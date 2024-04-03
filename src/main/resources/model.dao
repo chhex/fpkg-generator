@@ -1,0 +1,1831 @@
+model : zentraldispo;
+
+rdbms schema: vk_current
+package schemas: VK, AENV
+
+com.affichage.it21.vk.zentraldispo.dao { 
+	
+//=================================================================================== 
+// FLAECHENDIENST
+//=================================================================================== 
+
+	flaechen{
+	versioned readOnly entity FlaechenDenormTotF implements("com.affichage.it21.adgis.api.dao.Face") (id=(flVid, gueltigVon) oid=flOid tableName=FLAECHEN_DENORM_TOT_F)
+	{
+		excludes (WL_ID,WTL_NUMMER,TRAEGER_KONFIGURATION,BELEUCHTUNG_AKTIV)
+		
+		 readOnly domainField FlType                  	flType          	(column = FL_TYPE)
+		          
+		 readOnly manyToOne ObjektEbeneF             	objekteEbene  		(joinColumns = OBJ_EBENE_ID)
+		 readOnly manyToOne FlSichteinschraenkungenF    sichteinschraenkung	(joinColumns = FL_OID)
+temporal readOnly manyToOne ObjekteTotF              	objekt        		(joinColumns = OBJ_OID)
+temporal readOnly manyToOne AkquisitionGebieteBlattTotF	gebGebietCode		(joinColumns = GBOT_OID)
+
+                            Number  nummer                 (column = NUMMER)
+                            Point   geoLocation            (column = FL_STANDORT)
+                            Double  angularPosition        (column = FL_DREHWINKEL) // TODO: alter name war "drehwinkel"; ui muss angepasst werden, problem?
+		                    String  adressZusatz           (column = ADRESS_ZUSATZ)
+		           readOnly Number  faceNumber             (column = NUMMER)
+                   readOnly Double  visibilityAreaAngle    (column = BEACHTUNGS_WINKEL)
+			       readOnly Integer visibilityAreaDistance (column = SICHT_DISTANZ) 
+			       readOnly String  positionId             (column = POSITION_NR)
+				   readOnly String  additionalAddress      (column = ADRESS_ZUSATZ)
+					        String  gebietBez              (column = GEBIET_BEZ)		
+				   readOnly String  territoryName          (column = GEBIET_BEZ)
+				            String  pfBez                  (column = PF_BEZ)
+				   readOnly String  productFormatName      (column = PF_BEZ)
+	 	           readOnly Number  beidseitigBedruckt     (castTo = Boolean)	
+				   
+ 		transient readOnly  DemontageDatum demontDat      (delegates)
+ 		transient readOnly  MpkFuture      mpkFuture      (delegates)
+ 		transient           StrasseNummer  strasseNummer  (delegates)
+        transient           StmListe       stmListe       (delegates)
+        transient readOnly  Area           visibilityArea 
+        transient readOnly  FaceId         faceId         (delegates)
+		transient           Address        address        (delegates)				   
+	    transient listOf    FaceInPhoto    faceInPhotos
+	    
+		readOnly domainField StatusFl           status                   (column = STATUS)
+				 domainField KontaktKategorie   kontaktKategorie         (column = KONTAKT_KATEGORIE)
+                 domainField AnbieterKontaktKat anbieterKontaktKategorie (column = ANBIETER_KONTAKT_KAT)
+		         domainField Wochentag 			aushangWochenTag 		 (column = AUSHANG_WOCHENTAG)			
+		readOnly Number langfristAktion     (castTo=Boolean)
+		readOnly Number langfristVisumsfrei (castTo=Boolean)
+	}
+	
+	readOnly entity FlaecheUnterbruecheF (id=(flubId)){}   		
+	readOnly entity GpBkrFuerOpoeTotF(id=(subjOid, gueltigVon)){}
+   	readOnly entity ProduktFormateBsF (id=(pfId)) {}
+   	
+   	//TODO langfristig entfernen umbauen
+   	readOnly entity AgpsDgtlAdditionalInfoF (id=(agpsId)){
+   		includes(AGPS_ID, INTENSITAET, MEDIUM_LAENGE)
+   	}
+   	
+   	versioned readOnly entity AkquisitionGebieteBlattTotF (id=(gblVid,gueltigVon) oid=blattGbotOid tableName=GEBIETE_BLATT_TOT_F where="geb_gbat_id=42")
+   	{
+   		includes(GBL_VID, GUELTIG_VON, GUELTIG_BIS, BLATT_GBOT_OID)
+   		readOnly String	gebGebietCode (column = GEB_GEBIET_CODE)
+   	}
+   	
+   	readOnly entity GebietArtenBsF (id=(gbatId)) {}
+   	readOnly entity VerkehrsbetriebeF (id=(vbeId) tableAlias="VBF") {}
+
+   	versioned readOnly entity FmGebieteArtTotF (id=(gbvtVid) oid=gbotOid tableName=FM_GEBIETE_ART_TOT_F) {}
+   	versioned readOnly entity ObjekteTotF implements("com.affichage.it21.adgis.api.dao.Property") (id=(objVid) oid=objOid tableName=OBJEKTE_TOT_F){
+		oneToMany ObjektEbeneF objektEbenen (mappedBy=zugeordnetesObjektTotF)
+        manyToOne ObjektArtenBsF objektArt (joinColumns=OAT_ID)
+
+        // AdGis
+        Point geoLocation (column=OBJ_STANDORT)
+        transient listOf PropertyFloor propertyFloors (delegates)
+        transient PropertyType propertySubType (delegates)
+        transient readOnly PropertyId propertyId (delegates)   		
+   	}
+
+	readOnly entity KdvtFlzoF (id=(agpsFlZoId)){}
+   	
+    readOnly entity ObjektEbeneF implements("com.affichage.it21.adgis.api.dao.PropertyFloor") (id=(objEbeneId)) {
+      domainField Aktivcode status (column=STATUS)
+      temporal readOnly manyToOne ObjekteTotF zugeordnetesObjektTotF (joinColumns=OBJ_OID)
+      oneToOne RaumbezugsplaeneF zugeordneterRaumbezugsplan (mappedBy=objektEbene)
+      readOnly oneToMany FlaechenDenormTotF zugeordneteFlaechen (mappedBy=objekteEbene where="greatest(trunc(sysdate), nvl(tsql_time_up.vt_from(), const_up.min_date())) between gueltig_von and nvl(gueltig_bis, const_up.max_date())")
+
+      readOnly Number objOid
+            
+      Varchar bezeichnung (column=BEZEICHNUNG)
+            
+      // AdGis
+      transient listOf Face faces (delegates)      
+      readOnly Varchar floorName (column=BEZEICHNUNG)
+      transient FloorMap floorMap (delegates)
+    }   
+        
+	entity RaumbezugsplaeneF (id=(rmbzplId) tableAlias="RPF") {
+        domainField GeneralStufe generalStufe (column=GENERALISIERUNG_STUFE)
+        oneToOne ObjektEbeneF objektEbene (joinColumn = OBJ_EBENE_ID)
+        oneToOne ObjektplaeneExportF zugeordneterObjektplanExport (mappedBy=raumbezugsplan)
+        
+        readOnly Number objEbeneId (column=OBJ_EBENE_ID) // FK aus ObjektEbeneOfFlaeche
+        DateTime erstelltAm
+        DateTime letzteMutationAm
+    }  
+    
+    readOnly entity ObjektplaeneExportF (id=(rmbzplId) tableAlias="OPEF") {
+        oneToOne RaumbezugsplaeneF raumbezugsplan (joinColumn = RMBZPL_ID)
+    }              	
+   	
+   	versioned readOnly entity GebieteTotF (id=(gbvtVid) oid=gbotOid tableName=GEBIETE_TOT_F){}
+   	readOnly entity BranchenBsF (id=(brcId)) {
+   		readOnly oneToMany BranchenBsF children (mappedBy=parent)
+		readOnly manyToOne BranchenBsF parent (joinColumns=BRC_ID_IST_UNTERGRUPPE_VON)   		
+   	}
+   	readOnly entity PfFlatZuordnungenF (id=(pflatZoId)) {
+   		readOnly manyToOne FlaechenartenF flat (joinColumns = FLAT_OID)}
+   	readOnly entity FlaechenartenF (id=(flatOid) tableAlias="FAF") {}  	
+   	
+   	readOnly entity FlaechenFotoF (id=(flInFotoId)){}
+    readOnly entity SprNachrichtF (id=(nchrtId)) {
+    	domainField StatusSpr status (column=STATUS)
+	   }
+	readOnly entity FahrzeugKategorieBsF (id=(fkId)) {}
+	readOnly entity BetriebszeitBsF (id=(codeWert) tableAlias="BZBF") {} 
+	readOnly entity FahrzeugTypBsF (id=(ftId)) {}
+	readOnly entity MieterF (id=(mioId)){}
+	readOnly entity MietermixF (id=(mmId) tableAlias="MMF"){}
+    readOnly entity ObjektArtenBsF (id=(oatId)){}
+    readOnly entity KvPosKuendigungLogF (id=(logId)){
+		manyToOne KvLangfristigF log (joinColumns=KVLF_ID)    	
+    }
+    
+     entity PerspektivansichtenF implements("com.affichage.it21.adgis.api.dao.PointOfPerspective") (id=(ppaId) sequenceName=PPA_SEQ) {
+     	includes(PPA_ID,NUMMER,KOMMENTAR)
+     	oneToMany ObjInPerspektivansichtF objekte (mappedBy=perspektivansicht)
+      	oneToMany FlInPerspektivansichtF flaechen (mappedBy=perspektivansicht)
+           
+        transient BildVorhanden bildVorhanden (delegates)
+            
+        dbGenerated Date erfasstAm
+        dbGenerated String erfasstDurch
+        dbGenerated Date geaendertAm
+        dbGenerated String geaendertDurch
+            
+            // Geo-Zeugs
+        Point geoLocation (column=STANDORT)
+        Varchar perspectiveName (column=BEZEICHNUNG)
+        transient Blob planBild (delegates)
+        transient Perspective perspective (delegates)
+        transient listOf FaceInPerspective facesInPerspective (delegates)
+        transient listOf PropertyInPerspective propertiesInPerspective (delegates)
+        } 
+        
+     entity ObjInPerspektivansichtF implements("com.affichage.it21.adgis.api.dao.PropertyInPerspective, com.affichage.it21.adgis.api.dao.Property") (id=(objppaId) sequenceName=OBJPPA_SEQ) {
+       manyToOne PerspektivansichtenF perspektivansicht (joinColumns=PPA_ID)
+            
+            // Geo-Zeugs
+            temporal oneToOne ObjekteTotF property (joinColumn=OBJ_OID)
+            Double propertyHorizontalPosition (column=HORIZONTALE_KOORD)
+            Double propertyVerticalPosition (column=VERTIKALE_KOORD)
+            
+            transient GeoLocationPoint geoLocation (delegates)
+            transient listOf PropertyFloor propertyFloors (delegates)
+            transient PropertyType propertySubType (delegates)
+            transient readOnly PropertyId propertyId (delegates)
+        }  
+        
+      entity FlInPerspektivansichtF implements("com.affichage.it21.adgis.api.dao.FaceInPerspective, com.affichage.it21.adgis.api.dao.Face") (id=(flppaId) sequenceName=FLPPA_SEQ) {
+         manyToOne PerspektivansichtenF perspektivansicht (joinColumns=PPA_ID)
+            // Geo-Zeugs
+            temporal manyToOne FlaechenDenormTotF face (joinColumns=FL_OID)
+            readOnly manyToOne FlaechenlisteF fllist (joinColumns=FL_OID referencedColumn=FL_OID)
+            readOnly manyToOne AgpsFlDatenF fldlist (joinColumns=FL_OID referencedColumn=FL_OID)
+            Double faceHorizontalPosition (column=HORIZONTALE_KOORD)
+            Double faceVerticalPosition (column=VERTIKALE_KOORD)
+            
+            transient GeoLocationPoint geoLocation (delegates)
+            transient AngularPositionDouble angularPosition (delegates) 
+            transient readOnly VisibilityAreaAngleDouble visibilityAreaAngle (delegates)
+            transient readOnly VisibilityAreaDistanceInteger visibilityAreaDistance (delegates)
+            transient PositionIdString positionId (delegates)
+            transient readOnly FaceId faceId (delegates)
+            transient readOnly Area visibilityArea
+            
+            // Foto-Doku (nur Transientfelder, da diese Infos im VK nicht benötigt werden )
+			transient FaceNumber faceNumber 
+			transient Address address
+			transient AdditionalAddress additionalAddress 
+			transient ProductFormatName productFormatName 
+			transient TerritoryName territoryName 
+			transient listOf FaceInPhoto faceInPhotos
+        }
+}
+
+//=================================================================================== 
+// PM
+//===================================================================================
+	
+	pm{
+		versioned readOnly entity NetzgruppenAllTotF (id=(ntgrvtVid) oid=ntgrotOid){}
+	}
+
+//=================================================================================== 
+// VERKAUF
+//=================================================================================== 
+
+	verkauf 
+	{
+   		readOnly entity DruckerF (id=(druId)){} 
+   		 		
+  		readOnly entity VbDefaultDruckerF (id=(vddId)){
+  			readOnly oneToOne DruckerF drucker (joinColumn=DRU_ID)
+  		}
+
+		readOnly entity FobF (id=(aushangBeginn) tableAlias="FOBF"){
+			readOnly domainField AgpsStatus agpsStatus (column = AGPS_STATUS)
+		}
+		  	 	  				
+		readOnly entity SucheKundeVertraegeF implements("IAgpsArten") (id = (kdvtId)) 
+		{
+	      includes(ABRECHNUNG_PERIODE_DAUER, AGPS_ARTEN, ATGEB_BEZEICHNUNG, ATGEB_GESCHAEFTSPARTNER_NR, ATGEB_VAR_BEZ_ZUSATZ, BIS_KW, DKT_BEZEICHNUNG,
+	      	EKD_BEZEICHNUNG, EKD_GESCHAEFTSPARTNER_NR, HVKOE_BEZEICHNUNG, INITIIERT, KAMPAGNE_NUMMER, KDVT_ID, KTK_BEZEICHNUNG,
+	      	KUENDIGUNG_DATUM, KUENDIGUNG_FRIST, KVLF_ID, RADR_BEZEICHNUNG, RADR_GESCHAEFTSPARTNER_NR, REFERENZ, REMPF_BEZEICHNUNG,
+	      	REMPF_GESCHAEFTSPARTNER_NR, STELLVERTRETUNG, SUJET, VB_KURZZEICHEN, VBH_KURZZEICHEN, VERTRAG_BEGINN, VERTRAG_ENDE,
+	      	VERTRAG_NUMMER, VKOE_BEZEICHNUNG, VON_KW, WAGT_BEZEICHNUNG, WAGT_GESCHAEFTSPARTNER_NR, ZUSTAENDIG, PROVISORISCH_BESTAETIGT
+	      )	  
+		  readOnly oneToOne KundeVertraegeF       kampagneOrAbschnitt 		   (joinColumn = KDVT_ID)
+		  
+		  readOnly domainField ZahlungModus       zahlungModus                 (column = ZAHLUNGSMODUS)
+		  readOnly domainField OnlineType 		  onlineType 		 		   (column = ONLINE_TYPE)
+		  readOnly domainField KundeVertragStatus kundeVertragStatus 		   (column = KDVT_STATUS)
+		  readOnly domainField Waehrung 	      zahlungswaehrung   		   (column = ZAHLUNGSWAEHRUNG)
+		  readOnly domainField ZahlungsartBerKom  zahlungsartBeraterkommission (column = ZAHLUNGSART_BERATERKOMMISSION)
+		  readOnly domainField KdvtType 		  kdvtType 					   (column = KDVT_TYPE)
+		  
+		  notNull  Number 					      isMyapgsgaErlaubt 	  	   (castTo = Boolean)
+		  notNull  Number 					 	  manuelleRechnungsfreigabe    (castTo = Boolean) 
+		  
+		  readOnly Number schlussrechnungVerzoegern (castTo = Boolean)
+		  readOnly Number istUnterhalt  			(castTo = Boolean)
+		  notNull  Number provisorischBestaetigt    (castTo = Boolean)
+		}
+		 
+		readOnly entity SucheAuftraegeF implements("IAgpsArten") (id=(agId)) 
+		{
+		  includes(AG_ID,AG_NR, AGENTUR, AGENTUR_NR, AGPS_ARTEN, AH_BEGINN, AH_ENDE, AUFTRAGGEBER, AUFTRAGGEBER_NR, BESCHREIBUNG, BIS_KW, BRANCHE, INITIIERT, KAMP_NR, KOKO_BEZEICHNUNG, NEBENBRANCHEN, STELLVERTRETUNG, SUJET, VB, VON_KW, ZUSTAENDIG)
+		  readOnly oneToOne    AuftraegeF         auftrag           (joinColumn = AG_ID) 
+		  
+		  readOnly domainField ZahlungModus       zahlungModus      (column = ZAHLUNGSMODUS)
+		  readOnly domainField AuftragArt         auftragArt        (column = AGAT_ID)
+		  readOnly domainField AuftragStatus      auftragStatus     (column = AG_STATUS)
+		  readOnly domainField KundeVertragStatus kvStatus 		    (column = KDVT_STATUS)
+		  readOnly domainField Verrechnungsebene  verrechnungsebene (column = VERRECHNUNGSEBENE)
+		  readOnly domainField KdvtType 		  kdvtType 		    (column = KDVT_TYPE)
+		  readOnly domainField ZahlungsartBerKom  zahlungsartBerKom (column = ZAHLUNGSART_BERATERKOMMISSION)
+		  
+		  readOnly Number amtlAbgBelasten (castTo = Boolean)
+		  readOnly Number istUnterhalt    (castTo = Boolean)
+		} 
+		
+		readOnly entity SucheAuftragPositionenF (id=(agpsId)) 
+		{
+		  includes(AG_STATUS,AGAT_ID,AGENTUR,AGENTUR_NR,AGP_NR,AGP_STATUS,AGPS_ART,AGPS_ID,AH_BEG,AH_ENDE,AUFTRAGGEBER,AUFTRAGGEBER_NR,AUFTRAGSNUMMER,BRANCHE,DS_OPTION_VERFALL_DATUM,INITIIERT,KAMP_NR,OFFERTVERFALLDATUM,OPTIONSVERFALLDATUM,STELLVERTRETUNG,SUJET,VB,VKOE_BEZEICHNUNG,VON_KW,ZUSTAENDIG,BIS_KW,ABWOE_BEZEICHNUNG,BESCHREIBUNG,AUSHANG_DAUER,ZEIFENSTER,MEDIUM_LAENGE)
+  		  readOnly oneToOne    AuftragPositionenF agps (joinColumn = AGPS_ID)
+  		  
+  		  readOnly domainField ZahlungModus       zahlungModus (column = ZAHLUNGSMODUS)
+  		  readOnly domainField KundeVertragStatus kdvtStatus   (column = KDVT_STATUS)
+  		  readOnly domainField AgpsStatus         agpStatus    (column = AGP_STATUS)
+  		  readOnly domainField AuftragArt         auftragArt   (column = AGAT_ID)
+  		  readOnly domainField AuftragStatus      agStatus     (column = AG_STATUS) 		   
+  		  readOnly domainField KdvtType           kdvtType     (column = KDVT_TYPE)
+  		  readOnly domainField AgpsArt    		  agpsArt  	   (column = AGPS_ART)
+  		  
+  		  Number optionAufErgaenzen (castTo = Boolean)
+		}
+		
+		//suchekriteriensaetze kann glaube ich geloescht werden
+		readOnly entity SucheKriteriensaetzeF(id=(krsId)) {
+		  readOnly oneToOne Standalonekriteriensatz stdkrs (joinColumn=KRS_ID)
+		}
+	
+		readOnly entity AuftragMinmaxF (id=(agId)) {
+			readOnly oneToOne AuftraegeF auftrag (joinColumn=AG_ID)
+		}
+  		readOnly entity KampagneMinmaxF (id=(kdvtId)) {
+  			readOnly oneToOne KundeVertraegeF kampagne (joinColumn=KDVT_ID)
+  		}
+  		
+  		readOnly entity KrsOhneAuftraegeF (id=(krsId)) {
+  		   transient notNull Boolean istSelektiert  //wie setzt man Defaultvalue?
+  		   transient notNull Boolean hatBranchenrestriktion
+  		   transient notNull Boolean hatVerkaufsOerestriktion
+  		   readOnly oneToMany AuftragPositionenF auftragpositionen (joinColumns=KRS_ID referencedColumns=KRS_ID)
+   		}
+  		
+  		readOnly entity FlNtgrDetailsF (id=(flOid, flAushVon, enAushVon, elntId)){}
+  		
+  		readOnly entity AgpsNgSnKrsBezeichnungF (id=(agpsId)){}
+  		
+  		readOnly entity AgpsFlDatenF implements("com.affichage.it21.adgis.api.dao.Face")  (id=(agpsFlZoId)){
+		    manyToOne AuftragPositionenF auftragPosition (joinColumns=AGPS_ID)
+		    manyToOne AuftraegeF auftrag (joinColumns=AG_ID)  
+		    manyToOne KundeVertraegeF kampagne (joinColumns=KDVT_ID)
+		    manyToOne DachKampagnenF dachKampagne (joinColumns=KDVT_ID)
+		    manyToOne AgkrsHaeAuswahlF haendler (joinColumns=AGKRS_HAE_ID)
+  	        readOnly oneToMany FlInPerspektivansichtF flperspektive (mappedBy=fldlist)
+		    readOnly domainField AgpsFlZuordSta 	status 			   (column = STATUS)
+		    readOnly domainField Kommunikationsraum kommunikationsraum (column = KOMMUNIKATIONSRAUM)
+       	    readOnly domainField FzAntrieb 	      	fzAntrieb 		   (column = FZ_ANTRIEB)
+		    temporal readOnly manyToOne ObjekteTotF objektobj (joinColumns=OBJ_OID date=fzAhBeginn norewrite)
+		    readOnly manyToOne AgpsFlZuordnungenF agpsFlZuordnung (joinColumns=AGPS_FL_ZO_ID)
+    	    notNull Number strecke (castTo=Boolean) 
+    	    Amount breite
+    	    Amount hoehe
+    	    Amount bruttopreisPreisermittlung
+    	    // Geo Infos
+			Point geoLocation (column=FL_STANDORT)
+            Double angularPosition (column=FL_DREHWINKEL)
+            readOnly Double visibilityAreaAngle (column=BEACHTUNGS_WINKEL)
+            readOnly Integer visibilityAreaDistance (column=SICHT_DISTANZ)     		
+ 			String positionNr (column=POSITION_NR)
+            readOnly String positionId (column=POSITION_NR)
+            transient readOnly FaceId faceId (delegates)
+            transient readOnly Area visibilityArea
+            
+            // Foto-Doku (nur Transientfelder, da diese Infos im VK nicht benötigt werden )
+			transient FaceNumber faceNumber 
+			transient Address address
+			transient AdditionalAddress additionalAddress 
+			transient ProductFormatName productFormatName 
+			transient TerritoryName territoryName 
+			transient listOf FaceInPhoto faceInPhotos
+  		}
+  		
+   		readOnly entity AgpsFlaechenF (id=(agpsFlZoId))
+   		{
+    		readOnly manyToOne   AgpsFlGebieteF  	gebfl      		   (joinColumns = AGPS_ID,GBOT_OID)
+    		readOnly manyToOne   AgpsFlObjekteF  	objfl      	       (joinColumns = AGPS_ID,OBJ_OID)
+    		readOnly manyToOne   AgpsFlHaendlerF 	haefl      		   (joinColumns = AGPS_ID,AGKRS_HAE_ID)
+            readOnly oneToOne    AgpsFlUmplXlF   	umpfl      		   (joinColumn  = AGPS_FL_ZO_ID)
+     	    readOnly oneToMany   AgpsFlUmplXlF   	umpfllist  		   (mappedBy    = flaeche_up)
+     	    readOnly domainField AgpsFlZuordSta  	status     		   (column      = STATUS)
+     	    readOnly domainField Kommunikationsraum kommunikationsraum (column      = KOMMUNIKATIONSRAUM)
+       	    readOnly domainField FzAntrieb 	      	fzAntrieb 		   (column	    = FZ_ANTRIEB)
+    		notNull              Number          	strecke    		   (castTo      = Boolean)
+    		notNull              Number          	up         		   (castTo      = Boolean)
+    		notNull              Number          	annulliert 		   (castTo      = Boolean)
+  			transient IstSelektiertNoBeanAdapterPropertyChange istSelektiertNoUpdate (delegates) 
+  			transient Entfernung entfernung (delegates)
+  			Amount bruttopreisPreisermittlung		
+  		}
+  		
+   	    readOnly entity AgAgpsFlaechenF (id=(agpsFlZoId))
+   	    {
+  			readOnly manyToOne   AgAgpsFlGebieteF   gebietsflaechen    (joinColumns = AG_ID,GBOT_OID)
+  			readOnly manyToOne   AgpsFlZuordnungenF agpsFlZuordnung    (joinColumns = AGPS_FL_ZO_ID)
+  			readOnly oneToOne    AgpsFlUmplXlF      umpfl              (joinColumn  = AGPS_FL_ZO_ID)
+  			readOnly oneToMany   AgpsFlUmplXlF      umpfllist          (mappedBy    = flaeche_up_ag)
+  			readOnly domainField AgpsFlZuordSta     flzoStatus         (column      = STATUS)
+  			readOnly domainField Kommunikationsraum kommunikationsraum (column      = KOMMUNIKATIONSRAUM)
+       	    readOnly domainField FzAntrieb 	      	fzAntrieb 		   (column	    = FZ_ANTRIEB)
+  			notNull              Number             strecke            (castTo      = Boolean)
+  			notNull              Number             up                 (castTo      = Boolean)
+  			transient IstSelektiertNoBeanAdapterPropertyChange istSelektiertNoUpdate (delegates)
+  		}
+
+  		readOnly entity AgpsFlUmplXlF (id=(agpsFlZoId))
+  		{
+ 		  readOnly oneToOne    AgpsFlaechenF      upfl             	 (mappedBy    = umpfl)
+		  readOnly manyToOne   AgpsFlaechenF      flaeche_up       	 (joinColumns = AGPS_FL_ZO_ID)   		
+		  readOnly manyToOne   AgAgpsFlaechenF    flaeche_up_ag    	 (joinColumns = AGPS_FL_ZO_ID)   
+		           domainField QualitaetUmplatz   qualitaetumplatz 	 (column      = QUALITAET_UP)
+    	  readOnly domainField Kommunikationsraum kommunikationsraum (column      = KOMMUNIKATIONSRAUM)
+       	  readOnly domainField FzAntrieb 	      fzAntrieb 		 (column	  = FZ_ANTRIEB)
+ 	      notNull              Number             strecke          	 (castTo      = Boolean)  			
+  		}
+  		  		
+  		readOnly entity ResFlVmF (id=(agpsFlZoId)) {
+  		  readOnly manyToOne AgpsFlVbeVmF vbefl (joinColumns=AGPS_ID, VBE_ID)
+  		  
+  		  readOnly domainField FzflZone zone (column=ZONE)  		  
+		  readOnly domainField Traeger traeger (column=TRAEGER)  		
+		  readOnly domainField FlType flType (column=FL_TYPE)  
+  		  notNull Number up (castTo=Boolean)
+  		  notNull Number annulliert (castTo=Boolean)
+  	      Number beidseitigBedruckt (castTo=Boolean)
+  	      readOnly domainField AgpsFlZuordSta flzoStatus (column=STATUS)
+		  transient IstSelektiertNoBeanAdapterPropertyChange istSelektiertNoUpdate (delegates)  	        		  
+  		}
+	
+   		readOnly entity LeistungArtenBsF (id=(lstartId) sequenceName=LSTART_SEQ){
+   			oneToMany AuftragArtenF auftragArten (mappedBy=leistungArtenBs)
+   			Number imTakt (castTo=Boolean)
+   		}
+	
+		entity KokoF implements ("Aushangende2DelegateInterface") (id=(kokoId) sequenceName=KOKO_SEQ) {
+			manyToOne Kontingentkriteriensatz kokoKrs (joinColumns=KOKO_KRS_ID referencedColumn=KRS_ID)
+			notNull domainField StatusKoko kokoStatus (column=STATUS)
+			transient Aushangende aushangEnde (delegates)
+			notNull Number ausgleich (castTo=Boolean)
+		    readOnly oneToMany KokoJuiF kokopos (mappedBy=koko)	
+			readOnly oneToMany KokoFlGebieteF kokoFlGebiete (mappedBy=koko)
+			readOnly oneToMany KokoFlZuordnungF kokoFlZuordnung (mappedBy=koko)
+			readOnly oneToMany KokoFlaechenF kokoFlaechen (mappedBy=koko)
+			readOnly oneToMany AuftraegeF kokoAuftraege (mappedBy=koko)
+		}
+		
+		readOnly entity KokoFlGebieteF (id=(gbotOid,kokoId)){
+			readOnly manyToOne KokoF koko (joinColumns=KOKO_ID)
+			readOnly oneToMany KokoFlaechenF kokoFlaechen (mappedBy=gebiet)
+		}
+		
+		readOnly entity KokoFlZuordnungF (id=(kokoFlZuordnungId)){
+			readOnly manyToOne KokoF koko (joinColumns=KOKO_ID)
+		}
+		
+		readOnly entity KokoFlaechenF (id=(kokoFlZuordnungId) tableAlias="KOKOFF"){
+			readOnly manyToOne KokoF koko (joinColumns=KOKO_ID)
+			readOnly manyToOne KokoFlGebieteF gebiet (joinColumns=GBOT_OID,KOKO_ID)
+			notNull domainField StatusKoko kokoStatus (column=KOKO_STATUS)
+			domainField StatusFl statusFl (column=STATUS)
+			notNull Number strecke (castTo=Boolean)
+		}
+		
+		readOnly entity AgAgpsFlVmF (id=(agId, flOid,agpsId)) {
+          readOnly manyToOne AuftraegeF auftrag (joinColumns=AG_ID)
+          temporal readOnly manyToOne FlaechenDenormTotF flaechen (joinColumns=FL_OID date=aushangBeginn norewrite)
+          domainField AgpsStatus agpsStatus (column=AGPS_STATUS)
+          readOnly domainField FzflZone zone (column=ZONE)
+          readOnly domainField Traeger traeger (column=TRAEGER)
+		}
+		
+		readOnly entity AgAgpsFlGebieteF (id=(agId, gbotOid) ) {
+          readOnly manyToOne AuftraegeF ag (joinColumns=AG_ID)		
+          readOnly oneToMany AgAgpsFlaechenF aggebfl (mappedBy=gebietsflaechen orderBy=" blatt_sort_string, obj_sort_string, obj_frequenz desc, objekt, strassen_anschrift, haus_nr, adress_zusatz, position_nr, flaechennummer")   
+		}
+		
+		entity AktionenBsF (id=(aktnId)) {
+ 	      oneToMany AktionenSprF aktionenSpr (mappedBy=aktionenBs)
+ 	      transient HtmlLink linkWithHtmlTag (delegates)
+		}
+																						
+		entity RabattArtenBsF (id=(rbatId)) {
+ 	      domainField JaNein uebersteuerbar (column=UEBERSTEUERBAR)
+ 	      domainField JaNein visumspflichtig (column=VISUMSPFLICHTIG)
+ 	      domainField JaNein rabattKummuliertInVkPap (column=RABATT_KUMM_IN_VP)
+ 	      domainField RabattBerArt berechnungsart (column=BERECHNUNGSART)
+ 	      oneToMany RabattZuordnungenF rabattZuorndungen (mappedBy=rabattArtenBs)
+ 	      oneToMany RabattArtenSprF rabattArtenSpr (mappedBy=rabattArtenBs)
+		}
+		entity ZusatzkostenArtenBsF (id=(zskoatId)) {
+       		domainField ZusatzkostBerArt zusatzkostenBerArt (column=BERECHNUNGSART)
+       		domainField Aktivcode status (column=GUELTIG)	 
+       		readOnly oneToMany ZusatzkostenArtSprF uebersetzung (joinColumns=ZSKOAT_ID)      	
+		}
+        readOnly entity AgpsFlGebieteF (id=(agpsId, gbotOid)){
+          readOnly manyToOne AuftragPositionenF agpsextra (joinColumns=AGPS_ID)
+          readOnly oneToMany AgpsFlaechenF flaechen (mappedBy=gebfl orderBy = " blatt_sort_string, obj_sort_string, obj_frequenz desc,objekt, strassen_anschrift, haus_nr, adress_zusatz, position_nr,flaechennummer")
+        }
+        readOnly entity AgpsFlObjekteF (id=(agpsId,objOid)){
+          readOnly manyToOne AuftragPositionenF agpsextra (joinColumns=AGPS_ID)        
+          readOnly oneToMany AgpsFlaechenF flaechen (mappedBy=objfl orderBy = " blatt_sort_string, strassen_anschrift, haus_nr, adress_zusatz, position_nr,flaechennummer")
+        }
+        
+        readOnly entity AgpsFlHaendlerF (id=(agpsId, agkrsHaeId)){
+        	readOnly manyToOne AuftragPositionenF agpsextra (joinColumns=AGPS_ID)
+        	readOnly oneToMany AgpsFlaechenF flaechen (mappedBy=haefl orderBy = " blatt_sort_string, strassen_anschrift, haus_nr, adress_zusatz, position_nr,flaechennummer")
+        }
+        
+        readOnly entity AgpsFlVbeVmF (id=(agpsId,vbeId)){
+          readOnly manyToOne AuftragPositionenF traagpsextra (joinColumns=AGPS_ID)
+          readOnly oneToMany ResFlVmF vbeflaechen (mappedBy=vbefl)
+        }
+
+        readOnly entity KdvtlgKuendigungF (id=(kuendigungTypId, kuendigungDatum, erstesVertragsende)) {
+        	domainField KuendigungTypen kuendigungTyp (column=KUENDIGUNG_TYPE)
+        	readOnly Number kuendigungTypId (column=KUENDIGUNG_TYPE)
+        }	
+        entity AuftragArtenBsF (id=(agatId)) 
+        {
+        	domainField AuftragArt          auftrArt           (column=BEZEICHNUNG_CODE)
+        	domainField JaNein visumPflichtig (column=VISUM_PFLICHTIG)
+       	 	domainField JaNein gueltig (column=GUELTIG)
+        	manyToOne BeraterkommAtAllBsF beraterkommAtAllBs (joinColumns=BKAT_OID)
+			manyToOne LeistungArtenBsF leistungArtenBs (joinColumns=LSTART_ID)
+        }	        
+        // Status History Views
+        entity AgpsStatusHistoryF (id=(agpssthisId) tableAlias="AGPSSTF") {
+          manyToOne AuftragPositionenF agpsStatusHist (joinColumns=AGPS_ID)
+        	domainField AgpsStatus status (column=STATUS)        
+        }
+        readOnly entity AgStatusHistoryF (id=(agsthisId) tableAlias="AGSHF") {
+	    	domainField AuftragStatus status (column=STATUS)
+  	      	manyToOne AuftraegeF auftrag (joinColumns=AG_ID)       	              
+        }
+        readOnly entity KdvtStatusHistoryF (id=(kdvtsthisId)) {
+	      notNull domainField KundeVertragStatus status (column=STATUS)     
+        }
+        // IT-26712 Handfaktura: Status-History soll ergaenzt werden GUI
+        readOnly entity HfaStatusHistoryF (id=(hfasthisId)) {
+          manyToOne   HandfakturaF 		hfaStatusHist (joinColumns = HFA_ID)
+          domainField HandfakturaStatus status 		  (column = STATUS)        
+        }	
+		
+        readOnly entity ErsatzFlaechenF (id=(flaechennummer)) {
+	      		   domainField QualitaetUmplatz   qualitaetUmpl 	 (column = QUALITAET)       
+	      readOnly domainField Kommunikationsraum kommunikationsraum (column = KOMMUNIKATIONSRAUM)
+       	  readOnly domainField FzAntrieb 	      fzAntrieb 		 (column = FZ_ANTRIEB)  
+  		  		  	   notNull Number 			  strecke			 (castTo = Boolean)        
+        }
+        
+        readOnly entity StandortMerkmaleBsF (id=(stmId)){
+        }
+        
+		readOnly entity VerfuegFlProGebF (id=(vvftId) tableAlias="VFLPGF") {
+			notNull Number anStrecke (castTo=Boolean)
+		}
+		readOnly entity AzDoppelbelegungenF (id=(agps1Id, fl1Oid,agps2Id, fl2Oid)) {
+			notNull Number fl1InEn (castTo=Boolean) 
+			notNull Number fl2InEn (castTo=Boolean)
+			transient IstSelektiertNoBeanAdapterPropertyChange istSelektiertNoUpdateLinks  (delegates)
+			transient IstSelektiertNoBeanAdapterPropertyChange istSelektiertNoUpdateRechts (delegates)
+			
+		}
+   	    readOnly entity GebieteAusschlF (id=(gbotOid)) {}		
+   	    readOnly entity ObjekteStmGebieteF (id=(objOid)) {}
+   	    readOnly entity ObjekteGebF (id=(objOid)){}
+   	    readOnly entity AzDifferKombiF (id=(agpsId, gebietId, objektId, haendlerId)){}
+   	    readOnly entity AzDifferStmF (id=(agpsId, gebietId, objektId, haendlerId, stmId)){}
+   	    readOnly entity AzErgebnisF (id=(agpsId, aushangWoche) tableAlias="AGKRSEF") {}
+   	    readOnly entity AzErgebnisStmF (id=(agpsId, stmId, aushangWoche)){}
+   	    readOnly entity PzBgbuDiffMsgF (id=(pbdmvId)) {
+   	    	String gruppierungTyp (column=GRUPPIERUNG_TYP)
+   	    }
+   	    
+   	    readOnly entity VerfuegFremdeNurGebF (id=(gbotOid)){
+		  oneToMany VerfuegFremdeProGebF fremdeFlaechen (mappedBy=vgfremdeflaechen)
+		}
+		
+		readOnly entity VerfuegFremdeProGebF (id=(flOid)){
+		  		   manyToOne   VerfuegFremdeNurGebF vgfremdeflaechen   (joinColumns = GBOT_OID)
+		  readOnly domainField Kommunikationsraum 	kommunikationsraum (column = KOMMUNIKATIONSRAUM)
+       	  readOnly domainField FzAntrieb 	      	fzAntrieb 		   (column = FZ_ANTRIEB)
+		}
+		
+		entity KvLangfristigF (id=(kvlfId) sequenceName=KVLF_SEQ) {
+			excludes (INDEXBASIS)
+			oneToMany KundeVertraegeF abschnitte (mappedBy=vertrag)
+			oneToMany KvPosKuendigungLogF kuendigungLog (mappedBy=log orderBy=" kvlf_id, zeitstempel, schritt")
+			domainField VertragMinDauer mindestDauer (column=MINDEST_DAUER)
+			notNull domainField AbrechnungPeriode abrechnungPeriode (column=ABRECHNUNG_PERIODE_DAUER)
+			domainField VertragWminDauer wocheMindestDauer (column=MINDEST_DAUER_WOCHE)			
+			domainField VerlaengerungArt manuellVerlaengern (column=MANUELL_VERLAENGERN)		
+		}
+
+		readOnly entity LogosF (id=(logoId)){}
+		
+		readOnly entity DachkampagnenZusatzF (id=(dktId, kdvtId)){
+			readOnly oneToOne DachKampagnenF zusatz (joinColumn=DKT_ID)
+			domainField DkaTyp deckblattArt (column=DECKBLATT_ART)
+		}
+		
+		readOnly entity DachkampagnenAgpsArtenBsF(id=(kdvtId)){
+			
+		}
+
+
+		entity DachKampagnenF implements("HatFlaechenListeInterface", "VbVkoeDelegateInterface") (id=(dktId) sequenceName=DKT_SEQ) 
+		{	
+		   readOnly oneToOne    DachkampagnenZusatzF 	  zusatz 		   (mappedBy=zusatz)		
+					oneToMany   KundeVertraegeF           segmentkampagnen (mappedBy=segkamp)
+		   readOnly oneToMany   AgpsFlDatenF 			  flaechenliste    (mappedBy=dachKampagne orderBy=" blatt_sort_string, obj_sort_string, obj_frequenz desc, objekt, strassen_anschrift, haus_nr, adress_zusatz, position_nr, flaechennummer")
+		   readOnly oneToMany   FlaechenlisteF 			  flaechenlisteNew (mappedBy=dachKampagne orderBy=" blatt_sort_string, obj_sort_string, obj_frequenz desc, objekt, strassen_anschrift, haus_nr, adress_zusatz, position_nr, flaechennummer")									
+		   temporal manyToOne   VerkaufsBeraterTotF 	  vb   			   (joinColumns=VKBER_OID date=vkberDate rewriteSysdate)		
+		   temporal manyToOne   VerkaufsOeTotF 	  		  vkoe 			   (joinColumns=VKOE_OID  date=vkoeDate  rewriteSysdate)		
+					
+				    domainField DkaTyp 				      deckblattArt 	   (column=DECKBLATT_ART)
+		
+		   transient 		    VbVkoe 					  vbVkoe 		   (delegates)	
+		   transient readOnly   Doppelbelegungen 		  doppelbelegungen (delegates)				
+		}	
+
+		// Kampagnen, Vertraege, Lokaldispoauftraege
+		// Typ Kunde Vertraege
+		abstract entity KundeVertraegeF  implements ("HatFlaechenListeInterface", "HatSprBewertungInterface", "VbVkoeDelegateInterface", "VbVkoeHDelegateInterface", "IAuftraggeberVarBezZusatz", "IDeckblattadrVarBezZusatz","IAgenturVarBezZusatz", "IRechnadrVarBezZusatz") (id=(kdvtId) 
+									     sequenceName=KDVT_SEQ discrColumn=KDVT_TYPE tableName=KUNDE_VERTRAEGE_F )  
+		{
+			includes(KDVT_ID, STATUS, GBAT_ID, KDVT_TYPE, ZAHLUNGSART_BERATERKOMMISSION, VKOE_OID, VKBER_OID, ATGEB_ID, ENDKUNDE_SUBJ_OID,
+				WERBEAGENTUR_SUBJ_OID, RECHN_EMPF_SUBJ_OID, AUFTRAGGEB_KONTAKT_SUBJ_OID, ENDKUNDE_KONTAKT_SUBJ_OID,
+				WERBEAGENTUR_KONTAKT_SUBJ_OID, ABRECHNUNG_PERIODE_DAUER, KAMPAGNE_NUMMER, REFERENZ, MEMO_NOTIZ, BEZEICHNUNG, ERFASST_AM,
+				ERFASST_DURCH, GEAENDERT_AM, GEAENDERT_DURCH, KUENDIGUNG_DATUM, PROZENTSATZ_BERATERKOMMISSION, AGAT_ID, BRC_ID,
+				TEXT_VOR_RECHNUNG, TEXT_NACH_RECHNUNG, VERLAENGERUNG_DAUER, ZAHLUNGSMODUS, VKOE_DATE, VKBER_DATE, ATGEB_DATE, ENDKUNDE_DATE,
+				WERBE_AGENTUR_DATE, RECHN_EMPF_DATE, AUFTRAGGEBER_KONTAKT_DATE, ENDKUNDE_KONTAKT_DATE, WERBE_AGENTUR_KONTAKT_DATE,
+				ANZ_KOPIEN_FAKTURA, VKOE_HBE_OID, VKBER_HBE_OID, VKOE_HBE_DATE, VKBER_HBE_DATE, ABSCHNITT_BEGINN, ABSCHNITT_ENDE, KVLF_ID,
+				LSTMODIFIKATION_KOMMUNIZIERT, ZAHLUNGSWAEHRUNG, MIETE_VERTRAG, MIETE_VERTRAG_DATUM, UNTERHALT_VERTRAG, UNTERHALT_VERTRAG_DATUM,
+				RGSTELLUNG_GEW_AM, RG_SOFORT_FAELLIG, ATGEB_KONTAKT_DRUCK_JN, AGENTUR_KONTAKT_DRUCK_JN, J_VERSION, ONLINE_TYPE,
+				SCHLUSSRECHNUNG_VERZOEGERN, ATGEB_VAR_BEZ_ZUSATZ, RECHN_EMPF_KONTAKT_SUBJ_OID, RECHN_EMPF_KONTAKT_DATE, IST_LEAD_KDVT,
+				DKT_ID, ATGEB_KONTAKT_2_SUBJ_OID, ATGEB_KONTAKT_2_DATE, IST_UNTERHALT, VP_INFO_ZAHLUNG_VOR_AUSHANG, TRANSAKTIONS_ID,
+				DECKBLATTADR_VAR_BEZ_ZUSATZ, AGENTUR_VAR_BEZ_ZUSATZ, RECHNADR_VAR_BEZ_ZUSATZ, PORTAL_ID, DRUCKEREI_SUBJ_OID, DRUCKEREI_DATE,
+				ZUSTAENDIG_SUBJ_OID, ZUSTAENDIG_DATE, STELLVERTUNG_SUBJ_OID, STELLVERTUNG_DATE, IS_MYAPGSGA_ERLAUBT, MANUELLE_RECHNUNGSFREIGABE,
+				INITIERT_DURCH_SUBJ_OID, INITIERT_DURCH_DATE, HAUPT_KONTAKT, ZVV_DTC_NR, ADRESSLISTE_ZU_ERSTELLEN,
+				VERKAUF_CHANCE, APG_SELLING_OP_NAME, RECHNUNGS_ADRESSAT_SUBJ_OID, RECHNUNGS_ADRESSAT_DATE,
+				PROVISORISCH_BESTAETIGT, FREESPACE_SCHWEBEND, FIXIERUNG_DATUM
+			)
+			         oneToMany AuftraegeF 				 auftraege 					  (mappedBy=kampagne  orderBy = " auftragsnummer " )  
+					 oneToMany KdvtStatusHistoryF 		 statusHist 				  (joinColumn=KDVT_ID orderBy=" GUELTIG_AB ")	
+			         oneToMany KampagneKdvtSprBewertungF sprBewertung 				  (mappedBy=kampagne  where  =" spr_bewertung_type = 'K' ") // where weil typisierung nicht funktioniert 		
+		    readOnly oneToMany KdvtDokumenteF 			 dokumente 					  (mappedBy=kampdok	  orderBy=" kdvtdok_id desc")
+		    readOnly oneToMany AufgabenF		   		 aufgaben 					  (mappedBy=kampagne  orderBy=" aufg_id desc")
+			readOnly oneToMany AgpsFlDatenF 			 flaechenliste 				  (mappedBy=kampagne  orderBy=" blatt_sort_string, obj_sort_string, obj_frequenz desc, objekt, strassen_anschrift, haus_nr, adress_zusatz, position_nr, flaechennummer")
+			readOnly oneToMany FlaechenlisteF 			 flaechenlisteNew 			  (mappedBy=kampagne  orderBy=" blatt_sort_string, obj_sort_string, obj_frequenz desc, objekt, strassen_anschrift, haus_nr, adress_zusatz, position_nr, flaechennummer")
+			         oneToMany AgpsCountZlstF 			 agpsZlListe     			  (mappedBy=kampagne)
+			readOnly oneToMany KdvtApgKatAnzFlaechenF 	 anzahlFlaechenProApgKat 	  (mappedBy=kampagne)
+			readOnly oneToMany KdvtPfAnzFlaechenF 		 anzahlFlaechenProPf 		  (mappedBy=kampagne)
+			readOnly oneToMany KdvtSichtwinkAnzFlaechenF anzahlFlaechenProSichtwinkel (mappedBy=kampagne)
+			readOnly oneToMany KdvtPfSpracheAnzFlaechenF anzahlFlaechenProPfSprache   (mappedBy=kampagne)		
+			readOnly oneToMany VkPreisAgpsApaF			 preiseAgpsApa			      (mappedBy=kampagne)	
+			readOnly oneToMany KdvtWerbetechnikerF       werbetechniker				  (mappedBy=kampagne)			
+			readOnly oneToMany RechnungBaseF 			 rechnungen 			      (mappedBy=kampagne)
+			readOnly oneToMany AgVisumAusnahmeF			 visumAusnahmeEndkunde	      (joinColumns=ENDKUNDE_SUBJ_OID referencedColumns=ENDKUNDE_SUBJ_OID orderBy = "jahr DESC")
+									 
+				     manyToOne KvLangfristigF 			 vertrag 				      (joinColumns=KVLF_ID)	
+					 manyToOne DachKampagnenF 			 segkamp 				   	  (joinColumns=DKT_ID)
+			readOnly manyToOne DachkampagnenAgpsArtenBsF dkamAgpsArt			   	  (joinColumns=KDVT_ID)
+			readOnly manyToOne VpKdvtKontakteF 			 vpKdvtKontakte 			  (joinColumns=KDVT_ID)	
+			temporal manyToOne VerkaufsBeraterTotF 		 vb 					   	  (joinColumns=VKBER_OID     				 date=vkberDate rewriteSysdate)
+			temporal manyToOne VerkaufsBeraterTotF 		 vbh 					   	  (joinColumns=VKBER_HBE_OID 				 date=vkberHbeDate rewriteSysdate) 
+			temporal manyToOne VerkaufsOeTotF 			 vkoe 					   	  (joinColumns=VKOE_OID 	 				 date=vkoeDate rewriteSysdate)
+			temporal manyToOne VerkaufsOeTotF 			 vkoeh 					   	  (joinColumns=VKOE_HBE_OID  				 date=vkoeHbeDate rewriteSysdate)			
+			temporal manyToOne AuftraggeberTotF 		 auftraggeber 			   	  (joinColumns=ATGEB_ID 	 				 date=atgebDate rewriteSysdate)
+   temporal readOnly manyToOne AuftraggeberTotF 		 auftraggeberAktuell	  	  (joinColumns=ATGEB_ID)
+			temporal manyToOne PersonenDenormTotF 		 auftraggeberkontakt 	   	  (joinColumns=AUFTRAGGEB_KONTAKT_SUBJ_OID   date=auftraggeberKontaktDate rewriteSysdate)
+			temporal manyToOne PersonenDenormTotF 		 auftraggeberkontakt2 	   	  (joinColumns=ATGEB_KONTAKT_2_SUBJ_OID      date=atgebKontakt2Date rewriteSysdate)
+			temporal manyToOne PersonenDenormTotF 		 rechnEmpfKontakt 		   	  (joinColumns=RECHN_EMPF_KONTAKT_SUBJ_OID   date=rechnEmpfKontaktDate rewriteSysdate)
+			temporal manyToOne InstitutionenDenormTotF 	 agentur 				   	  (joinColumns=WERBEAGENTUR_SUBJ_OID 	     date=werbeAgenturDate rewriteSysdate)
+   temporal readOnly manyToOne InstitutionenDenormTotF 	 agenturAktuell 			  (joinColumns=WERBEAGENTUR_SUBJ_OID)
+			temporal manyToOne PersonenDenormTotF 		 agenturkontakt 		   	  (joinColumns=WERBEAGENTUR_KONTAKT_SUBJ_OID date=werbeAgenturKontaktDate rewriteSysdate)
+			temporal manyToOne SubjekteDenormTotF 		 endkunde 				   	  (joinColumns=ENDKUNDE_SUBJ_OID 			 date=endkundeDate rewriteSysdate)
+   temporal readOnly manyToOne SubjekteDenormTotF 		 endkundeAktuell		   	  (joinColumns=ENDKUNDE_SUBJ_OID)
+			temporal manyToOne PersonenDenormTotF 		 endkundekontakt 		   	  (joinColumns=ENDKUNDE_KONTAKT_SUBJ_OID     date=endkundeKontaktDate rewriteSysdate)
+   temporal readOnly manyToOne GeschpartnerAllTotF		 endkundeGeschaeftspartner 	  (joinColumns=ENDKUNDE_SUBJ_OID 			 date=endkundeDate rewriteSysdate)			
+			temporal manyToOne SubjekteDenormTotF		 rechnungsempfaenger 	   	  (joinColumns=RECHN_EMPF_SUBJ_OID 			 date=rechnEmpfDate rewriteSysdate)
+			temporal manyToOne SubjekteDenormTotF 		 druckerei 			   	 	  (joinColumns=DRUCKEREI_SUBJ_OID 	 		 date=druckereiDate rewriteSysdate)
+			temporal manyToOne SubjekteDenormTotF 		 zustaendig			   	 	  (joinColumns=ZUSTAENDIG_SUBJ_OID  	 	 date=zustaendigDate rewriteSysdate)
+			temporal manyToOne SubjekteDenormTotF 		 stellvertung   	   	 	  (joinColumns=STELLVERTUNG_SUBJ_OID 	 	 date=stellvertungDate rewriteSysdate)
+			temporal manyToOne SubjekteDenormTotF 		 initiiert			   	 	  (joinColumns=INITIERT_DURCH_SUBJ_OID	 	 date=initiertDurchDate rewriteSysdate)
+			temporal manyToOne SubjekteDenormTotF 		 rechnungsAdressat	   	 	  (joinColumns=RECHNUNGS_ADRESSAT_SUBJ_OID 	 date=rechnungsAdressatDate rewriteSysdate)
+ 
+			 readOnly oneToOne KampagneMinmaxF 			 minmax 				   	  (mappedBy=kampagne) //vermutlich nicht noetig (performance da nicht lazy)
+			 readOnly oneToOne VkPreisKdvtF 			 preise 				   	  (mappedBy=kampagne) //vermutlich nicht noetig (performance da nicht lazy)
+						
+		           domainField AbrechnungPeriode  		 abrechnungPeriodeDauer    	  (column=ABRECHNUNG_PERIODE_DAUER)			
+		   notNull domainField KundeVertragStatus 		 kdvtstat 					  (column=STATUS)
+		   notNull domainField ZahlungsartBerKom  		 zahlartbk 					  (column=ZAHLUNGSART_BERATERKOMMISSION)
+		   notNull domainField Waehrung 		   		 zahlungswaehrung 			  (column=ZAHLUNGSWAEHRUNG)	
+	  	   notNull domainField OnlineType 				 onlineType 				  (column=ONLINE_TYPE)
+		           domainField KvHauptKontakt			 hauptKontakt 				  (column=HAUPT_KONTAKT)
+		  		   domainField KdvtType 		         kdvtType      			      (column=KDVT_TYPE)
+
+		  readOnly dbGenerated Date 					 abschnittBeginn
+		  readOnly dbGenerated Date 					 abschnittEnde
+		  
+		  //generator muss upgadated werden. Workaround wird hier gemacht
+		  readOnly dbGenerated Date 					 geaendertAm
+		  readOnly dbGenerated Date 					 erfasstAm
+		  readOnly dbGenerated Varchar 					 geaendertDurch
+		  readOnly dbGenerated Varchar 					 erfasstDurch
+		  readOnly dbGenerated Number 					 verlaengerungDauer
+					   notNull Number 					 atgebKontaktDruckJn 		  (castTo=Boolean)
+					   notNull Number 					 agenturKontaktDruckJn 		  (castTo=Boolean)
+					   notNull Number 					 schlussrechnungVerzoegern 	  (castTo=Boolean)
+							   Number 					 vpInfoZahlungVorAushang 	  (castTo=Boolean) //theoretisch not null
+					   notNull Number 					 isMyapgsgaErlaubt 	  		  (castTo=Boolean) 
+					   notNull Number 					 manuelleRechnungsfreigabe    (castTo=Boolean) 
+							   Number 					 istLeadKdvt 				  (castTo=Boolean)		
+							   Number 					 istUnterhalt 				  (castTo=Boolean)
+					   notNull Number 					 provisorischBestaetigt       (castTo=Boolean)
+					   		   Number					 freespaceSchwebend			  (castTo=Boolean)
+					  readOnly String 					 transaktionsId
+			
+			transient readOnly Spezialkonditionen 		 spezialkonditionen 		  (delegates)
+			transient readOnly Doppelbelegungen 		 doppelbelegungen   		  (delegates)
+			         transient VbVkoe  					 vbVkoe  					  (delegates)			
+			         transient VbVkoeH 					 vbVkoeh 					  (delegates)
+			         
+					 transient AgenturVariablerBezZusatz           agenturVariablerBezeichnungsZusatz 			(delegates)
+					 transient AuftraggeberVariablerBezZusatz      auftraggeberVariablerBezeichnungsZusatz 		(delegates)
+					 transient DeckblattadresseVariablerBezZusatz  deckblattadresseVariablerBezeichnungsZusatz  (delegates)
+					 transient RechnungsadressatVariablerBezZusatz rechnungsadressatVariablerBezeichnungsZusatz (delegates)
+					 transient KdvtBruttoPreisermittlung 		   bruttoPreisermittlung 						(delegates)
+					 transient KdvtBruttoPreisermittlungEuro 	   bruttoPreisermittlungEuro 					(delegates)
+					 transient IstSwaBerechtigt		   			   istSwaBerechtigt						        (delegates)  // VK00199
+					 transient VerkaufsChance verkaufsChance (delegates)
+					 
+		}
+
+		readOnly entity VpKdvtKontakteF(id=(kdvtId)){
+		}
+
+		readOnly entity KdvtApgKatAnzFlaechenF (id=(kdvtId,anbieterKontaktKat)){
+   			readOnly manyToOne KundeVertraegeF kampagne (joinColumns=KDVT_ID)
+		}
+			
+		readOnly entity KdvtPfAnzFlaechenF (id=(kdvtId,pfBez)){
+			readOnly manyToOne KundeVertraegeF kampagne (joinColumns=KDVT_ID)
+		}	
+
+		readOnly entity KdvtSichtwinkAnzFlaechenF (id=(kdvtId,sichtwinkel)){
+			readOnly manyToOne KundeVertraegeF kampagne (joinColumns=KDVT_ID)
+		}
+
+		readOnly entity KdvtPfSpracheAnzFlaechenF (id=(kdvtId,pfBez,sprache)){
+			readOnly manyToOne KundeVertraegeF kampagne (joinColumns=KDVT_ID)
+		}
+
+		readOnly entity VkPreisAgpsApaF (id=(kdvtId,agpsArt)){
+			readOnly manyToOne KundeVertraegeF kampagne (joinColumns=KDVT_ID)
+			Amount bruttoPreis
+			Amount nettoPreis
+			Amount nettoNettoPreis
+			Amount fakturaPreisExklMwst
+			Amount rabattTotal
+			Amount beraterKommission
+			Amount beraterKommissionPsatz
+			Amount zusatzleistungTotal
+			Amount zusatzkosten
+			Amount amtlicheAbgaben
+		}
+				
+    	entity VkParameterF (id=(vkpId)){}
+
+    	entity VpInfosF (id=(vpiId)){
+    		Number apg (castTo=Boolean)
+    		Number digital (castTo=Boolean)
+    		Number mountain (castTo=Boolean)
+    		Number traffic (castTo=Boolean)
+    		Number megaposter (castTo=Boolean)
+    		Number promotion (castTo=Boolean)
+    		Number bordereau (castTo=Boolean)
+    		Number deckblatt (castTo=Boolean)
+    		Number rechnung (castTo=Boolean)
+    		Number lokaldispo (castTo=Boolean)
+    		Number vertrag (castTo=Boolean)
+    		Number referenzNotizVorhanden (castTo=Boolean)
+    		Number ausstrahlungsplan (castTo=Boolean)
+    	}
+
+		readOnly entity VkPreisKdvtF (id=(kdvtId)) {
+			readOnly oneToOne KundeVertraegeF kampagne (joinColumn=KDVT_ID)
+			Amount bruttoPreis
+			Amount nettoPreis
+			Amount nettoNettoPreis
+			Amount fakturaPreisExklMwst
+			Amount rabattTotal
+			Amount skonto
+			Amount beraterKommission
+			Amount zusatzkosten
+			Amount zusatzleistungTotal
+			Amount amtlicheAbgaben
+			transient KdvtNettoNettoPreisEuro kdvtNettoNettoPreisEuro (delegates)
+		}
+		
+		// Subtyp Kampagnen
+		entity Kampagnen extends KundeVertraegeF ( discrValue = 'KPG' ) { }
+		// Subtyp Vertragsabschnitte
+		entity Vertragsabschnitte extends KundeVertraegeF ( discrValue = 'KDVTLG') { }
+		// Subtyp Lokaldisopkampagnen
+		entity Lokaldispokampagnen extends KundeVertraegeF ( discrValue = 'KPGL' ) { }
+			
+		entity AuftragProduktFormatAnzFlaechenF (id=(agId,pfBez) tableName=AG_PF_ANZ_FLAECHEN_F){
+			readOnly manyToOne AuftraegeF auftraege (joinColumns=AG_ID)
+		}
+			
+		entity AuftragPreisuebersichtF (id=(agId) tableName=AUFTRAG_PREISUEBERSICHT_F tableAlias="APUF"){
+			oneToOne AuftraegeF auftraege (joinColumn=AG_ID)
+			Amount totalBrutto
+			Amount totalRabatt
+			Amount totalNetto
+			Amount totalBk
+			Amount totalNettoNetto
+		}
+
+		// Auftraege
+		entity AuftraegeF implements ("HatFlaechenListeInterface") (id=(agId) sequenceName=AG_SEQ tableAlias="AGF") 
+		{
+					 oneToMany   AuftragPositionenF 	 auftragposition 					(mappedBy=auftrag where = " agps_type != 'AGPSZL'")
+					 oneToMany   AuftragPositionenF 	 auftragpositionenOhneInErfassung 	(mappedBy=auftrag where = " status != 1 AND  agps_type != 'AGPSZL'")
+            		 oneToMany   AuftragPositionenF 	 auftragpositionenZdLight 			(mappedBy=auftrag where = " agps_type = 'AGPSZL'")
+					 oneToMany   AuftragPositionenF 	 agpsSegmentBuchung 				(mappedBy=auftrag where = " agps_type = 'AGPSSP'")
+					 oneToMany   AuftragPositionenF 	 agpsBestVorCovidStichdatum    	    (mappedBy=auftrag where = " status IN (8,9) AND (bestaetigung_datum <  to_date('26.03.2020','dd.mm.yyyy') OR aushang_beginn < TRUNC(SYSDATE) + 10) ") // VK00270
+					 oneToMany   AuftragPositionenF 	 agpsBestNachCovidStichdatum        (mappedBy=auftrag where = " status IN (8,9) AND bestaetigung_datum >= to_date('26.03.2020','dd.mm.yyyy') AND aushang_beginn > TRUNC(SYSDATE) + 10 ")  // VK00270
+					 oneToMany   AkontorechnungenGuiF  	 akontorechnungen 					(mappedBy=auftragIn)
+			temporal manyToOne   SubjekteDenormTotF 	 auftraggeber 						(joinColumns=RESTR_AUSN_SUBJ_OID date=restrAusnDate rewriteSysdate)
+	        readOnly oneToMany   AgStatusHistoryF 	 	 statusHist 						(mappedBy=auftrag)				
+			readOnly oneToMany   AgAgpsFlGebieteF 	 	 aggebiete 							(mappedBy=ag orderBy=" blatt_sort_string")
+			readOnly oneToMany   AgAgpsFlVmF 		 	 agVerkehrsflaechen 				(mappedBy=auftrag) 
+					 oneToMany   RabattWerteF 		 	 rabattwerte 						(mappedBy=auftrag)
+					 oneToMany   ZusatzkostenF 		 	 zusatzkosten 						(mappedBy=auftrag orderBy=" datum desc ")
+					 oneToMany   VisaF 				 	 visum 								(mappedBy=auftrag)
+			notNull  manyToOne   AuftragArtenBsF 		 agat 								(joinColumns = AGAT_ID)
+					 manyToOne   AktionenBsF 		     aktion 							(joinColumns = AKTN_ID)
+			notNull  domainField Verrechnungsebene 		 verr 								(column = VERRECHNUNGSEBENE)
+			notNull  domainField AuftragStatus 			 agstat 							(column = STATUS)
+			notNull  domainField Zahlungsmodus 			 zahlungsmodus 						(column=ZAHLUNGSMODUS)
+					 manyToOne   KokoF 					 koko 								(joinColumns = KOKO_ID)
+			readOnly oneToOne 	 AuftragMinmaxF 		 minmax 							(mappedBy=auftrag)
+			readOnly oneToOne 	 AuftragPreisuebersichtF preisuebersicht 					(mappedBy=auftraege)
+			readOnly oneToMany   AuftragProduktFormatAnzFlaechenF auftragProduktFormatAnzFlaechen (mappedBy=auftraege) 
+			readOnly oneToMany   RechnungBaseF 			 rechnungen 			            (joinColumn=AG_ID)
+					 manyToOne   KundeVertraegeF 		 kampagne 							(joinColumns=KDVT_ID)
+					 manyToOne   BranchenBsF 		 	 branchen 							(joinColumns=BRC_ID)
+					 manyToMany  BranchenBsF 			 auftrNebenbranchen 				(joinTable=AG_BRC_SEKUNDAER_F joinColumn=AG_ID referencedColumn=BRC_ID) //Nach jafo-1588 funktioniert: cascadeTypes='@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})'
+			readOnly oneToMany   AgpsFlDatenF 			 flaechenliste 						(mappedBy=auftrag orderBy=" blatt_sort_string, obj_sort_string, obj_frequenz desc, objekt, strassen_anschrift, haus_nr, adress_zusatz, position_nr, flaechennummer")
+			readOnly oneToMany   FlaechenlisteF 		 flaechenlisteNew 					(mappedBy=auftrag orderBy=" blatt_sort_string, obj_sort_string, obj_frequenz desc, objekt, strassen_anschrift, haus_nr, adress_zusatz, position_nr, flaechennummer")
+								 Number 				 auftragsnummer
+			notNull  			 Number 				 amtlAbgBelasten 					(castTo=Boolean)
+					 transient 	 AgBruttoPreisermittlung bruttoPreisermittlung (delegates)
+					 transient 	 AgAnzResFlaechen 		 anzResFlaechen 	   (delegates)
+					 transient 	 AgIdText 		 		 agIdText 			   (delegates)
+					 transient 	 AgAuftragsPosArt 		 auftragsPosArt 	   (delegates)
+					 transient 	 Double 				 akontoAmtlAbgaben
+					 transient 	 Double 				 akontoBK
+					 transient 	 Double 				 akontoFakturabetragOhneMwst
+					 transient 	 Double 			 	 akontoNettobetrag
+					 transient 	 Double 				 akontoVorausrechnungstotal
+					 transient 	 Double 				 akontoZusatzkosten
+					 transient 	 Double 				 akontoZusatzleistungen
+		} 
+		 
+		readOnly entity FakUntrFlAuswahlF (id=(agpsFlZoId)){}
+		
+		entity HandfakturaF implements ("VbVkoeDelegateInterface", "AmaAquoeDelegateInterface", "IAuftraggeberVarBezZusatz", "IDeckblattadrVarBezZusatz","IAgenturVarBezZusatz", "IRechnadrVarBezZusatz") (id=(hfaId) sequenceName=HFA_SEQ){
+			includes(HFA_ID,HANDFAKTURA_NUMMER,STATUS,REFERENZ,MEMO_NOTIZ,TEXT_VOR_RECHNUNG,TEXT_NACH_RECHNUNG,VKBER_OID,VKBER_DATE,VKOE_OID,
+				VKOE_DATE,ATGEB_ID,ATGEB_DATE,RECHN_EMPF_SUBJ_OID,RECHN_EMPF_SUBJ_OID_DATE,ERFASST_AM,ERFASST_DURCH,GEAENDERT_AM,GEAENDERT_DURCH,
+				AUFTRAGGEB_KONTAKT_SUBJ_OID,AUFTRAGGEBER_KONTAKT_DATE,AQMA_ID,AQMA_DATE,AQOE_OID,AQOE_DATE,J_VERSION,AGENTUR_KONTAKT_DRUCK_JN,
+				WERBEAGENTUR_SUBJ_OID,WERBEAGENTUR_KONTAKT_SUBJ_OID,WERBE_AGENTUR_DATE,WERBE_AGENTUR_KONTAKT_DATE,ATGEB_KONTAKT_DRUCK_JN,ZAHLUNGSWAEHRUNG,
+				RECHN_EMPF_K_SUBJ_OID,RECHN_EMPF_K_SUBJ_OID_DATE,ATGEB_VAR_BEZ_ZUSATZ,DECKBLATTADR_VAR_BEZ_ZUSATZ,AGENTUR_VAR_BEZ_ZUSATZ,
+				RECHNADR_VAR_BEZ_ZUSATZ,RECHNUNGS_ADRESSAT_SUBJ_OID, RECHNUNGS_ADRESSAT_DATE)
+			         oneToMany HandfakturaPosF    	   handfakturapos 		(mappedBy=handfaktura)	
+			         oneToMany HfaStatusHistoryF  	   statusHist     		(joinColumn=HFA_ID)	
+			readOnly oneToMany RechnungenF 		  	   rechnungen     		(mappedBy=rechn where = " rg_type='HFRG' " orderBy=" rg_id desc")	
+			temporal manyToOne AuftraggeberTotF   	   auftraggeber         (joinColumns=ATGEB_ID date=atgebDate rewriteSysdate)
+            temporal manyToOne PersonenDenormTotF 	   auftraggeberkontakt  (joinColumns=AUFTRAGGEB_KONTAKT_SUBJ_OID date=auftraggeberKontaktDate rewriteSysdate)	
+			temporal manyToOne InstitutionenDenormTotF agentur 				(joinColumns=WERBEAGENTUR_SUBJ_OID date=werbeAgenturDate rewriteSysdate)
+			temporal manyToOne PersonenDenormTotF 	   agenturkontakt 		(joinColumns=WERBEAGENTUR_KONTAKT_SUBJ_OID date=werbeAgenturKontaktDate rewriteSysdate)            		
+			temporal manyToOne VerkaufsOeTotF 	       vkoe 				(joinColumns=VKOE_OID date=vkoeDate rewriteSysdate)
+			temporal manyToOne FlaechenDienstOeTotF    aqoe 				(joinColumns=AQOE_OID date=aqoeDate rewriteSysdate)
+			temporal manyToOne VerkaufsBeraterTotF     vb 					(joinColumns=VKBER_OID date=vkberDate rewriteSysdate)
+			temporal manyToOne MitarbeiterTotF 	       ma 					(joinColumns=AQMA_ID date=aqmaDate rewriteSysdate)
+			temporal manyToOne SubjekteDenormTotF      rechnungsempfaenger 	(joinColumns=RECHN_EMPF_SUBJ_OID date=rechnEmpfSubjOidDate rewriteSysdate)			
+            temporal manyToOne PersonenDenormTotF      rechnempfkontakt 	(joinColumns=RECHN_EMPF_K_SUBJ_OID date=rechnEmpfKSubjOidDate rewriteSysdate)	
+				   domainField HandfakturaStatus 	   handfakturaStatus 	(column=STATUS)
+	  	   notNull domainField Waehrung 			   zahlungswaehrung 	(column=ZAHLUNGSWAEHRUNG)
+			           notNull Number 	  		       atgebKontaktDruckJn  (castTo=Boolean)
+			           notNull Number 				   agenturKontaktDruckJn(castTo=Boolean)
+
+								
+	        transient VbVkoe         					  vbVkoe         							  (delegates)
+	        transient AmaAquoe       					  amaAquoe       							  (delegates)	
+	        transient BetragOMwst    					  betragOMwst    							  (delegates)
+	        transient BetragMMwst    					  betragMMwst    							  (delegates)
+	        transient BetragRechnung 					  betragRechnung 						      (delegates)
+   	        transient AuftraggeberVariablerBezZusatz      auftraggeberVariablerBezeichnungsZusatz     (delegates)
+			transient DeckblattadresseVariablerBezZusatz  deckblattadresseVariablerBezeichnungsZusatz (delegates)
+			transient AgenturVariablerBezZusatz 		  agenturVariablerBezeichnungsZusatz          (delegates)
+			transient RechnungsadressatVariablerBezZusatz rechnungsadressatVariablerBezeichnungsZusatz(delegates)
+			temporal manyToOne SubjekteDenormTotF 		  rechnungsAdressat	 (joinColumns=RECHNUNGS_ADRESSAT_SUBJ_OID 	 date=rechnungsAdressatDate rewriteSysdate)
+		}
+		
+		entity KokoJuiF (id=(agpsId)){
+			manyToOne KokoF koko (joinColumns=KOKO_ID)
+		}
+		
+		entity HandfakturaPosF (id=(hpoId) sequenceName=HPO_SEQ)
+		{
+			manyToOne HandfakturaF handfaktura (joinColumns=HFA_ID)
+			manyToOne LdPositionArtenBsF posart (joinColumns=LDPA_ID)
+			manyToOne LdLoFilialenF ldlofiliale (joinColumns=LD_LOGISTIK_SUBJ_OID)
+			manyToOne LdAllOeF ldAllOe (joinColumns=LD_OPOE_SUBJ_OID)
+			transient LdTotalPreis totalPreis (delegates)
+			BigNumber2 anzahl
+		}
+		
+		readOnly entity LdPositionArtenBsF (id=(ldpaId)){
+		}
+		
+		readOnly entity LdLoFilialenF (id=(subjOid)){
+		}
+		
+		readOnly entity LdAllOeF (id=(opoeSubjOid)){}
+		readOnly entity LdAllOeKstF(id=(opoeOid, buchungskreisNr)){
+			readOnly manyToOne LdAllOeF ldall (joinColumns = OPOE_OID)
+		}		
+		
+		readOnly entity AgpsOffertverfallPruefenF (id=(offeriertAgpsId,optionAgpsId)) {
+			includes(OFFERIERT_AGPS_ID,OPTION_AGPS_ID,OFFERIERT_AGPS_NUMMER, OFFERIERT_SUJET, OFFERIERT_VERFALL_DATUM, OFFERIERT_AUSHANG_BEGINN, OFFERIERT_AUSHANG_DAUER, OPTION_SUJET, OFFERIERT_KAMPAGNENUMMER, OPTION_KAMPAGNENUMMER)
+			transient IstSelektiertNoBeanAdapterPropertyChange istSelektiertNoUpdate (delegates)
+			readOnly domainField AgpsStatus offeriertAgpsStatus (column=OFFERIERT_AGPS_STATUS)
+			readOnly domainField AgpsArt offeriertAgpsArt (column = OFFERIERT_AGPS_ART)
+			Number optionAgpsNummer 
+		}
+		
+		readOnly entity AgpsCountZlstF (id=(agpsId, agpslstId)) 
+		{
+			readOnly oneToMany AgpsZusatzleistungenF zusatzleistung       (joinColumn  = AGPS_ID orderBy = " leistung_datum DESC ")
+			readOnly oneToOne  AuftragPositionenF    auftragposition      (joinColumn  = AGPS_ID)
+		             manyToOne KundeVertraegeF       kampagne             (joinColumns = KDVT_ID)
+			         notNull   Number                mit_zusatzleistungen (castTo      = Boolean)
+			
+				   domainField Betriebszeit 		 betriebszeit 		  (column	   = BETRIEBSZEIT)
+			
+					 transient IstSelektiertNoBeanAdapterPropertyChange istSelektiertNoUpdate (delegates)
+		}
+		
+		readOnly entity AgpsUndZlstF (id=(agpsId, agpslstId)){
+			transient IstSelektiertNoBeanAdapterPropertyChange istSelektiertNoUpdate (delegates)
+			readOnly oneToOne AuftragPositionenF auftragposition (joinColumn=AGPS_ID)
+			notNull Number sujetAbdecken (castTo=Boolean)
+			notNull domainField AgpsStatus 	agpsStatus 	(column = AGPS_STATUS)
+					domainField AgpsArt 	agpsArt 	(column = AGPS_ART)  
+		}
+	
+		// Flaechenzuordnungen
+		entity AgpsFlZuordnungenF (id=(agpsFlZoId) sequenceName=AGPS_FL_ZO_SEQ) 
+		{
+			         manyToOne AuftragPositionenF   agps                  (joinColumns = AGPS_ID) 
+			temporal manyToOne FlaechenDenormTotF   flaechen              (joinColumns = FL_OID    date = aushangBeginn   norewrite)
+			temporal manyToOne FlaechenDenormTotF   flaechenUp            (joinColumns = FL_OID_UP date = aushangBeginnUp norewrite)
+		             manyToOne AgkrsHaeAuswahlF     haendler              (joinColumns = AGKRS_HAE_ID)
+
+			         readOnly  Date                 aushangBeginn
+			         readOnly  Date                 aushangEnde
+			         
+		   notNull domainField AgpsFlZuordSta       statusFlaeche       (column = STATUS)
+			       domainField AgpsFlUmplatzSta     statusUmplatzierung (column = STATUS_UP)
+			       domainField QualitaetUmplatz     qualitaetUmplatz    (column = QUALITAET_UP)
+			       
+			         transient AgpsFlZuordnungenFlaechenReal flaechenReal          (delegates)
+		             transient AfzBruttoPreisermittlung      bruttoPreisermittlung (delegates)
+		}
+		
+	entity AuftragPositionenF implements ("HatFlaechenListeInterface, Aushangende2DelegateInterface") (id=(agpsId) sequenceName=AGPS_SEQ) {
+		includes (AGPS_ID, AUFTRAGSPOSITIONSNUMMER,STATUS,AG_ID,ANGR_ID,NTGROT_OID,SPNTOT_OID,KRS_ID,SUJET_ABDECKEN,AUSHANG_BEGINN,AUSHANG_DAUER,
+					AUSHANG_INFORMATION,SUJET,RESERVATION_DATUM,OFFERT_DATUM,VERFALL_DATUM,EINLOES_VERFALL_DATUM,BESTAETIGEN,BESTAETIGUNG_DATUM,
+					ANNULLATION_DATUM,ERFASST_AM,ERFASST_DURCH,GEAENDERT_AM,GEAENDERT_DURCH,AGPS_TYPE,KDVTLGVA_ID,KUENDIGUNG_DATUM,JAHRES_BRUTTOPREIS,
+					AGPS_ID_VORGAENGER,DRITTUMSATZ_TEXT,KUENDIGUNG_TYP,KUENDIGUNG_SYSDATUM,J_VERSION,LD_ANZAHL,LD_BESCHREIBUNG,LD_STUECKPREIS,
+					LD_LOGISTIK_SUBJ_OID,LD_OPOE_SUBJ_OID,LD_PF_ID,LD_PARTNER_SUBJ_OID,LDPA_ID,LD_PV_NUMMER,EARLYBOOKING_RABATT,SP_BRUTTOBETRAG,
+					SP_RABATT,SP_BERATERKOMM,SP_ZUSATZLEISTUNGEN,SP_ZUSATZKOSTEN,SP_PRODUKTIONSKOSTEN,SP_MEHRWERTSTEUER,SP_NETTO_NETTO,
+					DS_OPTION_AUF_ERGAENZEN,UMBUCHUNG,DS_OPTION_VERFALL_DATUM,VBE_ID,AGPS_ART,ABWICKLUNG_SUBJ_OID,
+					ABWICKLUNG_DATE,VOLBUCH_ANZAHL_FL)
+				     manyToOne AuftraegeF 				  auftrag 				 (joinColumns=AG_ID)
+					 manyToOne AnnullationGruendeBsF 	  anngruende 			 (joinColumns=ANGR_ID)
+   	    			 manyToOne LdPositionArtenBsF 		  posart 				 (joinColumns=LDPA_ID)
+   	    			 manyToOne LdLoFilialenF 			  ldlofiliale 			 (joinColumns=LD_LOGISTIK_SUBJ_OID)
+   	    			 manyToOne ProduktFormateBsF 		  ldpf 					 (joinColumns=LD_PF_ID)
+   	    			 manyToOne VerkehrsbetriebeF 		  ld_verkehrsbetrieb     (joinColumns=VBE_ID)
+   	    			 manyToOne LdAllOeF 				  ldAllOe 				 (joinColumns=LD_OPOE_SUBJ_OID)
+			readOnly oneToOne  AgKrsBaseF 				  agkampinfos 			 (joinColumn=AG_ID)
+				     oneToOne  AgKriteriensaetzeF 		  krs 					 (joinColumn=KRS_ID referencedColumn=KRS_ID)
+			readOnly oneToMany AgBrcSekundaerF 			  nebenbranchen 		 (mappedBy=agposinfo)
+			readOnly oneToMany AgpsFlDatenF 			  flaechenliste 		 (mappedBy=auftragPosition orderBy=" blatt_sort_string, obj_sort_string, obj_frequenz desc, objekt, strassen_anschrift, haus_nr, adress_zusatz, position_nr, flaechennummer")
+	        		 oneToMany AgpsFlZuordnungenF 		  afz 					 (mappedBy=agps)
+	        	     oneToMany AgpsStatusHistoryF 		  statusHist 			 (mappedBy=agpsStatusHist)
+	        readOnly oneToMany AgpsFlGebieteF 			  afg 					 (mappedBy=agpsextra orderBy = " blatt_sort_string")
+	        readOnly oneToMany AgpsFlObjekteF 			  afo 					 (mappedBy=agpsextra orderBy = " bezeichnung")
+	        readOnly oneToMany AgpsFlHaendlerF 			  afh 					 (mappedBy=agpsextra orderBy = " name")
+	        readOnly oneToMany ErsatzFlaechenF 			  ersatzfl 				 (joinColumn=AGPS_ID)
+	        readOnly oneToMany AgpsFlVbeVmF 			  afvbe 				 (mappedBy=traagpsextra)
+	        		 oneToMany AgpsZusatzleistungenF 	  zusatzleistungen 		 (mappedBy=agpsextra orderBy=" leistung_datum DESC")
+   	    	readOnly oneToMany AzDifferKombiF 			  azdifferkombi 		 (joinColumn=AGPS_ID)
+   	    	readOnly oneToMany AzDifferStmF 			  azdifferstmi 			 (joinColumn=AGPS_ID)
+   	    	readOnly oneToMany AzErgebnisF 				  azergebnisi 			 (joinColumn=AGPS_ID)
+   	    	readOnly oneToMany AzErgebnisStmF 			  azergebnisstmi 		 (joinColumn=AGPS_ID)
+   	    	readOnly oneToMany PzBgbuDiffMsgF 			  bgbudiffmsg 			 (joinColumn=AGPS_ID)
+   	    	readOnly oneToMany AgpsEnZuordnungenF 		  elementarnetzZuordnung (mappedBy=auftragposition)
+   	    	readOnly oneToMany DgfxTzsZoAnzeigeF          dgfxTzsZoAnzeige       (mappedBy=agps)
+   	    	//TODO AgpsDgtlAdditionalInfoF langfristig ausbauen
+   	    	readOnly manyToOne AgpsDgtlAdditionalInfoF 	  dgtlAddInfo 			 (joinColumns=AGPS_ID)
+  		    readOnly oneToMany SnElementarnetzRkSperreF   supernetzElementarnetz (mappedBy=auftragPosition orderBy = "  bezeichnung  ")  
+   	    	readOnly oneToMany FlaechenlisteF 			  flaechenlisteNew 		 (mappedBy=auftragPosition orderBy=" blatt_sort_string, obj_sort_string, obj_frequenz desc, objekt, strassen_anschrift, haus_nr, adress_zusatz, position_nr, flaechennummer")   	
+ 			temporal manyToOne SubjekteDenormTotF 		  abwoe 				 (joinColumns=ABWICKLUNG_SUBJ_OID referencedColumn=SUBJ_OID  date=abwicklungDate rewriteSysdate)
+
+   	    	temporal 		  manyToOne SubjekteDenormTotF ldpartner (joinColumns=LD_PARTNER_SUBJ_OID)
+   	    	
+   	    	transient AgpsBruttoPreisermittlung bruttoPreisermittlung (delegates)
+   	    	transient Aushangende 				aushangEnde 		  (delegates)
+   	    	transient AhEndSegment 				ahEndSegment 		  (delegates)
+   	    	transient BeginnWoche 				beginnWoche 		  (delegates)
+   	    	transient EndeWoche 				endeWoche 			  (delegates)
+   	    	transient NetzKrsText 				netzKrsText 		  (delegates)
+   	    	transient LdTotalPreis 				ldTotalPreis 		  (delegates)
+   	    	transient AgpsAnzahlFlaechen 		anzahlFlaechen 		  (delegates)
+   	    	transient AgpsFlaechenNr 		    agpsFlaechenNr 	      (delegates)
+   	    	transient AgpsAnzahlAusstrahlungenUndDauer anzahlAusstrahlungenUndDauer (delegates)
+   	    	
+  		    transient notNull Boolean istSelektiert
+  		    transient notNull Boolean hatLeereUmplatzierungen
+
+			notNull 		 domainField AgpsStatus agpsstat (column=STATUS)
+			notNull 		 domainField AgpsTyp 	agpsTyp	 (column=AGPS_TYPE)
+			notNull readOnly domainField AgpsArt    agpsArt  (column=AGPS_ART)
+						
+			notNull  	Number 	sujetAbdecken         (castTo=Boolean)
+   	    	readOnly 	Date   	aushangBeginnReadOnly (column=AUSHANG_BEGINN)
+   	    	notNull  	Number 	dsOptionAufErgaenzen  (castTo=Boolean)
+   	    	readOnly 	Number 	ntgrotOid 			  (column=NTGROT_OID)
+   	    	readOnly 	Date    reservationDatum
+			dbGenerated String  sujet
+			dbGenerated Number  earlybookingRabatt
+			dbGenerated Number  umbuchung  	
+   	    	
+   	    	Amount 	   ldStueckpreis
+   	    	Amount 	   spBruttobetrag
+   	    	Amount     spRabatt
+   	    	Amount 	   spBeraterkomm
+   	    	Amount 	   spZusatzleistungen
+   	    	Amount 	   spZusatzkosten
+   	    	Amount 	   spProduktionskosten
+   	    	Amount 	   spMehrwertsteuer
+   	    	Amount 	   spNettoNetto
+   	    	BigNumber2 ldAnzahl
+   	    	Date 	   aushangBeginn
+   	    	readOnly domainField KuendigungTypen kuendigungTyp (column=KUENDIGUNG_TYP)
+   	    	readOnly domainField ReservationTypDigi reservationTypDigi (column = DS_BUCHUNG_TYP)
+		} 
+		
+        entity AgpsZusatzleistungenF (id=(agpslstId) sequenceName=AGPSLST_SEQ){
+       	  manyToOne AuftragPositionenF agpsextra (joinColumns=AGPS_ID)
+       	  manyToOne LeistungArtenBsF leistungarten (joinColumns=LSTART_ID)
+		  notNull Number imTakt (castTo=Boolean)
+		  notNull Number pauschalpreis (castTo=Boolean)
+		  manyToOne AgpsFlZuordnungenF agpsFlZuordnung (joinColumns=AGPS_FL_ZO_ID)
+		  Amount leistungPreis
+		  dbGenerated Date erfasstAm
+	      dbGenerated String erfasstDurch		         	  
+        }
+        
+        readOnly entity FlaechenlisteF implements("com.affichage.it21.adgis.api.dao.Face") (id=(flOid,agpsFlZoId,flaechenbuchungValue ) tableAlias="FLF"){
+        	manyToOne KundeVertraegeF kampagne (joinColumns=KDVT_ID)
+        	manyToOne DachKampagnenF dachKampagne (joinColumns=DKT_ID)
+        	manyToOne AuftraegeF auftrag (joinColumns=AG_ID)
+        	manyToOne AuftragPositionenF auftragPosition (joinColumns=AGPS_ID)
+        	manyToOne AgkrsHaeAuswahlF haendler (joinColumns=AGKRS_HAE_ID)
+        	readOnly Number flaechenbuchungValue (column=FLAECHENBUCHUNG)
+		    temporal readOnly manyToOne ObjekteTotF objektobj (joinColumns=OBJ_OID date=aushangBeginnAfz norewrite)
+    	    readOnly oneToMany FlInPerspektivansichtF flperspektive (mappedBy=fllist)
+        	readOnly domainField AgpsFlZuordSta agpsFlZuordStatus (column=STATUS)
+        	readOnly domainField QualitaetUmplatz qualitaetUp (column=QUALITAET_UP)
+       		readOnly domainField FlaechenBuchung flaechenBuchung (column=FLAECHENBUCHUNG)
+       		readOnly domainField Kommunikationsraum kommunikationsraum (column=KOMMUNIKATIONSRAUM)
+       		readOnly domainField Kommunikationsraum kommunikationsraumKomplement (column=KOMMUNIKATIONSRAUM_KOMPLEMENT)
+       		readOnly domainField FzAntrieb fzAntrieb (column=FZ_ANTRIEB)
+       		readOnly domainField FzAntrieb fzAntriebKomplement (column=FZ_ANTRIEB_KOMPLEMENT)
+       		transient IstSelektiertNoBeanAdapterPropertyChange istSelektiertNoUpdate (delegates)       		
+       		// Geo-Informationen
+            transient Location geoLocation (delegates)
+            Double angularPosition (column=FL_DREHWINKEL)
+            readOnly Double visibilityAreaAngle (column=BEACHTUNGS_WINKEL)
+            readOnly Integer visibilityAreaDistance (column=SICHT_DISTANZ) 
+  			String positionNr (column=POSITION_NR)
+            readOnly String positionId (column=POSITION_NR)
+            Number flOid (column=FL_OID)
+            Amount bruttopreisPreisermittlung
+            transient readOnly FaceId faceId (delegates)
+            notNull Number strecke (castTo=Boolean)
+            transient readOnly Area visibilityArea
+            
+            // Foto-Doku (nur Transientfelder, da diese Infos im VK nicht benötigt werden )
+			transient FaceNumber faceNumber 
+			transient Address address
+			transient AdditionalAddress additionalAddress 
+			transient ProductFormatName productFormatName 
+			transient TerritoryName territoryName 
+			transient listOf FaceInPhoto faceInPhotos
+        }		
+		
+		readOnly entity AgKrsBaseF (id=(agId)) {}	
+					
+		entity AgBrcSekundaerF (id=(agBrcSekId) sequenceName=AG_BRC_SEK_SEQ) {
+		  readOnly manyToOne AuftragPositionenF agposinfo (joinColumns=AG_ID)
+		 		   manyToOne AuftraegeF 		auftrag   (joinColumns=AG_ID)
+		  		   manyToOne BranchenBsF 		branchen  (joinColumns=BRC_ID)
+       }
+		
+       entity AgkrsZoneAuswahlF (id=(agkrsZoneId) sequenceName=AGKRS_ZONE_SEQ){
+       		manyToOne AgKriteriensaetzeF krs (joinColumns=KRS_ID)
+			domainField FzflZone zone (column=ZONE_ID)
+       }
+       
+       entity AgkrsKatAuswahlF (id=(agkrsKatId) sequenceName=AGKRS_KAT_SEQ){
+       		manyToOne AgKriteriensaetzeF krs (joinColumns=KRS_ID)
+       		domainField AnbieterKontaktKat anbieterKontaktKat (column=KONTAKT_KATEGORIE) 
+       }
+       
+      
+       entity AgkrsPachtgrundAuswahlF (id=(agkrsPachtgrundAuswahlId)  sequenceName=AGKRS_PACHTGRUND_AUSWAHL_SEQ) {
+			manyToOne AgKriteriensaetzeF krs (joinColumns=KRS_ID)
+       		domainField Pachtgrund pachtgrund (column=CODE_WERT)
+       }
+		
+		// Kriteriensatz
+		// Typ Kriteriensatz		
+		abstract entity AgKriteriensaetzeF implements ("VbVkoeDelegateInterface", "VbVkoeHDelegateInterface") // "HatSprBewertungInterface" //
+		 (id=(krsId) sequenceName=AGKRS_SEQ discrColumn=KRS_TYPE tableName=AG_KRITERIENSAETZE_F) 
+		 {
+					oneToMany   AgkrsStmAnteileF  	    stm 	  	   	  	  	(mappedBy=krs)
+					oneToMany   AgkrsStmAusschlF  	    stmAus 	  	   	  	  	(mappedBy=krs)
+					oneToMany   AgkrsObjAuswahlF 	    objaus 		   	  	    (mappedBy=krs)
+		            oneToMany   AgkrsHaeAuswahlF 	    haeaus 		      	    (mappedBy=krs)
+		            oneToMany   AgkrsPlzXlF 	        plzaus 		      	    (mappedBy=krs)
+		   		    oneToMany   AgkrsNgAuswahlF 	    netzAuswahl        	    (mappedBy=krs)
+					oneToMany   AgkrsGbEinschlXlF 	    krsgebein 	      	    (mappedBy=krsgb)
+					oneToMany   AgkrsGbAusschlXlF 	    krsgebaus 	      	    (mappedBy=krsgbaus)
+					oneToMany   AgkrsEinzelflaechenF    einzelflaechen     	    (mappedBy=krsefl)
+			        oneToMany   AuftragPositionenF      auftragPositionen  	    (joinColumn=KRS_ID)
+		            
+					manyToMany  ProduktFormateBsF       produktFormate 			(joinTable=AGKRS_PF_AUSWAHL_F     	   joinColumn=KRS_ID referencedColumn=PF_ID)
+					manyToMany  FlaechenartenF 	        flaechenArten  			(joinTable=AGKRS_FLAT_AUSWAHL_F   	   joinColumn=KRS_ID referencedColumn=FLAT_OID)
+					manyToMany  VerkehrsbetriebeF       verkehrsBetriebe     	(joinTable=AGKRS_VBE_AUSWAHL_F    	   joinColumn=KRS_ID referencedColumn=VBE_ID)
+					manyToMany  MieterF 			    mieter 			    	(joinTable=AGKRS_MIETER_AUSWAHL_F 	   joinColumn=KRS_ID referencedColumn=MIO_ID)
+
+		    		oneToMany  AgkrsZoneAuswahlF zoneAuswahl (mappedBy=krs)
+		    		oneToMany  AgkrsKatAuswahlF anbieterKontaktKategorieAuswahl (mappedBy=krs)
+					
+		   		    manyToMany  BranchenBsF 		    agKritNebenbranchen  	(joinTable=AKVF_BRC_SEKUNDAER_F   	   joinColumn=KRS_ID referencedColumn=BRC_ID)
+			        oneToMany   AgkrsPachtgrundAuswahlF pachtgrundAuswahl       (mappedBy=krs)
+		   	        manyToMany  FlGruppenGroesseF 		gruppenGroesse 			(joinTable=AGKRS_GR_GROESSE_AUSWAHL_F  joinColumn=KRS_ID referencedColumn=GRUPPEN_GROESSE) 
+		
+					manyToOne   BranchenBsF 		    hauptbranche         	(joinColumns=BRC_ID)
+					domainField Traeger  			    traeger 		    	(column=TRAEGER)
+					domainField Betriebszeit		    betriebszeit 		    (column=BETRIEBSZEIT)
+					manyToOne   FahrzeugKategorieBsF    fahrzeugkategorie    	(joinColumns=FK_ID)
+					manyToOne   FahrzeugTypBsF 		    fahrzeugtyp 	  	    (joinColumns=FT_ID)
+			        manyToOne   KokoF 				    koko 			    	(joinColumns=KOKO_ID)
+		            manyToOne   AgKriteriensaetzeF 	    bestehenderKriteriensatz(joinColumns=KRS_ID_ALT referencedColumn=KRS_ID)   
+		   temporal manyToOne   SubjekteDenormTotF  	auftraggeber 			(joinColumns=RESTR_AUSN_SUBJ_OID date=restrAusnDate rewriteSysdate)
+		   temporal manyToOne   SubjekteDenormTotF      fldoe 					(joinColumns=FLDOE_SUBJ_OID 	 date=erfasstAm 	rewriteSysdate)
+		   temporal manyToOne   VerkaufsBeraterTotF 	vb 						(joinColumns=VKBER_OID)	
+		   temporal manyToOne   VerkaufsOeTotF 	   	    vkoe 					(joinColumns=VKOE_OID)  
+		   temporal manyToOne   VerkaufsBeraterTotF 	vbh					(joinColumns=VKBER_HBE_OID)	
+		   temporal manyToOne   VerkaufsOeTotF 	   	    vkoeh 					(joinColumns=VKOE_HBE_OID)  
+		   temporal manyToOne   SubjekteDenormTotF  	endkunde 				(joinColumns=SUBJ_OID)
+		   		    			
+			        transient   VbVkoe 			 		vbVkoe 					(delegates)
+			        transient   VbVkoeH 			 	vbVkoeh 				(delegates)
+		
+					domainField ObjektFlStandort  		objektFlStandort 	    (column=OBJ_FL_STANDORT)	                
+			        domainField Reservation 	  		reservationType 		(column=RESERVATION_TYP)       
+		    notNull domainField UmplatzierungBest 		umplatzBestimmung 		(column=UMPLATZIERUNG_BESTIMMUNG)			
+				
+								Number 					erwBudgetErfasst    	  (castTo=Boolean)
+								Number 					kostenOptimierung   	  (castTo=Boolean)
+								Number 					gebietsverteilung   	  (castTo=Boolean)
+								Number 					mitLangfristBindung 	  (castTo=Boolean)
+								Number 					ohneObjektFlaechen  	  (castTo=Boolean)
+								Number 					mitNetzflaechen 	   	  (castTo=Boolean)		
+								Number 					mitGebundenRes 	   		  (castTo=Boolean)
+								Number 					nurSichtwinkelFront 	  (castTo=Boolean)
+						notNull Number 					eigeneVkvrBeruecksichtigen(castTo=Boolean)
+						notNull Number 					flOhneVkVorrechtFreigabe  (castTo=Boolean)
+						notNull Number 					mussAnStreckeLiegen       (castTo=Boolean)					
+						        Double 					richtofferteWunschfaktor  (column=RICHTOFFERTE_WUNSCHFAKTOR)
+                				Number          		freiFuerJv          	  (castTo=Boolean)
+                				Number          		dayDeals          		  (castTo=Boolean)
+                				Amount shareOfTimeZiel
+		}
+		
+			entity AgkrsNgAuswahlF (id=(agkrsNgaId) sequenceName=AGKRS_NG_AUSWAHL_SEQ){
+				manyToOne AgKriteriensaetzeF krs (joinColumns=KRS_ID)
+			}
+
+			// Subtypen des Kriteriensatzes
+			entity Auftragskriteriensatz extends AgKriteriensaetzeF (discrValue='AGKRS'){}
+			entity Verkehrsmittelkriteriensatz extends AgKriteriensaetzeF (discrValue='VMKRS') {}
+			entity Kontingentkriteriensatz extends AgKriteriensaetzeF (discrValue='KOKOKRS') {}
+			entity Standalonekriteriensatz extends AgKriteriensaetzeF (discrValue='AKVF') {}
+			entity Digitalkriteriensatz extends AgKriteriensaetzeF (discrValue='DGTLKRS') {
+			}
+			entity Einzelflaechenkriteriensatz extends AgKriteriensaetzeF (discrValue='EFLKRS'){}
+			
+
+		entity AgkrsStmAnteileF (id=(agkrsstmanId) sequenceName=AGKRSSTMAN_SEQ tableAlias="ASANTF")
+		{
+			manyToOne AgKriteriensaetzeF  krs                (joinColumns = KRS_ID)
+			manyToOne StandortMerkmaleBsF standortMerkmalEin (joinColumns = STM_ID)			
+		}
+
+		entity AgkrsStmAusschlF (id=(agkrsstmauId) sequenceName=AGKRSSTMAU_SEQ tableAlias="ASAUSF")
+		{
+			manyToOne AgKriteriensaetzeF  krs                (joinColumns = KRS_ID)
+			manyToOne StandortMerkmaleBsF standortMerkmalAus (joinColumns = STM_ID)			
+		}
+		
+		entity AgkrsGbEinschlXlF (id=(agkrsgbeinId) sequenceName=AGKRSGBEIN_SEQ){
+			manyToOne AgKriteriensaetzeF krsgb (joinColumns=KRS_ID)
+			temporal manyToOne FmGebieteArtTotF gebArtTot (joinColumns=GBOT_OID date=krsgb.aushangBeginn norewrite)
+			Number gbvtVid
+			Number gbatId
+			readOnly Number gbotOid
+			String gebietCode
+			String bezeichnung					
+		}
+		
+		entity AgkrsGbAusschlXlF (id=(agkrsgbausId) sequenceName=AGKRSGBAUS_SEQ){
+			manyToOne AgKriteriensaetzeF krsgbaus (joinColumns=KRS_ID)
+			temporal manyToOne FmGebieteArtTotF gebArtTot (joinColumns=GBOT_OID date=krsgbaus.aushangBeginn norewrite)
+			manyToOne AgkrsGbEinschlXlF einschlussGebiet(joinColumns=AGKRSGBEIN_ID)
+			Number gbvtVid
+			Number gbatId
+			String gebietCode
+			String bezeichnung			
+		}
+		
+   	    readOnly entity FmPlzGemeindeF (id=(plz, gbotOid) tableName=FM_PLZ_GEMEINDE_F) {}
+
+		entity AgkrsPlzXlF (id=(agkrsPlzId) sequenceName=AGKRS_PLZ_SEQ){
+			manyToOne AgKriteriensaetzeF krs (joinColumns=KRS_ID)
+		}
+
+		entity AgkrsGrGroesseAuswahlF (id=(agkrsGrGroesseId) sequenceName=AGKRS_GR_GROESSE_SEQ ) {
+			manyToOne AgKriteriensaetzeF krs (joinColumns=KRS_ID)
+		}
+
+		entity AgkrsEinzelflaechenF (id=(agkrseflId) sequenceName=AGKRSEFL_SEQ){
+			manyToOne AgKriteriensaetzeF krsefl (joinColumns=KRS_ID)
+			temporal manyToOne FlaechenDenormTotF flaeche (joinColumns=FL_OID)
+		}
+	
+		entity AgkrsObjAuswahlF (id=(agkrsObjId) sequenceName=AGKRS_OBJ_SEQ){
+			manyToOne AgKriteriensaetzeF krs (joinColumns = KRS_ID)
+			temporal  manyToOne ObjekteTotF objekteTot (joinColumns=OBJ_OID)
+		}
+		
+        entity AgkrsHaeAuswahlF implements("com.affichage.it21.adgis.api.dao.PointOfInterest") (id=(agkrsHaeId) sequenceName=AGKRS_HAE_SEQ) {
+          Point geoLocation (column=HAE_STANDORT)        	
+          domainField QualitaetGeoCoord qualitaetgeocoord (column=QUALITAET_GEO_COORD)
+//          domainField RoutingAusrichtung ausrichtung (column=AUSRICHTUNG)
+	      manyToOne AgKriteriensaetzeF krs (joinColumns=KRS_ID)
+	      transient PoiType poiType (delegates)        
+        }		
+
+		// Verkaufskriteriensatzinformationen
+		entity AkvfBrcSekundaerF  ( id=(akvfBrcId) sequenceName=AKVF_BRC_SEQ tableAlias="AKBSF"){
+			manyToOne Standalonekriteriensatz stdkrs (joinColumns = KRS_ID)
+		}
+
+		readOnly entity VpBeilagenF (id=(vpbId) tableAlias="VPBF"){}
+		
+		document readOnly entity KdvtDokLobF (id=(kdvtdoklobId)){
+			readOnly manyToOne KdvtDokumenteF kdvtDokumente (joinColumns=KDVTDOK_ID)
+		}
+							
+		readOnly entity KdvtDokumenteVpF (id=(kdvtdokId)){}
+							
+		// Kampagnendokumente
+		entity KdvtDokumenteF (id=(kdvtdokId) sequenceName=KDVTDOK_SEQ) {
+			manyToOne KundeVertraegeF kampdok (joinColumns=KDVT_ID)
+			readOnly oneToMany KdvtDokLobF kdvtDokLob (mappedBy=kdvtDokumente)  //its one to one but we want it lazy
+   			notNull domainField ReportFormat reportFormat (column=DOKUMENT_FORMAT)
+   			notNull manyToOne DruckerF druckerF (joinColumns=DRUCKER referencedColumn=ALIAS) 
+		    notNull Number direktdruck (castTo=Boolean)
+		    notNull Number mitDeckBlatt (castTo=Boolean)
+		    notNull Number mitProduktBlatt (castTo=Boolean)
+		    notNull Number mitRekapitulation (castTo=Boolean)
+		    notNull Number mitVerteilungPlan (castTo=Boolean)
+		    notNull Number mitAdressliste (castTo=Boolean)
+		    notNull Number mitSprXmlDatei (castTo=Boolean)
+		    notNull Number mitSprBewertung (castTo=Boolean)
+		    notNull Number isMyapgsgaErlaubt (castTo=Boolean)
+		    notNull Number nurBrutto (castTo=Boolean)
+		    notNull Number mitKontaktwert (castTo=Boolean)
+		    readOnly manyToOne VpBeilagenF vpBeilage01F (joinColumns=VP_BEILAGE_01 referencedColumn=VPB_ID)
+		    readOnly manyToOne VpBeilagenF vpBeilage02F (joinColumns=VP_BEILAGE_02 referencedColumn=VPB_ID)
+		    readOnly manyToOne VpBeilagenF vpBeilage03F (joinColumns=VP_BEILAGE_03 referencedColumn=VPB_ID)
+		    readOnly manyToOne VpBeilagenF vpBeilage04F (joinColumns=VP_BEILAGE_04 referencedColumn=VPB_ID)
+		    readOnly manyToOne VpBeilagenF vpBeilage05F (joinColumns=VP_BEILAGE_05 referencedColumn=VPB_ID)
+		    readOnly manyToOne VpBeilagenF vpBeilage06F (joinColumns=VP_BEILAGE_06 referencedColumn=VPB_ID)
+		    readOnly manyToOne VpBeilagenF vpBeilage07F (joinColumns=VP_BEILAGE_07 referencedColumn=VPB_ID)
+		    readOnly manyToOne VpBeilagenF vpBeilage08F (joinColumns=VP_BEILAGE_08 referencedColumn=VPB_ID)
+		    readOnly manyToOne VpBeilagenF vpBeilage09F (joinColumns=VP_BEILAGE_09 referencedColumn=VPB_ID)
+		    readOnly manyToOne VpBeilagenF vpBeilage10F (joinColumns=VP_BEILAGE_10 referencedColumn=VPB_ID)
+   			readOnly domainField VpDrucklayout drucklayout (column=DRUCKLAYOUT)
+		}
+
+		entity AdresslisteWertF (id=(adrwId) sequenceName=ADRW_SEQ ) {
+		 Clob flOidList
+		 Clob preisList
+		}
+
+		// Rabatt Werte
+		entity RabattWerteF (id=(rbwtId) sequenceName=RBWT_SEQ) {
+			manyToOne AuftraegeF auftrag (joinColumns=AG_ID)
+			manyToOne RabattArtenBsF rabattarten (joinColumns=RBAT_ID)
+			
+			dbGenerated Date erfasstAm
+			dbGenerated String erfasstDurch
+		}
+		// Zusatzkosten
+		entity ZusatzkostenF (id=(zskoId) sequenceName=ZSKO_SEQ) {
+			manyToOne AuftraegeF auftrag (joinColumns=AG_ID)
+			manyToOne ZusatzkostenArtenBsF zusatzkostenarten (joinColumns=ZSKOAT_ID)
+			
+			dbGenerated Date erfasstAm
+			dbGenerated String erfasstDurch
+		}
+		// Visierung
+		readOnly entity VisMaVisiertF (id = (visId)){} 
+ 			
+		entity VisaF (id=(visId) sequenceName=VIS_SEQ){
+			readOnly domainField JaNein auftragFreigabeErteilt (column=AUFTRAG_FREIGABE_ERTEILT)
+			notNull Number visumZurWiedervorlage (castTo=Boolean)
+			manyToOne AuftraegeF auftrag (joinColumns=AG_ID)
+			notNull domainField VisaTyp visaTyp (column =VISA_TYP)
+		    temporal manyToOne PersonenDenormTotF visumsbeurteilungAn (joinColumns=VISUMSBEURTEILUNG_AN_SUBJ_OID referencedColumn=SUBJ_OID date=visumsbeurteilungAnDate rewriteSysdate)
+		    temporal manyToOne PersonenDenormTotF freigabeDurch (joinColumns=FREIGABE_DURCH_SUBJ_OID referencedColumn=SUBJ_OID date=zuletztBeurteiltAm rewriteSysdate)
+		}
+		
+        entity AnnullationGruendeBsF (id=(angrId) sequenceName=ANGR_SEQ) {
+			oneToMany AnnullationGruendeSprF uebersetzung (mappedBy = annullationGruendeBs orderBy = "sprache_id" )
+        	domainField JaNein allgAuswaehlbar (column=ALLG_AUSWAEHLBAR)
+        	domainField JaNein kostenpflichtig (column=KONSTENPFLICHTIG)
+//        	domainField JaNein konstenpflichtig (column=KONSTENPFLICHTIG)
+        	domainField Aktivcode gueltig (column=GUELTIG)
+        	domainField GruppeAnnullationG gruppeAnnullationGrund (column=GRUPPE_ANNULLATION_GRUND)
+        }
+        
+       entity AnnullationGruendeSprF (id=(angrsprId) sequenceName=ANGRSPR_SEQ){
+			manyToOne AnnullationGruendeBsF annullationGruendeBs (joinColumns=ANGR_ID)
+           	domainField SpracheId sprache (column=SPRACHE_ID)             
+        }
+
+		abstract entity KdvtSprBewertungKkF (id=(ksbId, kontaktKlasse) discrColumn=SPR_BEWERTUNG_TYPE){
+			oneToMany KdvtSprFlGebieteF gebiete (mappedBy=sprBewertung where=" gbot_oid is not null ")
+			oneToMany KdvtSprFlGebieteF totals  (mappedBy=sprBewertungTotal where=" gbot_oid is null")
+			readOnly oneToOne SprNachrichtF sprNachricht (joinColumn=NCHRT_ID)
+			notNull domainField Kontaktklasse kontaktklasse (column=KONTAKT_KLASSE)
+			readOnly Number kontaktKlasse (column=KONTAKT_KLASSE)
+		}
+		
+		entity KampagneKdvtSprBewertungF extends KdvtSprBewertungKkF (discrValue='K'){
+			manyToOne KundeVertraegeF kampagne (joinColumns=KDVT_ID)
+		}
+		
+		entity BuchungKdvtSprBewertungF extends KdvtSprBewertungKkF (discrValue='B'){
+			manyToOne AgKriteriensaetzeF kriteriensatz (joinColumns=KRS_ID)
+		}
+		
+		entity PpiKdvtSprBewertungF extends KdvtSprBewertungKkF (discrValue='P'){
+			manyToOne PpiKampagneF ppiKampagne (joinColumns=PPI_KP_ID)
+		}
+		
+		entity KdvtSprFlGebieteF (id=(ksbId, gbotOid, kontaktklasse)){
+			readOnly manyToOne KdvtSprBewertungKkF sprBewertung (joinColumns=KSB_ID, KONTAKTKLASSE)	
+			readOnly manyToOne KdvtSprBewertungKkF sprBewertungTotal (joinColumns=KSB_ID, KONTAKTKLASSE)	
+			domainField SprBewGebArt   sprBewGebArt (column=GBAT_ID)
+			transient SprBewGebArtType gbatUebersteuert (delegates)
+		}
+		
+		readOnly entity VkFlSituationF(id=(isoWocheJahr)){
+		}
+	
+// Verfuegbarkeit Netze		
+		entity VerfuegbareNetzeF implements ("AushangbeginnDelegateInterface, AushangbeginnKwDateDelegateInterface, AushangendeDelegateInterface, AushangendeKwDateDelegateInterface") (id=(netzOid,aushangbeginn)) { //aushangbeginn muss wegen requery und JPA-Caching im key sein
+			temporal manyToOne SubjekteDenormTotF pmOe (joinColumns=PMOE_OID date=aushangbeginn rewriteSysdate)
+			readOnly String netzTyp
+			readOnly Number sperreVk (castTo=Boolean)
+			readOnly Date aushangbeginn
+			transient Decimal agatId 
+			transient Netzpreis preis (delegates)
+			transient NetzVerfuegbar verfuegbar (delegates)
+			transient Aushangende aushangende (delegates)
+			transient Aushangtag aushangtag (delegates)
+			transient AushangbeginnKwDate aushangbeginnKwDate (delegates)
+			transient AushangendeKwDate aushangendeKwDate (delegates)
+			transient Boolean istSelektiert
+			transient Boolean istReserviert
+			transient String takt1
+			transient String takt2
+			transient String takt3
+			transient String takt4
+			transient String takt5
+			transient String takt6
+			transient String takt7
+			transient String takt8
+		}
+
+		readOnly entity AgpsNgSnF (id=(agpsId)) {
+		    readOnly String typ
+		    transient Amount preis
+		    domainField AgpsStatus status (column=STATUS)
+		    readOnly manyToOne AgKrsBaseF agKrsBase (joinColumns=AG_ID)
+		    readOnly manyToOne AuftragPositionenF auftragposition (joinColumns=AGPS_ID)
+		    transient Boolean istSelektiert
+		    readOnly Number dsOptionAufErgaenzen (castTo=Boolean)
+		    readOnly oneToMany DgfxTzsZoAnzeigeF dgfxTzsZoAnzeige (mappedBy=agpsNgSn)
+		}
+		
+		readOnly entity NgSnAufloesungenF (id=(aufgeloestBis,aufgeloestAb,aufgeloesteInstanzen,netzOid)){}
+				
+		readOnly entity SnDirektUeberNgSnF (id=(netzOidUnten, snOid, snNetzNr,snBezeichnung, gueltigVon, gueltigBis)){
+			includes(GUELTIG_BIS,GUELTIG_VON, NETZ_OID_UNTEN,SN_BEZEICHNUNG,SN_NETZ_NR,SN_OID)
+		}
+		
+		readOnly entity NetzbuchungAllInfoF (id=(netzOid, datenherkunft, aushangBeginn) tableName=NETZBUCHUNG_ALL_INFO_JUI_F) {
+		    temporal manyToOne SubjekteDenormTotF pmOe (joinColumns=PMOE_OID date=aushangBeginn norewrite)
+			domainField AgpsStatus status (column=AGPS_STATUS)
+			readOnly String netzTyp
+			readOnly String verfuegbar
+			readOnly Number sperreVk (castTo=Boolean)
+			transient Amount preis
+	    } 
+		
+		readOnly entity NgSnBsF (id=(nId, typ, gueltigVon)) {
+			readOnly String typ
+		}
+			
+		readOnly entity NetzbuchungVgInfoF (id=(nId, aushangAm) tableName=NETZBUCHUNG_VG_INFO_JUI_F) {
+		  	readOnly String netzTyp
+		}
+		
+		entity RechnungenF (id=(rgId)){
+			readOnly manyToOne RechnungDokumenteF rgDokumente (joinColumns=RG_ID referencedColumn=RG_ID)
+			manyToOne KundeVertraegeF kampagne (joinColumns=KDVT_ID)
+			manyToOne AuftraegeF auftrag (joinColumns=AG_ID)
+			manyToOne AuftragPositionenF auftragPosition (joinColumns=AGPS_ID)
+			domainField RechnungStatus status (column=STATUS)
+			manyToOne HandfakturaF rechn (joinColumns=HFA_ID)
+			domainField Rechnungsart rechnungsArt(column=RECHNUNG_ART)
+			Number sofortigeFaelligkeit (castTo=Boolean)
+			transient HtmlDokument htmldokument (delegates)
+			temporal manyToOne SubjekteDenormTotF rechnungsempfaenger (joinColumns=RG_EMPF_SUBJ_OID)
+			temporal manyToOne PersonenDenormTotF rechnEmpfKontakt (joinColumns=RG_EMPF_K_SUBJ_OID)
+		}
+		
+		entity AkontorechnungenGuiF implements("IAuftraggeberVarBezZusatz") (id=(rgId,agIdIn) tableAlias="ARGF"){ 
+			readOnly  Number agIdIn
+			          Number sofortigeFaelligkeit (castTo = Boolean)
+			notNull   Number atgebKDruckJn        (castTo = Boolean)
+			          Number manuelleFreigabe     (castTo = Boolean)
+			
+			manyToOne AuftraegeF         auftragIn           (joinColumns = AG_ID_IN referencedColumn=AG_ID)
+			manyToOne KundeVertraegeF    kampagne            (joinColumns = KDVT_ID)
+			manyToOne AuftraegeF         auftrag             (joinColumns = AG_ID)
+			manyToOne AuftragPositionenF auftragPosition     (joinColumns = AGPS_ID)
+   temporal manyToOne SubjekteDenormTotF auftraggeber        (joinColumns = ATGEB_SUBJ_OID)
+   temporal manyToOne PersonenDenormTotF auftraggeberkontakt (joinColumns = ATGEB_K_SUBJ_OID)
+   temporal manyToOne SubjekteDenormTotF rechnungsempfaenger (joinColumns = RG_EMPF_SUBJ_OID)
+   temporal manyToOne PersonenDenormTotF rechnEmpfKontakt    (joinColumns = RG_EMPF_K_SUBJ_OID)
+   
+	      domainField RechnungStatus status (column=STATUS)
+	      
+			transient AuftraggeberVariablerBezZusatz auftraggeberVariablerBezeichnungsZusatz (delegates)
+
+		  dbGenerated Date   erfasstAm
+		  dbGenerated String erfasstDurch
+		}
+		
+		entity FlFreigebenAnnulkostenF (id=(agpsFlZoId)){
+		}
+		
+		entity FlFreigebenErlaubtF (id=(agpsFlZoId)){
+		}
+		
+		entity FlFreigebenFremdAnnulF (id=(agpsFlZoId)){
+		}
+		
+		entity FlFreigebenKurzfristF (id=(agpsFlZoId)){
+		}
+		
+		entity FlFreigebenNichtErlaubtF (id=(agpsFlZoId)){
+		}
+				
+		query entity VerfuegMengenF {}
+		
+		entity ElementarnetzeF (id=(netzNr)){
+		}
+		
+		entity AgpsEnZuordnungenF (id=(agpsEnZoId)){
+			includes(AGPS_EN_ZO_ID, ANZAHL_AUSSTRAHL_ORIGINAL, AUSHANG_BEGINN, AUSSTRAHL_ANZAHL_GEWUENSCHT, BUCHUNG_AUSSTRAHL_ANZAHL, FUELLER_AUSSTRAHL_ANZAHL, MEDIUM_LAENGE, NETZPREIS, NETZPREIS_ORIGINAL)
+			 readOnly manyToOne AuftragPositionenF auftragposition (joinColumns=AGPS_ID)
+			 readOnly manyToOne ElementarnetzeF elementarnetz (joinColumns=EN_ID)
+   	    	 transient AgpsAnzahlAusstrahlungenUndDauer anzahlAusstrahlungenUndDauer (delegates)
+   	    	 Number kompensationGleicheNg (castTo=Boolean)
+   	    	 readOnly manyToOne VkIntensitaetDigitalBsF vkIntensitaet(joinColumns=VKI_ID)  
+		}		
+		
+	   	readOnly entity VkIntensitaetDigitalBsF (id=(vkiId)){
+   			includes(VKI_ID,BEZEICHNUNG)
+   			domainField AgpsDgtlTyp agpsDgtlTypVerwendung (column = AGPS_DGTL_TYP_VERWENDUNG)
+		}		
+				
+		readOnly entity DgfxTzsZoAnzeigeF (id=(aushangDatum, agpsId)){
+			includes( AUSHANG_DATUM, BUCHUNG_AUSSTRAHLUNGSMUSTER, WARTELISTE_AUSSTRAHLUNGSMUSTER, FUELLER_AUSSTRAHLUNGSMUSTER, TZS_LAENGE_MINUTEN,
+				NETZ_BEZEICHNUNG, TAGESPROGRAMM_ZEIT_ANFANG, TAGESPROGRAMM_ZEIT_ENDE, AGPS_ID, VKI_BEZEICHNUNG
+			)
+			manyToOne AuftragPositionenF agps (joinColumns=AGPS_ID referencedColumn=AGPS_ID)
+			Zeit tagesprogrammZeitAnfang
+			Zeit tagesprogrammZeitEnde
+			manyToOne AgpsNgSnF agpsNgSn (joinColumns=AGPS_ID referencedColumn=AGPS_ID)
+		}
+
+		readOnly entity SnElementarnetzRkSperreF (id=(agpsId, enId)){
+			includes(AGPS_ID, EN_ID, BEZEICHNUNG, NETZ_NR)
+			manyToOne AuftragPositionenF auftragPosition (joinColumns=AGPS_ID)				
+		}
+		
+		readOnly entity UmgebObjTypenAktivBsF (id=(uotsprId)){}
+
+        readOnly entity UmgebungObjekteF implements("com.affichage.it21.adgis.api.dao.PointOfInterest") (id=(ugobId) tableName=UMGEBUNG_OBJEKTE_GEBIETE_PIV_F){
+       		readOnly manyToOne UmgebObjTypenAktivBsF umgebungsTyp (joinColumns=UOT_ID referencedColumn=UOT_ID)
+       		readOnly Point geoLocation (column=STANDORT)
+       		transient Number radius
+       		transient Number maxRadius
+       		transient PoiType poiType (delegates)       		
+       }
+              
+       entity AktAuftraggeberF (id=(atgebId) tableAlias="AKTAF"){
+       		excludes (GUELTIG_VON, GUELTIG_BIS, KOMBI_ALL, SUBJ_TYPE, SUBJ_UEBER_OID)
+       }
+       
+       entity JahresUmsatzRabattF(id=(jurabId) tableName=JURA_RABATTE_F) {
+			manyToOne SubjekteDenormTotF aktAuftraggeber(joinColumns=ATGEB_SUBJ_OID referencedColumn=SUBJ_OID)
+       }
+       
+       entity ZusatzkostenArtSprF(id=(zskoatsprId) tableName=ZUSATZKOSTEN_ARTEN_SPR_F) {
+       		domainField SpracheId sprache (column = SPRACHE_ID)       	
+       }
+       
+       entity UnterschriftenRegelungF(id=(urId) tableName=UNTERSCHRIFTENREGELUNG_F) {
+       		temporal manyToOne SubjekteDenormTotF verkaufsBerater (joinColumns=SUBJ_OID_VB)
+       		temporal manyToOne SubjekteDenormTotF rechtsUnterzeichnender (joinColumns=SUBJ_OID_RU)
+       }
+
+       entity DwhStdUmsatzUnternehmungF(id=(dsuId) sequenceName=DWH_DSU_ID_SEQ tableName=DWH_STD_UMS_UNTER_F) {
+                    oneToMany DwhStdStatistikFilialeF     fkStatistikFiliale(mappedBy=fkStatistikUnternehmung)
+       }
+
+       entity DwhStdStatistikFilialeF(id=(dsfId) sequenceName=DWH_DSF_ID_SEQ) {
+                    manyToOne DwhStdUmsatzUnternehmungF   fkStatistikUnternehmung(joinColumns=DSU_ID)
+                    oneToMany DwhStdVbOeZuordF            fkVbVkoeZuordnung      (mappedBy=fkStatistikFiliale)
+       }
+       
+       entity DwhStdVbOeZuordF(id=(zuordId)  sequenceName=DWH_ZUORD_ID_SEQ) {
+           temporal manyToOne VerkaufsBeraterTotF         fkVerkaufsberater       (joinColumns=VKBER_OID  date=vkberDate rewriteSysdate)
+           temporal manyToOne VerkaufsOeTotF              fkVerkaufsOe            (joinColumns=VKOE_OID   date=vkoeDate  rewriteSysdate)
+                    manyToOne DwhStdStatistikFilialeF     fkStatistikFiliale      (joinColumns=DSF_ID)
+       }
+       
+       readOnly entity DwhStatistikUntFilDenormF(id=(dsuId, dsfId, zuordId)) {
+                    manyToOne DwhStdUmsatzUnternehmungF   fkStatistikUnternehmung (joinColumns=DSU_ID)
+                    manyToOne DwhStdStatistikFilialeF     fkStatistikFiliale      (joinColumns=DSF_ID)
+           temporal manyToOne VerkaufsBeraterTotF         fkVerkaufsberater       (joinColumns=VKBER_OID  date=vkberDate rewriteSysdate)
+           temporal manyToOne VerkaufsOeTotF              fkVerkaufsOe            (joinColumns=VKOE_OID   date=vkoeDate  rewriteSysdate)
+                    manyToOne DwhStdVbOeZuordF            fkVbVkoeZuordnung       (joinColumns=ZUORD_ID)
+       }
+       
+
+       entity DwhStdBudgetartF(id=(budgetartId) tableAlias="DSBAF"){           
+       }
+       
+       entity DwhStdBudgetF(id=(budgetId)) {
+                    manyToOne DwhStdBudgetartF            fkBudgetart             (joinColumns=BUDGETART_ID)                   
+                    manyToOne DwhStatistikUntFilDenormF   fkStatistikZuordnung    (joinColumns=ZUORD_ID)
+       }
+       
+       entity OffeneVorauszahlungenF(id=(kdvtId)){           
+       }
+       readOnly entity AbgrenzungsbuchungenRoF(id=(agbId)) {           
+       }
+       
+       readOnly entity BuchungsjournaleF(id=(bujId)) {
+           oneToMany RechnungDokumenteF rechnungDokumente (joinColumn=BUJ_ID)            
+       }
+        
+       document entity RechnungDokumenteF(id=(rgdokId)) {
+           oneToOne RechnungenF rechnungen (joinColumn=RG_ID)
+            temporal manyToOne AuftraggeberTotF auftraggeber (joinColumns=SAP_ATGEB_ID referencedColumn=ATGEB_ID)
+       }  
+       
+       entity KdvtSprBewertungF(id=(ksbId)) {
+       		oneToOne Kampagnen kampagnen (joinColumn=KDVT_ID)
+       		oneToOne KdvtSprFlGebieteF gebiete (joinColumn=KSB_ID)
+       }
+       
+       entity PpiKampagneF implements ("HatSprBewertungInterface") (id=(ppiKpId) sequenceName=PPI_KP_SEQ){
+       		oneToMany PpiKpKpBeziehungF ppiKampBez (mappedBy=ppiKampagnen)
+       	    domainField Kontaktklasse kontaktKlasse (column=KONTAKT_KLASSE)
+       	    oneToMany PpiKdvtSprBewertungF sprBewertung (mappedBy=ppiKampagne where =" spr_bewertung_type = 'P' ") // where weil typisierung nicht funktioniert 		
+       		Number bern (castTo=Boolean)
+       		Number lausanne (castTo=Boolean)
+       		Number zuerich (castTo=Boolean)
+       		Number basel (castTo=Boolean)
+       		Number genf (castTo=Boolean)
+       		Number luzern (castTo=Boolean)
+       }
+       
+      entity PpiKpKpBeziehungF (id=(ppiKpKpId) sequenceName=PPI_KP_KP_SEQ){
+			manyToOne PpiKampagneF ppiKampagnen (joinColumns=PPI_KP_ID)
+			oneToOne Kampagnen kampagnen (joinColumn=KDVT_ID)
+  	  }     
+       
+       entity RechnungBaseF (id=(rgId )  tableName=RECHNUNG_BASE_FILTER_F ) 
+       {
+       	includes(ANZAHL_MAHNUNGEN, FAELLIGKEIT_DATUM, FIBU_BETRAG, KDVT_ID, MAHNUNG_FAELLIG_DATUM, MAX_AUSHANG_ENDE_WOCHE, MIN_AUSHANG_BEGINN,MIN_AUSHANG_BEGINN_WOCHE, MWST_BETRAG, RECHNUNG_BETRAG, RECHNUNG_DATUM, RECHNUNG_NUMMER, RG_ID, RG_NUMMER_ERSETZT, RW_TYPE, ZAHLUNGSBETRAG, ZAHLUNGSWAEHRUNG)
+           manyToOne   VerkaufOperatOeF     verkaufOperatOe      (joinColumns = VKOE_OID)
+           manyToOne   KundeVertraegeF      kampagne             (joinColumns = KAMPAGNE_NUMMER referencedColumn = KAMPAGNE_NUMMER)
+           manyToOne   AuftraegeF           auftrage             (joinColumns = AG_ID)
+           
+           domainField RechnungStatus       rechnungStatus       (column = STATUS)
+           domainField Verrechnungsebene    verrechnungEbene     (column = VERRECHNUNGSEBENE)
+           domainField Rechnungsart         rechnungsArt         (column = RECHNUNG_ART)
+           domainField Rechnungsbezeichnung rechnungsbezeichnung (column = RECHNUNGSBEZEICHNUNG)
+           
+           notNull 	   Number 			    ohneAusdruck 		 (castTo = Boolean)
+       }
+       
+       entity VerkaufOperatOeF(id=(vkoeOid)) {           
+       }
+       
+       entity AgatRbkoZuordnungenF(id=(agatrbkozoId) sequenceName=RBZO_SEQ) {
+       		manyToOne RabattKombiBsF rabattKombiBs (joinColumns=RBKO_ID)
+       		manyToOne AuftragArtenF auftragArten (joinColumns=AGAT_ID)
+       }
+       
+       entity AuftragArtenF(id=(agatId) sequenceName=AGAT_SEQ tableAlias="AUAF"){
+       		domainField JaNein visumPflichtig (column=VISUM_PFLICHTIG)
+       	 	domainField JaNein gueltig (column=GUELTIG)
+   	       	domainField AuftragArt         auftragart          (column=BEZEICHNUNG_CODE)
+        	manyToOne BeraterkommAtAllBsF beraterkommAtAllBs (joinColumns=BKAT_OID)
+       	 	manyToOne LeistungArtenBsF leistungArtenBs (joinColumns=LSTART_ID)
+       	 	oneToMany AgatRbkoZuordnungenF agatRbkoZuordnungen (mappedBy=auftragArten)
+       }
+       
+       entity AktionenSprF(id=(aktnsprId) sequenceName=AKTNSPR_SEQ) {
+       		domainField SpracheId sprache (column=SPRACHE_ID)
+       		manyToOne 	AktionenBsF aktionenBs (joinColumns=AKTN_ID)
+       		
+       }
+       
+       entity RabattKombiBsF(id=(rbkoId) sequenceName=RBKO_SEQ){
+       		oneToMany RabattKombiSprF rabattKombiSpr (mappedBy=rabattKombiBs)
+       		oneToMany RabattZuordnungenF rabattZuordnungen (mappedBy=rabattKombiBs)
+       }
+       
+       entity BeraterkommAtAllBsF(id=(bkatOid) sequenceName=BERATERKOMM_AT_OSQ){
+       		oneToMany AuftragArtenF auftragArten (mappedBy=beraterkommAtAllBs)
+       }
+       
+       entity RabattZuordnungenF(id=(rbzoId) sequenceName=RBZO_SEQ){
+       		domainField JaNein obligRabatt (column=OBLIG_RABATT)
+       		manyToOne RabattKombiBsF rabattKombiBs (joinColumns=RBKO_ID)
+       		manyToOne RabattArtenBsF rabattArtenBs (joinColumns=RBAT_ID)	
+       }
+       
+       entity RabattKombiSprF(id=(rbkosprId) sequenceName=RBKOSPR_SEQ){
+       		readOnly domainField SpracheId sprache (column = SPRACHE_ID)
+       		manyToOne RabattKombiBsF rabattKombiBs (joinColumns=RBKO_ID)
+       }
+       
+       entity RabattArtenSprF(id=(rbatsprId) sequenceName=RBATSPR_SEQ) {
+       		domainField SpracheId sprache (column=SPRACHE_ID)
+       		manyToOne RabattArtenBsF rabattArtenBs (joinColumns=RBAT_ID)
+       }   
+       
+        readOnly entity VkFlSplittExportF (id=(agpsFlZoId)){
+        	readOnly domainField Sichtwinkel sichtwinkel (column=SICHTWINKEL)
+        	readOnly manyToOne AuftragPositionenF auftragsPosition (joinColumns=AGPS_ID)
+        	Amount flaechenpreis
+        }  
+        
+        readOnly entity VkFlAdresslisteF implements ("VkFlSplittExportF") (id=(agpsFlZoId)){
+        	readOnly domainField Sichtwinkel sichtwinkel (column=SICHTWINKEL)
+        	readOnly manyToOne AuftragPositionenF auftragsPosition (joinColumns=AGPS_ID)
+        	Amount flaechenpreis
+        	
+        	//Die transienten Felder sind da um das Interface zu erfüllen
+        	transient Number agpsArt
+			transient Number auftragsnummer
+			transient String agpsStatus
+			transient Number flOid
+			transient Date aushangBeginnDate
+			transient Number aushangWochentag
+			transient Amount breite
+			transient Amount hoehe
+			transient String blattSortString
+			transient String blattSortStringBfs
+			transient Number produktionskosten
+			transient String strasseSort
+			transient String gebGebietCodeSort
+			transient String webgisLink
+			transient String verkaufsadresse
+			transient String betriebszeit
+			transient String gebiet
+			transient Number strecke
+			transient Number dayDeals
+			transient Number drucklayout
+			transient Number betragMontage
+			transient String kommraumBedeutung
+			transient String agglomeration
+			transient String gebietCode
+			transient String vkSortString
+        }
+
+		entity ImpDataFlaechensplitF  (id=(idfId) sequenceName=IDF_SEQ){
+			readOnly manyToOne   AuftragPositionenF    	auftragposition  	(joinColumns=VK_AGPS_NR referencedColumn=AUFTRAGSPOSITIONSNUMMER)	
+   	    	Number 	vkAgpsNr 			  (column=VK_AGPS_NR)
+		}
+		
+		entity VisumAusnahmeTypF(id=(vatId)){			
+		}
+		
+		entity VisumAusnahmeF(id=(vaId)){
+			Amount wert
+			Amount prozentBk
+			Amount prozentRabatt
+		}
+		
+		entity VisumAusnahmeDnrmF(id=(vaId)){			
+            manyToOne AuftragArtenBsF    auftragArt 	(joinColumns = AGAT_ID)
+			manyToOne RabattArtenBsF 	 rabattArt 		(joinColumns=RBAT_ID)
+			manyToOne SubjekteDenormTotF auftraggeber 	(joinColumns=ATGEB_ID 		   referencedColumn=ATGEB_ID)
+			manyToOne SubjekteDenormTotF endkunde 		(joinColumns=ENDKUNDE_SUBJ_OID referencedColumn=SUBJ_OID)
+			manyToOne SubjekteDenormTotF agentur 		(joinColumns=AGENTUR_SUBJ_OID  referencedColumn=SUBJ_OID)
+			Amount wert
+			Amount prozentBk
+			Amount prozentRabatt
+		}
+		
+		entity AgVisumAusnahmeF(id=(vaId)){			
+			manyToOne RabattArtenBsF rabattArt  		(joinColumns=RBAT_ID)
+			manyToOne SubjekteDenormTotF endkunde 		(joinColumns=ENDKUNDE_SUBJ_OID referencedColumn=SUBJ_OID)
+			Amount wert
+			Amount prozentBk
+			Amount prozentRabatt
+		}		
+
+		entity AufgabenF(id=(aufgId) sequenceName=AUFG_SEQ tableAlias="AUF")
+		{
+			readOnly manyToOne   AuftragPositionenF    	auftragposition  	(joinColumns=AGPS_ID)	
+			readOnly manyToOne   AuftraegeF 		   	auftrag 		 	(joinColumns=AG_ID) 
+					 manyToOne   KundeVertraegeF       	kampagne 		 	(joinColumns=KDVT_ID)
+					 manyToOne   DachKampagnenF        	dachkampagne 	 	(joinColumns=DKT_ID)
+			readOnly manyToOne   RechnungBaseF 		   	rechnung		 	(joinColumns=RG_ID) 
+			readOnly manyToOne   AgpsFlZuordnungenF    	agpsFlZuordnung  	(joinColumns=AGPS_FL_ZO_ID)
+		    temporal manyToOne   FlaechenDenormTotF    	flaeche		  		(joinColumns=FL_OID date=erfasstAm rewriteSysdate)
+					 oneToOne    AufgabeInfobereichBsF 	aufgabeInfo      	(mappedBy=aufgabe)
+					 oneToOne    AufgabeAgpsArtBsF 	   	aufgabeAgpsArt   	(mappedBy=aufgabe)
+					 oneToOne    AufgabeAbwicklungOeBsF aufgabeAbwOe     	(mappedBy=aufgabe)
+			temporal manyToOne   SubjekteDenormTotF    	aufgabeZustaendig	(joinColumns=ZUSTAENDIG_SUBJ_OID   date=zustaendigDate 	  rewriteSysdate)
+			temporal manyToOne   SubjekteDenormTotF    	aufgabeOe		 	(joinColumns=ZUSTAENDIGKEIT_OE_OID date=zustaendigkeitOeDate rewriteSysdate)
+			temporal manyToOne   SubjekteDenormTotF    	kunde		 	 	(joinColumns=SUBJ_OID)
+					 manyToOne	 AtPartnerVertraegeF	partnerVertrag		(joinColumns=PV_OID)
+
+			readOnly    		 Number                aufgatId			 					
+			readOnly manyToOne	 AufgabeArtenF 	   	   aufgabeArten      (joinColumns=AUFGAT_ID) 
+				     domainField AufgabeArt            aufgabeArt        (column=AUFGAT_ID)
+				     
+			         domainField AufgDringlichkeit 	   aufgDringlichkeit (column=DRINGLICHKEIT) 
+			         domainField AufgabeStatus 		   aufgabeStatusEdom (column=STATUS)
+               		 transient   Boolean               istSelektiertNoUpdate           
+			         transient   Restzeit 			   restzeit 		 (delegates)
+		}
+	
+		entity AufgabeInfobereichBsF(id=(aufgInfobereichId) sequenceName=AUFG_INFOBEREICH_SEQ)
+		{
+			oneToOne    AufgabenF aufgabe       (joinColumn=AUFG_ID)	
+		}
+		
+ 		entity AufgabeAgpsArtBsF(id=(aufgId))
+		{
+			readOnly oneToOne    AufgabenF aufgabe       (joinColumn=AUFG_ID)	
+		}
+		
+		entity AufgabeAbwicklungOeBsF(id=(aufgId))
+		{
+			readOnly oneToOne    AufgabenF aufgabe       (joinColumn=AUFG_ID)	
+		}
+					
+		entity AufgabeArtenF(id=(aufgatId))
+		{
+			Number aufgatId
+			readOnly domainField AufgabeTyp    aufgabeTyp (column=AUFGABE_TYP)
+			readOnly domainField AufgabeArt    aufgabeArt (column=AUFGAT_ID)
+		}	
+		
+		readOnly entity FlGruppenGroesseF (id=(gruppenGroesse)) {}
+				
+		readOnly entity RAusstrahlungsnachweisF ( id=(raId) ) {
+		}
+		
+		readOnly entity FlAusschluesseF (id=(flausId) tableAlias="FAUSF"){
+			includes(FLAUS_ID, FL_OID_AUSGESCHL, FL_OID)
+		}
+		
+		readOnly entity KdvtWerbetechnikerF (id=(kdvtId,vvId)){
+			readOnly manyToOne KundeVertraegeF kampagne (joinColumns=KDVT_ID)
+		}
+		
+		entity AtPartnerVertraegeF(id=(pvOid))
+		{
+			oneToMany    AufgabenF	aufgabe       (joinColumn=PV_OID)	
+		}
+		
+		readOnly entity DsPradReportImportF (id=(dsPradImportId) tableAlias="PRI"){
+			includes(DS_PRAD_IMPORT_ID, IMPORT_BEZEICHNUNG, ABRECHNUNGSMONAT, VERARBEITET, GELOESCHT)
+			readOnly oneToMany PradErstellenLokaldispoF erstellenLokaldispo(joinColumn=DS_PRAD_IMPORT_ID)
+			readOnly Number  verarbeitet     (castTo = Boolean)
+			readOnly Number  geloescht     (castTo = Boolean)
+		}
+		
+		readOnly entity PradErstellenLokaldispoF (id=(dsPradImportId,ekdSubjOid,agtSubjOid,rabattsatzPrz,campaignName,pfId,verkaufChance, pseudoGroupId)){
+			includes(DS_PRAD_IMPORT_ID,ABRECHNUNGSMONAT, EKD_SUBJ_OID,AGT_SUBJ_OID, RABATTSATZ_PRZ,CAMPAIGN_NAME,PF_ID, VERKAUF_CHANCE, DEAL_IDS,PF_BEZ, BRUTTO,NETTO, PSEUDO_GROUP_ID)
+			Amount brutto
+			Amount netto
+			temporal readOnly manyToOne InstitutionenDenormTotF	agentur 		(joinColumns=AGT_SUBJ_OID 	date=abrechnungsmonat norewrite)
+			temporal readOnly manyToOne InstitutionenDenormTotF agenturAktuell 	(joinColumns=AGT_SUBJ_OID)
+			temporal readOnly manyToOne SubjekteDenormTotF 		endkunde 		(joinColumns=EKD_SUBJ_OID 	date=abrechnungsmonat norewrite)
+			temporal readOnly manyToOne SubjekteDenormTotF 		endkundeAktuell	(joinColumns=EKD_SUBJ_OID)
+	   	}
+		
+		
+ }       
+}
