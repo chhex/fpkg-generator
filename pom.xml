@@ -54,6 +54,11 @@
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.affichage.persistence</groupId>
+			<artifactId>java-dao-service</artifactId>
+			<version>4.0.0-PS17</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>

@@ -3,6 +3,661 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.affichage.it21.vk.zentraldispo.dao.Services">
+
+	<!-- ================================================================================================ -->
+	<!-- annullation_f_pa -->
+	<!-- ================================================================================================ -->
+	
+	<update id="kvlf_agps_annull_kostpfl" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=
+			annullation_f_pa.kvlf_agps_annull_kostpfl_jf(kvlf_id_in	=> #{KVLF_ID_IN, mode=IN, jdbcType=NUMERIC},
+														 agps_id_in => #{AGPS_ID_IN, mode=IN, jdbcType=NUMERIC}) }	
+	</update>
+
+	<!-- ================================================================================================ -->
+	<!-- aufgaben_service_f_pa -->
+	<!-- ================================================================================================ -->	
+		
+	<update id="aufgaben_anfrage_lf_flaeche" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			aufgaben_service_f_pa.erstellen_anfrage_lf_flaeche(in_fl_oid_l    	=> #{IN_FL_OID_L,      mode=IN, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler},
+															   in_kampagnen_art	=> #{IN_KAMPAGNEN_ART, mode=IN, jdbcType=NUMERIC},
+                              				 	               in_freigabe_ab  	=> #{IN_FREIGABE_AB,   mode=IN, jdbcType=DATE},
+                              				 		           in_vkber_oid     => #{IN_VKBER_OID,     mode=IN, jdbcType=NUMERIC},
+                              				 		           in_notizen       => #{IN_NOTIZEN,       mode=IN, jdbcType=VARCHAR}) }
+	</update>
+	
+	<!-- ================================================================================================ -->
+	<!-- auftragsabwicklung_fl_f_pa -->
+	<!-- ================================================================================================ -->	 
+		
+	<update id="fl_freigeben1_init" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			auftragsabwicklung_fl_f_pa.fl_freigeben1_init() }
+	</update>
+	
+	<update id="fl_freigeben2_add" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			auftragsabwicklung_fl_f_pa.fl_freigeben2_add(in_agps_fl_zo_id => #{IN_AGPS_FL_ZO_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="fl_freigeben3_check" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			auftragsabwicklung_fl_f_pa.fl_freigeben3_check(in_annullieren => #{IN_ANNULLIEREN, mode=IN, jdbcType=NUMERIC},
+                                               			   in_agps_id     => #{IN_AGPS_ID,     mode=IN, jdbcType=NUMERIC},
+                                               			   in_ag_id       => #{IN_AG_ID,       mode=IN, jdbcType=NUMERIC},
+                                               			   in_kdvt_id     => #{IN_KDVT_ID,     mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="fl_freigeben4_execute" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			auftragsabwicklung_fl_f_pa.fl_freigeben4_execute() }
+	</update>
+
+	<!-- ================================================================================================ -->
+	<!-- buchung_analog_service_f -->
+	<!-- ================================================================================================ -->
+
+	<update id="agps_alle_bestaetigen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.agps_alle_bestaetigen(ag_id_in          	  => #{AG_ID_IN,               mode=IN, jdbcType=NUMERIC},
+                                              		   	   option_verfall_in 	  => #{OPTION_VERFALL_IN,      mode=IN, jdbcType=DATE},
+                                              		   	   entferne_warteliste_in => #{ENTFERNE_WARTELISTE_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>	
+	
+	<update id="agps_bestaetigen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.agps_bestaetigen(agps_id_in     		 => #{AGPS_ID_IN,             mode=IN, jdbcType=NUMERIC},
+                                             	      option_verfall_in      => #{OPTION_VERFALL_IN,      mode=IN, jdbcType=DATE},
+                                            	      entferne_warteliste_in => #{ENTFERNE_WARTELISTE_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>	
+	
+	<update id="agps_verschieben" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			buchung_analog_service_f.agps_verschieben(agps_id_in  => #{AGPS_ID_IN,  mode=IN,  jdbcType=NUMERIC},
+												  	  agps_id_out => #{AGPS_ID_OUT, mode=OUT, jdbcType=NUMERIC}) }
+	</update>	
+	
+	<update id="agps_verschieb_in_benutzung" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=	
+		     buchung_analog_service_f.agps_verschieb_in_benutzung(in_agps_id => #{in_agps_id, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+
+	<update id="buchen_auftragsposition" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=INTEGER} :=
+			buchung_analog_service_f.buchen_auftragsposition_i(in_agps_id 	  => #{IN_AGPS_ID,     mode=IN, jdbcType=NUMERIC},
+                                                		  	   in_buchungsart => #{IN_BUCHUNGSART, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="buchen_oev_einzelflaeche" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.buchen_oev_einzelflaeche(in_ag_id          => #{IN_AG_ID, 			mode=IN, jdbcType=NUMERIC},
+                                                	  	      in_fl_oid         => #{IN_FL_OID,  		mode=IN, jdbcType=NUMERIC},
+                                                	  		  in_aushang_beginn => #{IN_AUSHANG_BEGINN, mode=IN, jdbcType=DATE},
+                                                	  		  in_aushang_dauer  => #{IN_AUSHANG_DAUER,  mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+ 	<update id="ersatz_fl_registrieren" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.ersatz_fl_registrieren(agps_id_in    => #{AGPS_ID,    mode=IN, jdbcType=NUMERIC},
+                                                			fl_oid_org_in => #{FL_OID_ORG, mode=IN, jdbcType=NUMERIC},
+                                                			fl_oid_neu_in => #{FL_OID_NEU, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="ersatz_fl_suchen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.ersatz_fl_suchen(agps_id_in                => #{AGPS_ID, 					mode=IN, jdbcType=NUMERIC},
+                                                	  fl_oid_in                 => #{FL_OID,  					mode=IN, jdbcType=NUMERIC},
+                                                	  ah_beg_in                 => #{AH_BEG,  					mode=IN, jdbcType=DATE},
+                                                	  raise_on_auftragsbelegung => #{RAISE_ON_AUFTRAGSBELEGUNG, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="erstellen_agps_mit_kriteriensatz_standard" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.erstellen_agps_mit_kriteriensatz_standard(ag_id_in    => #{IN_AG_ID,    mode=IN,  jdbcType=NUMERIC},
+		     														           agps_id_out => #{OUT_AGPS_ID, mode=OUT, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="erstellen_agps_mit_kriteriensatz_ov" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.erstellen_agps_mit_kriteriensatz_ov(ag_id_in 	 => #{IN_AG_ID,    mode=IN,  jdbcType=NUMERIC},
+		     														     agps_id_out => #{OUT_AGPS_ID, mode=OUT, jdbcType=NUMERIC}) }
+	</update>
+		
+	<update id="erstellen_agps_mit_kopiertem_Kriteriensatz" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.erstellen_agps_mit_kopiertem_Kriteriensatz(agps_id_in 	=> #{IN_AGPS_ID,  mode=IN,  jdbcType=NUMERIC},
+	 															                agps_id_out => #{OUT_AGPS_ID, mode=OUT, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="fl_man_umplatzieren" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.fl_man_umplatzieren(agps_id_in    => #{AGPS_ID, 	mode=IN, jdbcType=NUMERIC},
+                                                		 fl_oid_org_in => #{FL_OID_ORG, mode=IN, jdbcType=NUMERIC},
+                                                		 fl_oid_neu_in => #{FL_OID_NEU, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+
+	<update id="annullieren_auftrag" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.annullieren_auftrag(ag_id_in 	=> #{IN_AG_ID_IN,     mode=IN, jdbcType=NUMERIC},
+                                                		 angr_id_in => #{IN_ANGR_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+
+	<update id="kopieren_krs" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.kopieren_krs(agkrs_id_in  => #{IN_AGKRS_ID_IN,   mode=IN,  jdbcType=NUMERIC},
+	 											  agkrs_id_out => #{OUT_AGKRS_ID_OUT, mode=OUT, jdbcType=NUMERIC}) }
+	</update>
+
+	<update id="annullieren_agps" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			buchung_analog_service_f.annullieren_agps(agps_id_in => #{IN_AGPS_ID_IN, mode=IN, jdbcType=NUMERIC},
+                                                	  angr_id_in => #{IN_ANGR_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+
+	<update id="agps_flaechen_freig_add_fl" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.agps_flaechen_freig_add_fl(agps_fl_zo_id_in => #{IN_AGPS_FL_ZO_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+  	<update id="agps_flaechen_freigeben_init" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.agps_flaechen_freigeben_init() }
+    </update>
+ 
+ 	<update id="agps_flaechen_freigeben" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.agps_flaechen_freigeben_jc(annullieren_in => #{IN_ANNULLIEREN_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+
+	<update id="agpsflzo_beenden" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.agpsflzo_beenden_jf(p_agpsflzo_id  				=> #{IN_P_AGPSFLZO_ID, 					mode=IN, jdbcType=NUMERIC},
+														 p_aushang_ende 				=> #{IN_P_AUSHANG_ENDE, 				mode=IN, jdbcType=DATE},
+														 p_ersatz_fl_nummer  			=> #{IN_P_ERSATZ_FL_NUMMER, 			mode=IN, jdbcType=NUMERIC},
+														 p_mit_auto_zusatzleistung  	=> #{IN_P_MIT_AUTO_ZUSATZLEISTUNG, 		mode=IN, jdbcType=NUMERIC},
+                                                	     p_mit_erfassten_zusatzleistung => #{IN_P_MIT_ERFASSTEN_ZUSATZLEISTUNG, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+
+	<update id="aendern_agps_in_reservation" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_analog_service_f.aendern_agps_in_reservation(agps_id_in => #{IN_AGPS_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+
+	<update id="akonto_erfassen_erlaubt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			buchung_analog_service_f.akonto_erfassen_erlaubt(in_ag_id             => #{IN_IN_AG_ID,             mode=IN, jdbcType=NUMERIC},
+															 in_zahlungsmodus_gui => #{IN_IN_ZAHLUNGSMODUS_GUI, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+
+  	<update id="get_budget_buchung_result" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			buchung_analog_service_f.get_budget_buchung_result() }
+    </update>
+  
+  	<update id="kdvt_annullieren" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			buchung_analog_service_f.kdvt_annullieren(kdvt_id_in => #{IN_KDVT_ID_IN, mode=IN, jdbcType=NUMERIC},
+                                                	  angr_id_in => #{IN_ANGR_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	  				   						
+	<!-- ================================================================================================ -->
+	<!-- buchung_kriteriensatz_service_f -->
+	<!-- ================================================================================================ -->
+	
+	<update id="checked_freigeben" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			buchung_kriteriensatz_service_f.checked_freigeben(in_agps_id => #{IN_AGPS_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+		
+	<update id="checked_reservieren" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			buchung_kriteriensatz_service_f.checked_reservieren(in_agps_id         => #{IN_AGPS_ID, 	    mode=IN,  jdbcType=NUMERIC},
+                                            	 		    	in_status          => #{IN_STATUS, 		    mode=IN,  jdbcType=NUMERIC},
+                                                		    	out_angeforderte   => #{OUT_ANGEFORDERTE,   mode=OUT, jdbcType=NUMERIC},
+                                                 		    	out_durchgefuehrte => #{OUT_DURCHGEFUEHRTE, mode=OUT, jdbcType=NUMERIC}) }
+	</update>	
+
+	<update id="dobe_freigeben" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			buchung_kriteriensatz_service_f.dobe_freigeben(in_agps_id => #{IN_AGPS_ID,  mode=IN, jdbcType=NUMERIC},
+												  	  	   in_fl_oid  => #{IN_FL_OID,   mode=IN, jdbcType=NUMERIC}) }
+	</update>
+
+  	<update id="exit_instance" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			buchung_kriteriensatz_service_f.exit_instance() }
+    </update>
+    		
+	<!-- ================================================================================================ -->
+	<!-- dgfx_buchungsablauf_f_pa -->
+	<!-- ================================================================================================ -->
+	
+	<update id="terminieren_dgfx" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			dgfx_buchungsablauf_f_pa.agps_terminieren(in_agps_ids    => #{IN_AGPS_IDS,    mode=IN, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler},
+													  in_aushang_bis => #{IN_AUSHANG_BIS, mode=IN, jdbcType=DATE}) }
+	</update>
+	
+	<update id="auftrag_mit_agps_verbinden" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			dgfx_buchungsablauf_f_pa.auftrag_mit_agps_verbinden(p_ag_id    => #{AG_ID,    mode=IN, jdbcType=NUMERIC},
+		                                   						p_agps_ids => #{AGPS_IDS, mode=IN, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler}) }
+	</update>
+			
+	<update id="autofueller" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			dgfx_buchungsablauf_f_pa.autofueller(in_agps_ids        => #{IN_AGPS_IDS,        mode=IN, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler},
+		                                         in_autofueller_art => #{IN_AUTOFUELLER_ART, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+		
+	<update id="sind_auto_fueller_erlaubt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			dgfx_buchungsablauf_f_pa.auto_fueller_erlaubt(in_krs_id => #{IN_KRS_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+		
+	<update id="check_krs_ag_branchen_vertr" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			dgfx_buchungsablauf_f_pa.check_krs_ag_branchen_vertr(in_ag_id  => #{AG_ID,  mode=IN, jdbcType=NUMERIC},
+																 in_krs_id => #{KRS_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="check_krs_ag_vkoe_vertr" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			dgfx_buchungsablauf_f_pa.check_krs_ag_vkoe_vertr(in_ag_id  => #{AG_ID,  mode=IN, jdbcType=NUMERIC},
+															 in_krs_id => #{KRS_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="check_ng_branchen_vkoe_vertr" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			dgfx_buchungsablauf_f_pa.check_ng_branchen_vkoe_vertr(in_ng_id 			=> #{IN_NG_ID, 			mode=IN, jdbcType=NUMERIC},
+																  in_aushang_beginn => #{IN_AUSHANG_BEGINN, mode=IN, jdbcType=DATE},
+																  in_aushang_dauer 	=> #{IN_AUSHANG_DAUER, 	mode=IN, jdbcType=NUMERIC},
+																  in_brc_idorids 	=> #{IN_BRC_IDORIDS, 	mode=IN, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler},
+																  in_vkoe_oid 		=> #{IN_VKOE_OID, 		mode=IN, jdbcType=NUMERIC},
+																  in_subj_oid 		=> #{IN_SUBJ_OID, 		mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="filter_ng_branchen_vkoe" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			dgfx_buchungsablauf_f_pa.filter_ng_branchen_vkoe(in_ng_ids 			 		 => #{IN_NG_IDS, 	     		   mode=IN,  jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler},
+															 in_aushang_beginn   		 => #{IN_AUSHANG_BEGINN, 		   mode=IN,  jdbcType=DATE},
+															 in_aushang_dauer 	 		 => #{IN_AUSHANG_DAUER, 		   mode=IN,  jdbcType=NUMERIC},
+															 in_brc_ids 		 		 => #{IN_BRC_IDS, 				   mode=IN,  jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler},
+															 in_vkoe_oid 		 		 => #{IN_VKOE_OID, 				   mode=IN,  jdbcType=NUMERIC},
+															 in_subj_oid_restrk_ausnahme => #{IN_SUBJ_OID_RESTRK_AUSNAHME, mode=IN,  jdbcType=NUMERIC},
+															 out_filtered_ng_ids 		 => #{FILTERED_NG_IDS, 			   mode=OUT, jdbcType=ARRAY, jdbcTypeName=UTIL.NUMBER_L, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler}) }
+	</update>
+
+
+	
+	<!-- ================================================================================================ -->
+	<!-- datenimport_service_f_pa -->
+	<!-- ================================================================================================ -->
+	
+	<update id="agps_hat_man_up" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			datenimport_service_f_pa.agps_hat_man_up(in_agps_id => #{AGPS_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+		
+	<update id="agps_export_allowed" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=	
+			datenimport_service_f_pa.agps_export_allowed(p_agps_id_list => #{P_AGPS_ID_LIST, mode=IN, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler}) }
+	</update>	
+	
+	<update id="check_lo_export_erlaubt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			datenimport_service_f_pa.check_lo_export_erlaubt(in_imp_id => #{IMP_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+		
+	<update id="pruefeImportSet" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			datenimport_service_f_pa.pruefe_importset(in_imp_id => #{IMP_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="sendeAnLogistik" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			datenimport_service_f_pa.sende_an_logistik(in_imp_id => #{IMP_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<!-- ================================================================================================ -->
+	<!-- en_kunde_vertraege_f -->
+	<!-- ================================================================================================ -->
+   
+	<update id="ist_swa_berechtigt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			en_kunde_vertraege_l_f.ist_swa_berechtigt(P_KDVT_ID_IN => #{P_KDVT_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+		
+    <update id="setAdresslisteZuErstellen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			en_kunde_vertraege_f.set_adressliste_zu_erstellen(P_KDVT_ID_IN => #{P_KDVT_ID_IN, mode=IN, jdbcType=NUMERIC },
+		 												      P_STATUS_IN  => #{P_STATUS_IN,  mode=IN, jdbcType=NUMERIC}) }
+    </update>
+	
+	<!-- ================================================================================================ -->
+	<!-- exception_pa -->
+	<!-- ================================================================================================ -->
+	
+	<update id="raise_failure" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			exception_pa.raise_failure(p_kategorie => #{p_kategorie, mode=IN, jdbcType=VARCHAR},
+		                               p_nummer    => #{p_nummer, 	 mode=IN, jdbcType=NUMERIC},
+		                               p_s1        => #{p_s1, 		 mode=IN, jdbcType=VARCHAR},
+		                               p_s2        => #{p_s2, 		 mode=IN, jdbcType=VARCHAR},
+		                               p_s3        => #{p_s3, 		 mode=IN, jdbcType=VARCHAR},
+		                               p_s4        => #{p_s4, 		 mode=IN, jdbcType=VARCHAR},
+		                               p_s5        => #{p_s5, 		 mode=IN, jdbcType=VARCHAR},
+		                               p_s6        => #{p_s6, 		 mode=IN, jdbcType=VARCHAR}) }
+	</update>	
+		
+	<!-- ================================================================================================ -->
+	<!-- faktura_f_pa -->
+	<!-- ================================================================================================ -->
+	
+	<update id="agps_is_abgerechnet" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=INTEGER} :=
+			faktura_f_pa.agps_is_abgerechnet(agps_id_in => #{AGPS_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+		
+	<update id="akonto_rg_erzeugen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=
+			faktura_f_pa.akonto_rg_erzeugen(kdvt_id_in => #{KDVT_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+			
+	<update id="getFakturaUnterlage" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=CLOB, javaType=java.lang.String} :=
+			faktura_f_pa.fakturaunterlage(rg_id_in => #{rgId, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="getfakturajournal" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=VARCHAR} := 
+			faktura_f_pa.getfakturajournal(AMOUNT_IO => #{AMOUNT_IO, mode=INOUT, jdbcType=NUMERIC}, 
+										   POS_IN    => #{POS_IN,    mode=IN,    jdbcType=NUMERIC}) }
+	</update>
+
+	<update id="get_akonto_preis" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			faktura_f_pa.get_akonto_preis(kdvt_id_in   			=> #{KDVT_ID_IN,       		mode=IN,  jdbcType=NUMERIC},
+                              			  ag_id_in     			=> #{AG_ID_IN,        		mode=IN,  jdbcType=NUMERIC},
+                              			  netto_preis_out       => #{NETTO_PREIS_OUT, 		mode=OUT, jdbcType=NUMERIC},
+                              			  beraterkommission_out => #{BERATERKOMMISSION_OUT, mode=OUT, jdbcType=NUMERIC},
+                              			  zusatzkosten_out      => #{ZUSATZKOSTEN_OUT, 		mode=OUT, jdbcType=NUMERIC},
+                              			  zusatzleistung_out    => #{ZUSATZLEISTUNG_OUT, 	mode=OUT, jdbcType=NUMERIC},
+                              			  faktura_preis_out     => #{FAKTURA_PREIS_OUT, 	mode=OUT, jdbcType=NUMERIC},
+                              			  akonto_preis_out      => #{AKONTO_PREIS_OUT, 		mode=OUT, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="preparefakturajournal" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			faktura_f_pa.preparefakturajournal(P_BUJ_ID => #{P_BUJ_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="rechnung_existiert" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=
+			faktura_f_pa.rechnung_existiert(kdvt_id_in => #{KDVT_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="rg_duplikat_erstellen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			faktura_f_pa.rg_duplikat_erstellen(rg_id_in => #{RG_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+		
+	<update id="schlussrechnung_existiert" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=
+			faktura_f_pa.schlussrechnung_existiert(kdvt_id_in => #{KDVT_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+
+	<!-- ================================================================================================ -->
+	<!-- fm_waehrungen_pa -->
+	<!-- ================================================================================================ -->	
+		
+	<update id="waehrungsrechner" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=
+		  	fm_waehrungen_pa.waehrungsrechner(p_ausgangswaehrung => #{P_AUSGANGSWAEHRUNG, mode=IN, jdbcType=NUMERIC},
+											  p_zielwaehrung 	 => #{P_ZIELWAEHRUNG, 	  mode=IN, jdbcType=NUMERIC},
+											  p_betrag 			 => #{P_BETRAG, 		  mode=IN, jdbcType=NUMERIC},
+											  p_valutadatum 	 => #{P_VALUTADATUM, 	  mode=IN, jdbcType=DATE}) }
+	</update>
+		
+	<!-- ================================================================================================ -->
+	<!-- fob_service_f -->
+	<!-- ================================================================================================ -->
+	
+	<update id="clearkrs" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			fob_service_f.clearkrs(in_krs_id => #{IN_KRS_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="efl_option_entfernen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			fob_service_f.entfernen(in_flzo_opt => #{IN_FLZO_OPTION, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+    <update id="fl_branche_vertraegelich" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=	
+			fob_service_f.fl_branche_vertraegelich(in_fl_oid        => #{IN_FL_OID, 		mode=IN, jdbcType=NUMERIC},
+											       in_brc_id_l      => #{IN_BRC_ID_L, 		mode=IN, jdbcType=NUMERIC},
+											       in_aushang_von   => #{IN_AUSHANG_BEGINN, mode=IN, jdbcType=DATE},
+											       in_aushang_dauer => #{IN_AUSHANG_DAUER, 	mode=IN, jdbcType=NUMERIC}, 
+											       in_subj_oid      => #{IN_SUBJ_OID, 		mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="geteflpreise" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			fob_service_f.get_preise(in_fl_oid          => #{IN_FL_OID         , mode=IN , jdbcType=NUMERIC},
+							         in_aushang_beginn  => #{IN_AUSHANG_BEGINN , mode=IN , jdbcType=DATE},
+							         in_aushang_dauer   => #{IN_AUSHANG_DAUER  , mode=IN , jdbcType=NUMERIC},
+                                     out_medienleistung => #{OUT_MEDIENLEISTUNG, mode=OUT, jdbcType=NUMERIC},
+                                     out_produktion     => #{OUT_PRODUKTION    , mode=OUT, jdbcType=NUMERIC},
+                                     out_montage        => #{OUT_MONTAGE       , mode=OUT, jdbcType=NUMERIC},
+                                     out_gebuehren      => #{OUT_GEBUEHREN     , mode=OUT, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="efl_option_zum_einloesen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			fob_service_f.option_zum_einloesen(in_agps_fl_zo_id => #{IN_AGPS_FL_ZO_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+				
+   	<update id="efl_reservieren_resopt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			fob_service_f.reservieren(in_atgeb_id         => #{IN_ATGEB_ID, 		mode=IN, jdbcType=NUMERIC},
+                                      in_agentur_subj_oid => #{IN_AGENTUR_SUBJ_OID, mode=IN, jdbcType=NUMERIC},
+                                      in_krs_id           => #{IN_KRS_ID, 			mode=IN, jdbcType=NUMERIC},
+                                      in_kdvt_id          => #{IN_KDVT_ID, 			mode=IN, jdbcType=NUMERIC},
+                                      in_ag_id            => #{IN_AG_ID, 			mode=IN, jdbcType=NUMERIC},
+                                      in_agps_art         => #{IN_AGPS_ART, 		mode=IN, jdbcType=NUMERIC}) }
+	</update>
+		
+	<!-- ================================================================================================ -->
+	<!-- koko_ausgleich_f_pa -->
+	<!-- ================================================================================================ -->	
+	
+	<update id="koko_ausgleichen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			koko_ausgleich_f_pa.koko_ausgleichen(p_koko_id => #{KOKO_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<!-- ================================================================================================ -->
+	<!-- koko_f_pa -->
+	<!-- ================================================================================================ -->	
+	
+	<update id="alle_koko_flzu_loeschen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=
+		  	koko_f_pa.alle_koko_flzu_loeschen(in_koko_id => #{KOKO_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="koko_einz_fl_hinzu_clear_jf1" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			koko_f_pa.einz_fl_hinzu_clear_jf1 }
+	</update>
+	
+	<update id="koko_einz_fl_hinzu_add_fl_jf2" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			koko_f_pa.einz_fl_hinzu_add_fl_jf2(in_fl_oid => #{FL_OID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="koko_einz_fl_hinzu_jf3" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			koko_f_pa.einz_fl_hinzu_jf3(koko_id_in           => #{KOKO_ID, 				mode=IN,  jdbcType=NUMERIC},
+										anz_fl_angefordert   => #{ANZ_FL_ANGEFORDERT, 	mode=OUT, jdbcType=NUMERIC},
+										anz_fl_durchgefuehrt => #{ANZ_FL_DURCHGEFUEHRT, mode=OUT, jdbcType=NUMERIC}) }
+	</update>
+	
+ 	<update id="koko_fl_loeschen_clear_jf1" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			koko_f_pa.fl_loeschen_clear_jf1 }
+	</update>
+	
+	<update id="koko_fl_loeschen_add_fl_jf2" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			koko_f_pa.fl_loeschen_add_fl_jf2(in_kfz_id => #{KFZ_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="koko_fl_loeschen_jf3" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=
+		  	koko_f_pa.fl_loeschen_jf3(in_koko_id => #{KOKO_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+		
+	<update id="koko_fl_loesen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			koko_f_pa.koko_fl_loesen(in_koko_id => #{KOKO_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="koko_flzu_checked_hinzufuegen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+		  	koko_f_pa.koko_flzu_checked_hinzufuegen(in_koko_id 		   => #{KOKO_ID,        mode=IN,  jdbcType=NUMERIC},
+													out_angeforderte   => #{ANGEFORDERTE,   mode=OUT, jdbcType=NUMERIC},
+													out_durchgefuehrte => #{DURCHGEFUEHRTE, mode=OUT, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="koko_kopieren" parameterType="hashmap" statementType="CALLABLE">
+		{CALL 
+			koko_f_pa.koko_kopieren(koko_id_alt    				  => #{KOKO_ID_ALT, 				  mode=IN,  jdbcType=NUMERIC},
+                          			bezeichnung_in            	  => #{BEZEICHNUNG_IN, 				  mode=IN,  jdbcType=VARCHAR},
+                          			aushang_beginn_in         	  => #{AUSHANG_BEGINN_IN, 			  mode=IN,  jdbcType=DATE},
+                          			aushang_dauer_in          	  => #{AUSHANG_DAUER_IN, 			  mode=IN,  jdbcType=NUMERIC},
+                          			ausgleich_in              	  => #{AUSGLEICH_IN, 				  mode=IN,  jdbcType=NUMERIC},
+			 			  			mit_verfuegbarkeitsabfrage_in => #{MIT_VERFUEGBARKEITSABFRAGE_IN, mode=IN,  jdbcType=NUMERIC},                       
+                          			anzahl_fl_gewuenscht       	  => #{ANZAHL_FL_GEWUENSCHT, 		  mode=OUT, jdbcType=NUMERIC},
+                          			anzahl_fl_erhalten        	  => #{ANZAHL_FL_ERHALTEN, 			  mode=OUT, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="koko_mit_kokokrs_erstellen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			koko_f_pa.koko_mit_kokokrs_erstellen(koko_id_in  => #{KOKO_ID,     mode=IN,  jdbcType=NUMERIC},
+												 koko_krs_id => #{KOKO_KRS_ID, mode=OUT, jdbcType=NUMERIC}) }
+	</update>
+	
+	<!-- ================================================================================================ -->
+	<!-- optionen_service_f -->
+	<!-- ================================================================================================ -->	
+	
+	<update id="agps_annehmen_einloesbare_opt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			optionen_service_f.agps_annehmen_einloesbare_opt(agps_id_in => #{IN_AGPS_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="agps_verwerfen_einloesbare_opt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			optionen_service_f.agps_verwerfen_einloesbare_opt(agps_id_in         => #{IN_AGPS_ID,         mode=IN, jdbcType=NUMERIC},
+														      option_behalten_in => #{IN_OPTION_BEHALTEN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+			
+	<!-- ================================================================================================ -->
+	<!-- parameter_up -->
+	<!-- ================================================================================================ -->
+
+	<update id="getInteger" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=INTEGER} :=
+			parameter_up.get_integer(#{selector, mode=IN, jdbcType=VARCHAR}) }
+	</update>
+				
+    <update id="appl_param_get_varchar2" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=VARCHAR} :=	
+			aenv.parameter_up.get_varchar2(in_param_name => #{IN_PARAM_NAME , mode=IN, jdbcType=VARCHAR}) }
+	</update>
+	
+	<!-- ================================================================================================ -->
+	<!-- spr_bewertung_f_pa -->
+    <!-- ================================================================================================ -->
+
+	<update id="add_gebiet" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			spr_bewertung_f_pa.add_gebiet(in_gbot_oid => #{IN_GBOT_OID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+    <update id="check_kp_end_mit_welbeg" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=	
+			spr_bewertung_f_pa.check_kp_end_mit_welbeg(kdvt_idids 	=> #{KDVT_IDIDS,   mode=IN, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler},
+							                           wellenbeginn => #{WELLENBEGINN, mode=IN, jdbcType=DATE}) }
+	</update>
+	
+	<update id="clear_gebiete" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			spr_bewertung_f_pa.clear_gebiete }
+	</update>
+	    
+	<update id="spr_bewertung_an_ppi" parameterType="hashmap" statementType="CALLABLE">   
+		{ CALL 
+			spr_bewertung_f_pa.spr_bewertung_an_ppi(in_ksb_id => #{IN_KSB_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="spr_bewertung_ausfuehren_jui" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			spr_bewertung_f_pa.spr_bewertung_ausfuehren_jui(in_ksb_id 		 => #{IN_KSB_ID, 	    mode=IN, jdbcType=NUMERIC}, 
+															in_ppi_bewertung => #{IN_PPI_BEWERTUNG, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+		
+	<update id="spr_bewertung_reset" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			spr_bewertung_f_pa.spr_bewertung_reset(out_ksb_id => #{OUT_KSB_ID, mode=OUT, jdbcType=NUMERIC}) }
+	</update>
+
+	<!-- ================================================================================================ -->
+	<!-- utilities_f_pa -->
+	<!-- ================================================================================================ -->
+	
+	<update id="ag_annull_kostenpflichtig_jf" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			utilities_f_pa.ag_annull_kostenpflichtig_jf(AG_ID_IN => #{AG_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="agps_get_annull_kosten_proz" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			utilities_f_pa.agps_get_annull_kosten_proz(AGPS_ID_IN => #{AGPS_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="get_vp_email_infoblock" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=VARCHAR} :=	
+		    utilities_f_pa.get_vp_email_infoblock(kdvt_id_in => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+		
+	<update id="get_vp_email_subject" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=VARCHAR} :=	
+		    utilities_f_pa.get_vp_email_subject(kdvt_id_in => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>	
+
+	<update id="kdvt_annull_kostenpflichtig_jf" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			utilities_f_pa.kdvt_annull_kostenpflichtig_jf(KDVT_ID_IN => #{KDVT_ID_IN, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="lo_upload_link_erstellen_funktion" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=VARCHAR} := 
+			utilities_f_pa.upload_link_erstellen_funktion(in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>		
+	
+	<!-- ================================================================================================ -->
+	<!-- verschieben_service_f_pa -->
+	<!-- ================================================================================================ -->
+		
+	<update id="save_agps_flaechen_liste" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			verschieben_service_f_pa.save_agps_flaechen_liste(in_agps_id_alt => #{IN_AGPS_ID_ALT, mode=IN, jdbcType=NUMERIC},
+		                                                      in_agps_id_neu => #{IN_AGPS_ID_NEU, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+
 	<!-- ================================================================================================ -->
 	<!-- vertrags_service_f -->
 	<!-- ================================================================================================ -->
@@ -40,4 +695,139 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			vertrags_service_f.verschieben_vertrag(in_kvlf_id => #{IN_KVLF_ID, mode=IN, jdbcType=NUMERIC},
 												   in_wochen  => #{IN_WOCHEN,  mode=IN, jdbcType=NUMERIC}) }	
 	</update>
+
+	<!-- ================================================================================================ -->
+	<!-- vertrags_service_l_f -->
+	<!-- ================================================================================================ -->
+	
+	<update id="get_aushangtaktende" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=DATE} :=
+			vertrags_service_l_f.get_aushangtaktende(in_agps_id 		=> #{IN_AGPS_ID,         mode=IN, jdbcType=NUMERIC},
+												  	 in_aushangende_von => #{IN_AUSHANGENDE_VON, mode=IN, jdbcType=DATE}) }	
+	</update>
+	
+	<update id="ermitteln_kuendigungsarten_vertrag" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			vertrags_service_l_f.ermitteln_kuendigungsarten_vertrag(p_kvlf_id		   => #{P_KVLF_ID,          mode=IN, jdbcType=NUMERIC},
+                                                          		    p_kuendigungsdatum => #{P_KUENDIGUNGSDATUM, mode=IN, jdbcType=DATE}) }	
+	</update>
+	
+	<update id="ermitteln_kuendigungsarten_agps" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			vertrags_service_l_f.ermitteln_kuendigungsarten_agps(p_agps_id_list		=> #{P_AGPS_ID_LIST,     mode=IN, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler},
+                                                          		 p_kuendigungsdatum	=> #{P_KUENDIGUNGSDATUM, mode=IN, jdbcType=DATE}) }	
+	</update>
+			
+	<update id="ist_datum_fuer_ao_kuendigung_erlaubt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			vertrags_service_l_f.ist_datum_fuer_ao_kuendigung_erlaubt(p_agps_id_in     => #{P_AGPS_ID_IN,     mode=IN, jdbcType=NUMERIC},
+                                                           	          p_kvlf_id_in     => #{P_KVLF_ID_IN,     mode=IN, jdbcType=NUMERIC},
+                                                           	          p_kuend_datum_in => #{P_KUEND_DATUM_IN, mode=IN, jdbcType=DATE}) }
+	</update>
+	
+	<!-- ================================================================================================ -->
+	<!-- view_params_pa -->
+	<!-- ================================================================================================ -->	
+	
+	<update id="set_geb_oid_einschl_jf" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			util.view_params_pa.set_geb_oid_einschl_jf(geb_oid_l_vc	=> #{GEB_OID_L_VC, mode=IN, jdbcType=VARCHAR}) }
+	</update>
+		
+	<!-- ================================================================================================ -->
+	<!-- vk_import_seq -->
+	<!-- ================================================================================================ -->
+		
+	<select id="vkImportSeq" resultType="Long">
+		SELECT vk_import_seq.nextval FROM DUAL
+	</select>	
+
+	<!-- ================================================================================================ -->
+	<!-- vk_preis_pltab_pa -->
+	<!-- ================================================================================================ -->
+		
+	<update id="preis_pltab_get_kdvt_brutto" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=
+			pe.vk_preis_pltab_pa.get_kdvt_brutto(in_id => #{KDVT_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="preis_pltab_get_ag_brutto" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=
+			pe.vk_preis_pltab_pa.get_ag_brutto(in_id => #{AG_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="preis_pltab_get_agps_brutto" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=
+		 	pe.vk_preis_pltab_pa.get_agps_brutto(in_id => #{AGPS_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="preis_pltab_get_afz_brutto" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} :=
+			pe.vk_preis_pltab_pa.get_afz_brutto(in_id => #{AGPS_FL_ZO_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+  	<update id="vk_preis_clean" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			pe.vk_preis_pltab_pa.clean() }
+    </update>
+	
+	<!-- ================================================================================================ -->
+	<!-- vk_preisermittlung_pa -->
+	<!-- ================================================================================================ -->
+	
+	<update id="preis_pltab_kdvt_calc_brutto" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL 
+			pe.vk_preisermittlung_pa.kdvt_calc_brutto(p_kdvt_id => #{KDVT_ID, mode=IN, jdbcType=NUMERIC},
+													  p_recalc  => #{RECALC,  mode=IN, jdbcType=NUMERIC}) }
+	</update>
+
+	<!-- ================================================================================================ -->
+	<!-- vp_f_pa -->
+	<!-- ================================================================================================ -->
+		
+	<update id="upd_kommraum_berge_int" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMERIC} := 
+			vp_f_pa.upd_kommraum_berge_int(in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC}) }
+	</update>
+	
+	<update id="kunde_vertrag_multiplizieren_digital" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.kunde_vertrag_multiplizieren_f.nur_digital(	p_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC},
+															p_verschiebung_in_tagen => #{P_VERSCHIEBUNG_IN_TAGEN, mode=IN, jdbcType=NUMERIC},
+															p_anzahl_kopien => #{P_ANZAHL_KOPIEN, mode=IN, jdbcType=NUMERIC},
+															p_mit_annulliert => #{P_MIT_ANNULLIERT, mode=IN, jdbcType=NUMERIC},
+															p_random => #{P_RANDOM, mode=IN, jdbcType=VARCHAR})  
+			}
+	</update>
+	
+<!-- 	<update id="prad_lokaldispo_erstellen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT,mode=OUT, jdbcType=CLOB, typeHandler=com.apgsga.forms2java.persistence.mybatis.ClobTypeHandler } := 
+			vk.prad_lokaldispo_erstellen_f.nur_digital(	p_ds_prad_import_id => #{P_DS_PRAD_IMPORT_ID, mode=IN, jdbcType=NUMERIC})  
+			}
+	</update>
+ -->	
+		
+	<update id="prad_lokaldispo_erstellen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT,mode=OUT, jdbcType=CLOB, typeHandler=com.apgsga.forms2java.persistence.mybatis.ClobTypeHandler } := 
+			vk.prad_lokaldispo_erstellen_f.nur_digital( p_prad_agps_ld_import_xml => #{P_PRAD_AGPS_LD_IMPORT_XML, mode=IN, jdbcType=CLOB, typeHandler=com.apgsga.forms2java.persistence.mybatis.ClobTypeHandler })  
+			}
+	</update>
+		
+	<update id="prad_check_vkoe_eindeutig" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT,mode=OUT, jdbcType=CLOB, typeHandler=com.apgsga.forms2java.persistence.mybatis.ClobTypeHandler } := 
+			vk.prad_lokaldispo_erstellen_f.check_vkoe_eindeutig(	p_endkunde_subj_oid_l => #{P_ENDKUNDE_SUBJ_OID_L, mode=IN, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler})  
+			}
+	</update>
+	
+	<update id="prad_check_mandat" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT,mode=OUT, jdbcType=CLOB, typeHandler=com.apgsga.forms2java.persistence.mybatis.ClobTypeHandler } := 
+			vk.prad_lokaldispo_erstellen_f.check_mandat(	p_endkunde_subj_oid_l => #{P_ENDKUNDE_SUBJ_OID_L, mode=IN, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler})  
+			}
+	</update>
+	
+	<update id="bestaetigen_alle_kv" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL buchung_analog_service_f.bestaetigen_kv(in_kdvt_ids => #{IN_KDVT_IDS, mode=IN, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler}) }
+	</update>
+	
+	
 </mapper>
