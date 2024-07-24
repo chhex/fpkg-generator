@@ -38,6 +38,7 @@ public class Proc {
     public void accept(ModelVisitor visitor) {
         visitor.visit(this);
         getParamters().forEach(parm ->{ parm.accept(visitor);});
+        visitor.postvisit(this);
     }
 
     @Override

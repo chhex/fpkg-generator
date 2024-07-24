@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="5s.com.apgsga.it21.mybatis.services.vk">
+<update id="faktura_f_pa_agps_is_abgerechnet" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.faktura_f_pa.agps_is_abgerechnet( agps_id_in => #{AGPS_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_akonto_rg_erzeugen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.faktura_f_pa.akonto_rg_erzeugen( kdvt_id_in => #{KDVT_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_bestimme_infofeld_text" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.faktura_f_pa.bestimme_infofeld_text( p_kdvt_id_in => #{P_KDVT_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+p_ag_id_in => #{P_AG_ID_IN, mode=IN, jdbcType=NUMERIC} ,	p_anz_ag => #{P_ANZ_AG, mode=IN, jdbcType=NUMERIC} ,	
+p_anz_agps => #{P_ANZ_AGPS, mode=IN, jdbcType=NUMERIC} ,	p_rechnung_art => #{P_RECHNUNG_ART, mode=IN, jdbcType=NUMERIC} ,	
+p_blockiert_bis_in => #{P_BLOCKIERT_BIS_IN, mode=IN, jdbcType=DATE} ,	
+p_datum_von => #{P_DATUM_VON, mode=IN, jdbcType=DATE} ,	p_datum_bis => #{P_DATUM_BIS, mode=IN, jdbcType=DATE} ,	
+p_infotext => #{P_INFOTEXT, mode=IN, jdbcType=VARCHAR} ,	p_akonto_bez => #{P_AKONTO_BEZ, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_check_srg_hat_demontierte_fl" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.faktura_f_pa.check_srg_hat_demontierte_fl( p_rg_id_in => #{P_RG_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+p_meldung_out => #{P_MELDUNG_OUT, mode=IN, jdbcType=VARCHAR} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_fakturaunterlage" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=CLOB} := CALL
+			vk.faktura_f_pa.fakturaunterlage( rg_id_in => #{RG_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_getfakturajournal" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=VARCHAR2} := CALL
+			vk.faktura_f_pa.getfakturajournal( amount_io => #{AMOUNT_IO, mode=IN, jdbcType=INTEGER} ,	
+pos_in => #{POS_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_get_akonto_preis" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.faktura_f_pa.get_akonto_preis( kdvt_id_in => #{KDVT_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+ag_id_in => #{AG_ID_IN, mode=IN, jdbcType=NUMERIC} ,	netto_preis_out => #{NETTO_PREIS_OUT, mode=IN, jdbcType=NUMERIC} ,	
+beraterkommission_out => #{BERATERKOMMISSION_OUT, mode=IN, jdbcType=NUMERIC} ,	
+zusatzkosten_out => #{ZUSATZKOSTEN_OUT, mode=IN, jdbcType=NUMERIC} ,	
+zusatzleistung_out => #{ZUSATZLEISTUNG_OUT, mode=IN, jdbcType=NUMERIC} ,	
+faktura_preis_out => #{FAKTURA_PREIS_OUT, mode=IN, jdbcType=NUMERIC} ,	
+akonto_preis_out => #{AKONTO_PREIS_OUT, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_get_faktura_preis" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.faktura_f_pa.get_faktura_preis( kdvt_id_in => #{KDVT_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+ag_id_in => #{AG_ID_IN, mode=IN, jdbcType=NUMERIC} ,	netto_preis_out => #{NETTO_PREIS_OUT, mode=IN, jdbcType=NUMERIC} ,	
+beraterkommission_out => #{BERATERKOMMISSION_OUT, mode=IN, jdbcType=NUMERIC} ,	
+zusatzkosten_out => #{ZUSATZKOSTEN_OUT, mode=IN, jdbcType=NUMERIC} ,	
+zusatzleistung_out => #{ZUSATZLEISTUNG_OUT, mode=IN, jdbcType=NUMERIC} ,	
+faktura_preis_out => #{FAKTURA_PREIS_OUT, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_get_ve_ag_faktura" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.faktura_f_pa.get_ve_ag_faktura( ag_id_in => #{AG_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+netto_preis_out => #{NETTO_PREIS_OUT, mode=IN, jdbcType=NUMERIC} ,	
+beraterkommission_out => #{BERATERKOMMISSION_OUT, mode=IN, jdbcType=NUMERIC} ,	
+zusatzkosten_out => #{ZUSATZKOSTEN_OUT, mode=IN, jdbcType=NUMERIC} ,	
+zusatzleistung_out => #{ZUSATZLEISTUNG_OUT, mode=IN, jdbcType=NUMERIC} ,	
+faktura_preis_out => #{FAKTURA_PREIS_OUT, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_get_ve_kdvt_faktura" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.faktura_f_pa.get_ve_kdvt_faktura( kdvt_id_in => #{KDVT_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+netto_preis_out => #{NETTO_PREIS_OUT, mode=IN, jdbcType=NUMERIC} ,	
+beraterkommission_out => #{BERATERKOMMISSION_OUT, mode=IN, jdbcType=NUMERIC} ,	
+zusatzkosten_out => #{ZUSATZKOSTEN_OUT, mode=IN, jdbcType=NUMERIC} ,	
+zusatzleistung_out => #{ZUSATZLEISTUNG_OUT, mode=IN, jdbcType=NUMERIC} ,	
+faktura_preis_out => #{FAKTURA_PREIS_OUT, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_preparefakturajournal" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.faktura_f_pa.preparefakturajournal( p_buj_id => #{P_BUJ_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_rechnungsstellung_verhindern" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.faktura_f_pa.rechnungsstellung_verhindern( rg_id_in => #{RG_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+text_in => #{TEXT_IN, mode=IN, jdbcType=VARCHAR} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_rechnung_existiert" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.faktura_f_pa.rechnung_existiert( kdvt_id_in => #{KDVT_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_rechnung_freigeben" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.faktura_f_pa.rechnung_freigeben( rg_id_in => #{RG_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_rechnung_korrigieren" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.faktura_f_pa.rechnung_korrigieren( rg_id_in => #{RG_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_rg_beruecksichtigt_vz" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.faktura_f_pa.rg_beruecksichtigt_vz( p_rg_id => #{P_RG_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_rg_duplikat_erstellen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.faktura_f_pa.rg_duplikat_erstellen( rg_id_in => #{RG_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_rg_korrektur_abschliessen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.faktura_f_pa.rg_korrektur_abschliessen( rg_id_in => #{RG_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_rg_korrektur_erlaubt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.faktura_f_pa.rg_korrektur_erlaubt( rg_id_in => #{RG_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_schlussrechnung_existiert" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.faktura_f_pa.schlussrechnung_existiert( kdvt_id_in => #{KDVT_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_upd_agentur" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.faktura_f_pa.upd_agentur( rg_id_in => #{RG_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="faktura_f_pa_upd_auftraggeber" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.faktura_f_pa.upd_auftraggeber( rg_id_in => #{RG_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+</mapper>

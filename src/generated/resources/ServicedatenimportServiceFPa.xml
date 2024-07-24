@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="5s.com.apgsga.it21.mybatis.services.vk">
+<update id="datenimport_service_f_pa_agps_export_allowed" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.datenimport_service_f_pa.agps_export_allowed( p_agps_id_list => #{P_AGPS_ID_LIST, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} 	
+			)  
+		}
+</update>
+<update id="datenimport_service_f_pa_agps_hat_man_up" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.datenimport_service_f_pa.agps_hat_man_up( in_agps_id => #{IN_AGPS_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="datenimport_service_f_pa_check_lo_export_erlaubt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.datenimport_service_f_pa.check_lo_export_erlaubt( in_imp_id => #{IN_IMP_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="datenimport_service_f_pa_pruefe_importset" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.datenimport_service_f_pa.pruefe_importset( in_imp_id => #{IN_IMP_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="datenimport_service_f_pa_sende_an_logistik" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.datenimport_service_f_pa.sende_an_logistik( in_imp_id => #{IN_IMP_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+</mapper>

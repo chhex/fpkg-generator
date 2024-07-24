@@ -6,38 +6,19 @@ import java.util.List;
 
 import com.affichage.it21.fpkg.generator.SysoutJavaNameConversionVisitor;
 import com.affichage.it21.fpkg.generator.SysoutVisitor;
-import com.affichage.it21.fpkg.generator.TypeMappingVisitor;
 import com.affichage.it21.fpkg.generator.TypesUsedVisitor;
 import com.affichage.it21.fpkg.model.ModelLoader;
 import com.affichage.it21.fpkg.model.ModelVisitor;
 import com.affichage.it21.fpkg.model.XmlSaxModelLoader;
 
-public class FpkgGenerator {
+public class FPkgMetaDataTester {
 
-    private String targetDir;
-    private ModelVisitor visitor = new SysoutVisitor();
-    private ModelLoader modelLoader = new XmlSaxModelLoader();
-
-    public String getTargetDir() {
-        return targetDir;
-    }
-
-    public void setTargetDir(String targetDir) {
-        this.targetDir = targetDir;
-    }
-
-    public ModelVisitor getVisitor() {
-        return visitor;
-    }
+    private ModelVisitor visitor;
+    private ModelLoader modelLoader;
 
     public void setVisitor(ModelVisitor visitor) {
         this.visitor = visitor;
     }
-
-    public ModelLoader getModelLoader() {
-        return modelLoader;
-    }
-
     public void setModelLoader(ModelLoader modelLoader) {
         this.modelLoader = modelLoader;
     }
@@ -51,7 +32,7 @@ public class FpkgGenerator {
 
  
     public static void main(String[] args) throws IOException {
-        var generator = new FpkgGenerator();
+        var generator = new FPkgMetaDataTester();
         generator.setModelLoader(new XmlSaxModelLoader());
         generator.setVisitor(new SysoutVisitor());
         var daoExtraction = new File("src/main/resources/dao_extraction.rdbms"); 

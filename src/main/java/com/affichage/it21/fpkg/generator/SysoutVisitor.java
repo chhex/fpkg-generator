@@ -1,11 +1,11 @@
 package com.affichage.it21.fpkg.generator;
 
-import com.affichage.it21.fpkg.model.ModelVisitor;
+import com.affichage.it21.fpkg.model.AbstractModelVisitor;
 import com.affichage.it21.fpkg.model.Parameter;
 import com.affichage.it21.fpkg.model.Pkg;
 import com.affichage.it21.fpkg.model.Proc;
 
-public class SysoutVisitor implements ModelVisitor {
+public class SysoutVisitor extends AbstractModelVisitor {
 
     @Override
     public void visit(Pkg pkg) {

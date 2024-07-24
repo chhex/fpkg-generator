@@ -29,6 +29,7 @@ public class Pkg {
     public void accept(ModelVisitor visitor) {
         visitor.visit(this);
         getProcedures().forEach(proc -> { proc.accept(visitor);});
+        visitor.postvisit(this);
     }
     @Override
     public String toString() {

@@ -1,11 +1,11 @@
 package com.affichage.it21.fpkg.generator;
 
-import com.affichage.it21.fpkg.model.ModelVisitor;
+import com.affichage.it21.fpkg.model.AbstractModelVisitor;
 import com.affichage.it21.fpkg.model.Parameter;
 import com.affichage.it21.fpkg.model.Pkg;
 import com.affichage.it21.fpkg.model.Proc;
 
-public class TypeMappingVisitor implements ModelVisitor {
+public class TypeMappingVisitor extends AbstractModelVisitor {
 
     private final TypeMaps typeMaps = new TypeMaps(); 
 
