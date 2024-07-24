@@ -114,3 +114,5 @@ local.properties
 test/output/
 report-testoutput/
 com.affichage.itext.utils/test/output/testPDFMitLogo.pdf
+.antlr/
+.vscode/

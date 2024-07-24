@@ -196,6 +196,13 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.affichage.it21.fpkg.service.FpkgGenerator</mainClass>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>

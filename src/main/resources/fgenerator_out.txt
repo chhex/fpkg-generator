@@ -1,0 +1,1424 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.apgsga.service:fpkggen:jar:0.2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.codehaus.mojo:exec-maven-plugin is missing. @ line 199, column 12
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+Downloading from repo: https://artifactory4t4apgsga.jfrog.io/artifactory/repo/org/codehaus/mojo/exec-maven-plugin/maven-metadata.xml
+Progress (1): 505/934 BProgress (1): 934 B                       Downloaded from repo: https://artifactory4t4apgsga.jfrog.io/artifactory/repo/org/codehaus/mojo/exec-maven-plugin/maven-metadata.xml (934 B at 834 B/s)
+[INFO] 
+[INFO] ---------------------< com.apgsga.service:fpkggen >---------------------
+[INFO] Building fpkggen 0.2-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from repo: https://artifactory4t4apgsga.jfrog.io/artifactory/repo/org/eclipse/emf/org.eclipse.emf.common/maven-metadata.xml
+Downloading from snapshots: https://artifactory4t4apgsga.jfrog.io/artifactory/snapshots/org/eclipse/emf/org.eclipse.emf.common/maven-metadata.xml
+Progress (1): 0.5/1.7 kBProgress (1): 1.7 kB                        Downloaded from repo: https://artifactory4t4apgsga.jfrog.io/artifactory/repo/org/eclipse/emf/org.eclipse.emf.common/maven-metadata.xml (1.7 kB at 4.2 kB/s)
+Downloading from repo: https://artifactory4t4apgsga.jfrog.io/artifactory/repo/org/eclipse/emf/org.eclipse.emf.ecore/maven-metadata.xml
+Downloading from snapshots: https://artifactory4t4apgsga.jfrog.io/artifactory/snapshots/org/eclipse/emf/org.eclipse.emf.ecore/maven-metadata.xml
+Progress (1): 0.5/1.7 kBProgress (1): 1.7 kB                        Downloaded from repo: https://artifactory4t4apgsga.jfrog.io/artifactory/repo/org/eclipse/emf/org.eclipse.emf.ecore/maven-metadata.xml (1.7 kB at 4.4 kB/s)
+[INFO] 
+[INFO] --- clean:3.0.0:clean (default-clean) @ fpkggen ---
+[INFO] Deleting /Users/che/git/fpkg-generator/target
+[INFO] 
+[INFO] --- resources:3.3.0:copy-resources (copy-resources) @ fpkggen ---
+[INFO] Copying 2 resources
+[INFO] 
+[INFO] --- antlr4:4.11.1:antlr4 (default) @ fpkggen ---
+[INFO] ANTLR 4: Processing source directory /Users/che/git/fpkg-generator/src/main/antlr4
+[INFO] Processing grammar: plsql/PlSqlLexer.g4
+[INFO] Processing grammar: plsql/PlSqlParser.g4
+[WARNING] warning(154): plsql/PlSqlParser.g4:3658:0: rule range_partition_desc contains an optional block with at least one alternative that can match an empty string
+[WARNING] /Users/che/git/fpkg-generator/plsql/PlSqlParser.g4 [3658:0]: rule range_partition_desc contains an optional block with at least one alternative that can match an empty string
+[WARNING] warning(154): plsql/PlSqlParser.g4:3671:0: rule list_partition_desc contains an optional block with at least one alternative that can match an empty string
+[WARNING] /Users/che/git/fpkg-generator/plsql/PlSqlParser.g4 [3671:0]: rule list_partition_desc contains an optional block with at least one alternative that can match an empty string
+[INFO] 
+[INFO] --- resources:3.3.0:resources (default-resources) @ fpkggen ---
+[INFO] Copying 4 resources
+[INFO] 
+[INFO] --- compiler:3.6.1:compile (default-compile) @ fpkggen ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 23 source files to /Users/che/git/fpkg-generator/target/classes
+[INFO] 
+[INFO] --- resources:3.3.0:testResources (default-testResources) @ fpkggen ---
+[INFO] skip non existing resourceDirectory /Users/che/git/fpkg-generator/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.6.1:testCompile (default-testCompile) @ fpkggen ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:2.19.1:test (default-test) @ fpkggen ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.0.2:jar (default-jar) @ fpkggen ---
+[INFO] Building jar: /Users/che/git/fpkg-generator/target/fpkggen-0.2-SNAPSHOT.jar
+[INFO] 
+[INFO] --- exec:3.3.0:java (default-cli) @ fpkggen ---
+*Package name: ANNULLATION_F_PA, schema VK
+  >Procedure name: KVLF_AGPS_ANNULL_KOSTPFL_JF, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: KVLF_ID_IN, type: NUMBER
+   +Parameter name: AGPS_ID_IN, type: NUMBER
+*Package name: AUFTRAGSABWICKLUNG_FL_F_PA, schema VK
+  >Procedure name: FL_FREIGEBEN1_INIT, type: rdbms:Procedure, returnType: null
+  >Procedure name: FL_FREIGEBEN2_ADD, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_AGPS_FL_ZO_ID, type: NUMBER
+  >Procedure name: FL_FREIGEBEN3_CHECK, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_ANNULLIEREN, type: NUMBER
+   +Parameter name: IN_AGPS_ID, type: NUMBER
+   +Parameter name: IN_AG_ID, type: NUMBER
+   +Parameter name: IN_KDVT_ID, type: NUMBER
+  >Procedure name: FL_FREIGEBEN4_EXECUTE, type: rdbms:Procedure, returnType: null
+*Package name: CODES_F_PA, schema VK
+  >Procedure name: AGAT_TRAFF_AG#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: AGAT_TRAFF_DUM#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: AGPS_VFZ_RESERVIERT, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: AG_VEBENE_AG#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: AG_VEBENE_KDVT#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: BLOCKIERT_BIS_OFFSET#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: LEITWAEHRUNG_MANDANT_CODE#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: RGAT_AKONTO#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: STATUS_AGPS_ANNULLIERT#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: STATUS_AGPS_IN_ERFASSUNG#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: STATUS_KDVT_ANNULLIERT#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: STATUS_KDVT_IN_BEARBEITUNG#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: STATUS_RG_ABGESCHL_AUSGEGL#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: STATUS_RG_ABGESCHL_N_GESTELLT#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: STATUS_RG_GESTELLT_OFFEN#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: STATUS_RG_KORREKTUR#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: STATUS_RG_PROVISORISCH#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: STATUS_RG_VORBEREITET#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: TYPE_RG_KUNDENRECHNUNG#, type: rdbms:Function, returnType: VARCHAR2
+  >Procedure name: ZAHLUNG_NACH_AUSHANG#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: ZAHLUNG_VOR_AUSHANG#, type: rdbms:Function, returnType: NUMBER
+*Package name: DATENIMPORT_SERVICE_F_PA, schema VK
+  >Procedure name: AGPS_EXPORT_ALLOWED, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: P_AGPS_ID_LIST, type: TABLE
+  >Procedure name: AGPS_HAT_MAN_UP, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_AGPS_ID, type: NUMBER
+  >Procedure name: CHECK_LO_EXPORT_ERLAUBT, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_IMP_ID, type: NUMBER
+  >Procedure name: PRUEFE_IMPORTSET, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_IMP_ID, type: NUMBER
+  >Procedure name: SENDE_AN_LOGISTIK, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_IMP_ID, type: NUMBER
+*Package name: DGFX_BUCHUNGSABLAUF_F_PA, schema VK
+  >Procedure name: AGPS_BUCHEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: P_AGPS_IDS, type: TABLE
+   +Parameter name: P_MIT_WARTELISTE, type: NUMBER
+   +Parameter name: P_KOMPENSATION_GLEICHE_NG, type: NUMBER
+  >Procedure name: AGPS_TERMINIEREN, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_AGPS_IDS, type: TABLE
+   +Parameter name: IN_AUSHANG_BIS, type: DATE
+  >Procedure name: AUFTRAG_MIT_AGPS_VERBINDEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: P_AG_ID, type: NUMBER
+   +Parameter name: P_AGPS_IDS, type: TABLE
+  >Procedure name: AUTOFUELLER, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_AGPS_IDS, type: TABLE
+   +Parameter name: IN_AUTOFUELLER_ART, type: NUMBER
+  >Procedure name: AUTO_FUELLER_ERLAUBT, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_KRS_ID, type: NUMBER
+  >Procedure name: CHECK_KRS_AG_BRANCHEN_VERTR, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_AG_ID, type: NUMBER
+   +Parameter name: IN_KRS_ID, type: NUMBER
+  >Procedure name: CHECK_KRS_AG_VKOE_VERTR, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_AG_ID, type: NUMBER
+   +Parameter name: IN_KRS_ID, type: NUMBER
+  >Procedure name: CHECK_NG_BRANCHEN_VKOE_VERTR, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_NG_ID, type: NUMBER
+   +Parameter name: IN_AUSHANG_BEGINN, type: DATE
+   +Parameter name: IN_AUSHANG_DAUER, type: NUMBER
+   +Parameter name: IN_BRC_IDORIDS, type: TABLE
+   +Parameter name: IN_VKOE_OID, type: NUMBER
+   +Parameter name: IN_SUBJ_OID, type: NUMBER
+  >Procedure name: DELETE_KRS, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_KRS_IDS, type: TABLE
+   +Parameter name: IN_AGPS_IDS, type: TABLE
+  >Procedure name: ERSTELLEN_TZS_VON_VKI, type: rdbms:Procedure, returnType: null
+   +Parameter name: P_KRS_IDS, type: TABLE
+  >Procedure name: FILTER_NG_BRANCHEN_VKOE, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_NG_IDS, type: TABLE
+   +Parameter name: IN_AUSHANG_BEGINN, type: DATE
+   +Parameter name: IN_AUSHANG_DAUER, type: NUMBER
+   +Parameter name: IN_BRC_IDS, type: TABLE
+   +Parameter name: IN_VKOE_OID, type: NUMBER
+   +Parameter name: IN_SUBJ_OID_RESTRK_AUSNAHME, type: NUMBER
+   +Parameter name: OUT_FILTERED_NG_IDS, type: TABLE
+  >Procedure name: GET_DGL_BRUTTOPREIS_NETZ, type: rdbms:Function, returnType: CLOB
+   +Parameter name: IN_PARAMETERS_XML, type: CLOB
+  >Procedure name: LOESCHE_KRS_AGPS, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_KRS_IDS, type: TABLE
+   +Parameter name: IN_AGPS_IDS, type: TABLE
+  >Procedure name: NETZ_AUSHANGTAG_AB_DATUM, type: rdbms:Procedure, returnType: null
+   +Parameter name: P_NTGROTOID, type: NUMBER
+   +Parameter name: P_DATUM_VON, type: DATE
+   +Parameter name: P_AUSHANGTAG, type: DATE
+   +Parameter name: P_AUSHANG_TAKT, type: NUMBER
+  >Procedure name: NG_SUCHE, type: rdbms:Function, returnType: TABLE
+   +Parameter name: P_AUSHANG_BEGINN, type: DATE
+   +Parameter name: P_AUSHANG_DAUER, type: NUMBER
+   +Parameter name: P_MEDIUM_LAENGE, type: NUMBER
+   +Parameter name: P_VKOE_OID, type: NUMBER
+   +Parameter name: P_BRC_ID_L, type: TABLE
+   +Parameter name: P_RK_AUSNAHME_SUBJ_OID, type: NUMBER
+   +Parameter name: P_NK_ID, type: NUMBER
+   +Parameter name: P_PF_ID_L, type: TABLE
+   +Parameter name: P_EIN_GBOT_OID_L, type: TABLE
+   +Parameter name: P_AUS_GBOT_OID_L, type: TABLE
+   +Parameter name: P_OBJ_OID_L, type: TABLE
+  >Procedure name: RESERVATION, type: rdbms:Procedure, returnType: null
+   +Parameter name: P_KRS_ID, type: NUMBER
+   +Parameter name: P_VORSCHLAG_ID, type: NUMBER
+   +Parameter name: P_VERTEILUNGART_ID, type: NUMBER
+   +Parameter name: O_DGFX_VG_RESULTAT_DETAIL_XML, type: CLOB
+   +Parameter name: O_AGPS_ID, type: NUMBER
+  >Procedure name: RESERVATION_XOR_VORSCHLAG, type: rdbms:Procedure, returnType: null
+   +Parameter name: P_KRS_ID, type: NUMBER
+   +Parameter name: P_IST_RESERVATION, type: NUMBER
+   +Parameter name: IO_VORSCHLAG_ID, type: NUMBER
+   +Parameter name: O_DGFX_VG_RESULTAT_DETAIL_XML, type: CLOB
+   +Parameter name: O_AGPS_ID, type: NUMBER
+  >Procedure name: VORSCHLAG, type: rdbms:Procedure, returnType: null
+   +Parameter name: P_KRS_ID, type: NUMBER
+   +Parameter name: P_VERTEILUNGART_ID, type: NUMBER
+   +Parameter name: O_VORSCHLAG_ID, type: NUMBER
+   +Parameter name: O_DGFX_VG_RESULTAT_DETAIL_XML, type: CLOB
+   +Parameter name: O_AGPS_ID, type: NUMBER
+  >Procedure name: WARTELISTE_AGPS_EINLOESEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: AGPS_IDS_IN, type: TABLE
+*Package name: FAKTURA_F_PA, schema VK
+  >Procedure name: AGPS_IS_ABGERECHNET, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: AGPS_ID_IN, type: NUMBER
+  >Procedure name: AKONTO_RG_ERZEUGEN, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+  >Procedure name: BESTIMME_INFOFELD_TEXT, type: rdbms:Procedure, returnType: null
+   +Parameter name: P_KDVT_ID_IN, type: NUMBER
+   +Parameter name: P_AG_ID_IN, type: NUMBER
+   +Parameter name: P_ANZ_AG, type: NUMBER
+   +Parameter name: P_ANZ_AGPS, type: NUMBER
+   +Parameter name: P_RECHNUNG_ART, type: NUMBER
+   +Parameter name: P_BLOCKIERT_BIS_IN, type: DATE
+   +Parameter name: P_DATUM_VON, type: DATE
+   +Parameter name: P_DATUM_BIS, type: DATE
+   +Parameter name: P_INFOTEXT, type: VARCHAR2
+   +Parameter name: P_AKONTO_BEZ, type: NUMBER
+  >Procedure name: CHECK_SRG_HAT_DEMONTIERTE_FL, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: P_RG_ID_IN, type: NUMBER
+   +Parameter name: P_MELDUNG_OUT, type: VARCHAR2
+  >Procedure name: FAKTURAUNTERLAGE, type: rdbms:Function, returnType: CLOB
+   +Parameter name: RG_ID_IN, type: NUMBER
+  >Procedure name: GETFAKTURAJOURNAL, type: rdbms:Function, returnType: VARCHAR2
+   +Parameter name: AMOUNT_IO, type: BINARY_INTEGER
+   +Parameter name: POS_IN, type: NUMBER
+  >Procedure name: GET_AKONTO_PREIS, type: rdbms:Procedure, returnType: null
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+   +Parameter name: AG_ID_IN, type: NUMBER
+   +Parameter name: NETTO_PREIS_OUT, type: NUMBER
+   +Parameter name: BERATERKOMMISSION_OUT, type: NUMBER
+   +Parameter name: ZUSATZKOSTEN_OUT, type: NUMBER
+   +Parameter name: ZUSATZLEISTUNG_OUT, type: NUMBER
+   +Parameter name: FAKTURA_PREIS_OUT, type: NUMBER
+   +Parameter name: AKONTO_PREIS_OUT, type: NUMBER
+  >Procedure name: GET_FAKTURA_PREIS, type: rdbms:Procedure, returnType: null
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+   +Parameter name: AG_ID_IN, type: NUMBER
+   +Parameter name: NETTO_PREIS_OUT, type: NUMBER
+   +Parameter name: BERATERKOMMISSION_OUT, type: NUMBER
+   +Parameter name: ZUSATZKOSTEN_OUT, type: NUMBER
+   +Parameter name: ZUSATZLEISTUNG_OUT, type: NUMBER
+   +Parameter name: FAKTURA_PREIS_OUT, type: NUMBER
+  >Procedure name: GET_VE_AG_FAKTURA, type: rdbms:Procedure, returnType: null
+   +Parameter name: AG_ID_IN, type: NUMBER
+   +Parameter name: NETTO_PREIS_OUT, type: NUMBER
+   +Parameter name: BERATERKOMMISSION_OUT, type: NUMBER
+   +Parameter name: ZUSATZKOSTEN_OUT, type: NUMBER
+   +Parameter name: ZUSATZLEISTUNG_OUT, type: NUMBER
+   +Parameter name: FAKTURA_PREIS_OUT, type: NUMBER
+  >Procedure name: GET_VE_KDVT_FAKTURA, type: rdbms:Procedure, returnType: null
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+   +Parameter name: NETTO_PREIS_OUT, type: NUMBER
+   +Parameter name: BERATERKOMMISSION_OUT, type: NUMBER
+   +Parameter name: ZUSATZKOSTEN_OUT, type: NUMBER
+   +Parameter name: ZUSATZLEISTUNG_OUT, type: NUMBER
+   +Parameter name: FAKTURA_PREIS_OUT, type: NUMBER
+  >Procedure name: PREPAREFAKTURAJOURNAL, type: rdbms:Procedure, returnType: null
+   +Parameter name: P_BUJ_ID, type: NUMBER
+  >Procedure name: RECHNUNGSSTELLUNG_VERHINDERN, type: rdbms:Procedure, returnType: null
+   +Parameter name: RG_ID_IN, type: NUMBER
+   +Parameter name: TEXT_IN, type: VARCHAR2
+  >Procedure name: RECHNUNG_EXISTIERT, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+  >Procedure name: RECHNUNG_FREIGEBEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: RG_ID_IN, type: NUMBER
+  >Procedure name: RECHNUNG_KORRIGIEREN, type: rdbms:Procedure, returnType: null
+   +Parameter name: RG_ID_IN, type: NUMBER
+  >Procedure name: RG_BERUECKSICHTIGT_VZ, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: P_RG_ID, type: NUMBER
+  >Procedure name: RG_DUPLIKAT_ERSTELLEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: RG_ID_IN, type: NUMBER
+  >Procedure name: RG_KORREKTUR_ABSCHLIESSEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: RG_ID_IN, type: NUMBER
+  >Procedure name: RG_KORREKTUR_ERLAUBT, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: RG_ID_IN, type: NUMBER
+  >Procedure name: SCHLUSSRECHNUNG_EXISTIERT, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+  >Procedure name: UPD_AGENTUR, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: RG_ID_IN, type: NUMBER
+  >Procedure name: UPD_AUFTRAGGEBER, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: RG_ID_IN, type: NUMBER
+*Package name: HANDFAKTURA_F_PA, schema VK
+  >Procedure name: NEUE_HANDFAKTURA, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: P_ATGEB_ID, type: NUMBER
+   +Parameter name: P_ATGEB_KONTAKT_SUBJ_OID, type: NUMBER
+   +Parameter name: P_AGENTUR_SUBJ_OID, type: NUMBER
+   +Parameter name: P_AGENTUR_KONTAKT_SUBJ_OID, type: NUMBER
+   +Parameter name: P_RECHN_EMPF_SUBJ_OID, type: NUMBER
+   +Parameter name: P_VKOE_OID, type: NUMBER
+   +Parameter name: P_VKBER_OID, type: NUMBER
+   +Parameter name: P_REFERENZ, type: VARCHAR2
+   +Parameter name: P_MEMO_NOTIZ, type: VARCHAR2
+   +Parameter name: P_TEXT_VOR_RECHNUNG, type: VARCHAR2
+   +Parameter name: P_TEXT_NACH_RECHNUNG, type: VARCHAR2
+  >Procedure name: NEUE_HANDFAKTURA_POS, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: P_HFA_ID, type: NUMBER
+   +Parameter name: P_LDPA_ID, type: NUMBER
+   +Parameter name: P_BESCHREIBUNG, type: VARCHAR2
+   +Parameter name: P_ANZAHL, type: NUMBER
+   +Parameter name: P_STUECKPREIS, type: NUMBER
+   +Parameter name: P_LEISTUNGSDATUM, type: DATE
+   +Parameter name: P_LD_LOGISTIK_SUBJ_OID, type: NUMBER
+   +Parameter name: P_AKQU_OE_SUBJ_OID, type: NUMBER
+  >Procedure name: RECHNUNG_BEARBEITEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: HFA_ID_IN, type: NUMBER
+  >Procedure name: RECHNUNG_ERSTELLEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: HFA_ID_IN, type: NUMBER
+  >Procedure name: RECHNUNG_FREIGEBEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: HFA_ID_IN, type: NUMBER
+  >Procedure name: RECHNUNG_STORNIEREN, type: rdbms:Procedure, returnType: null
+   +Parameter name: HFA_ID_IN, type: NUMBER
+*Package name: KOKO_AUSGLEICH_F_PA, schema VK
+  >Procedure name: KOKO_AUSGLEICHEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: P_KOKO_ID, type: NUMBER
+*Package name: KOKO_F_PA, schema VK
+  >Procedure name: ALLE_KOKO_FLZU_LOESCHEN, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_KOKO_ID, type: NUMBER
+  >Procedure name: EINZ_FL_HINZU_ADD_FL_JF2, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_FL_OID, type: NUMBER
+  >Procedure name: EINZ_FL_HINZU_CLEAR_JF1, type: rdbms:Procedure, returnType: null
+  >Procedure name: EINZ_FL_HINZU_JF3, type: rdbms:Procedure, returnType: null
+   +Parameter name: KOKO_ID_IN, type: NUMBER
+   +Parameter name: ANZ_FL_ANGEFORDERT, type: NUMBER
+   +Parameter name: ANZ_FL_DURCHGEFUEHRT, type: NUMBER
+  >Procedure name: FL_LOESCHEN_ADD_FL_JF2, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_KFZ_ID, type: NUMBER
+  >Procedure name: FL_LOESCHEN_CLEAR_JF1, type: rdbms:Procedure, returnType: null
+  >Procedure name: FL_LOESCHEN_JF3, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_KOKO_ID, type: NUMBER
+  >Procedure name: KOKO_FLZU_CHECKED_HINZUFUEGEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_KOKO_ID, type: NUMBER
+   +Parameter name: OUT_ANGEFORDERTE, type: NUMBER
+   +Parameter name: OUT_DURCHGEFUEHRTE, type: NUMBER
+  >Procedure name: KOKO_FL_LOESEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_KOKO_ID, type: NUMBER
+  >Procedure name: KOKO_KOPIEREN, type: rdbms:Procedure, returnType: null
+   +Parameter name: KOKO_ID_ALT, type: NUMBER
+   +Parameter name: BEZEICHNUNG_IN, type: VARCHAR2
+   +Parameter name: AUSHANG_BEGINN_IN, type: DATE
+   +Parameter name: AUSHANG_DAUER_IN, type: NUMBER
+   +Parameter name: AUSGLEICH_IN, type: NUMBER
+   +Parameter name: MIT_VERFUEGBARKEITSABFRAGE_IN, type: NUMBER
+   +Parameter name: ANZAHL_FL_GEWUENSCHT, type: NUMBER
+   +Parameter name: ANZAHL_FL_ERHALTEN, type: NUMBER
+  >Procedure name: KOKO_MIT_KOKOKRS_ERSTELLEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: KOKO_ID_IN, type: NUMBER
+   +Parameter name: KOKO_KRS_ID, type: NUMBER
+*Package name: LOB_F_PA, schema VK
+  >Procedure name: SERVER_COMMIT, type: rdbms:Procedure, returnType: null
+*Package name: MWST_F_PA, schema VK
+  >Procedure name: VP_MWST_ERMITTELN, type: rdbms:Procedure, returnType: null
+   +Parameter name: P_KDVT_ID, type: NUMBER
+   +Parameter name: P_NUR_RES_LEIST, type: PL/SQL BOOLEAN
+   +Parameter name: P_MWST1_SAP, type: VARCHAR2
+   +Parameter name: P_MWST1_TEXT, type: VARCHAR2
+   +Parameter name: P_MWST1_BEGINN, type: DATE
+   +Parameter name: P_MWST1_ENDE, type: DATE
+   +Parameter name: P_MWST1_BASIS, type: NUMBER
+   +Parameter name: P_MWST1_SATZ, type: NUMBER
+   +Parameter name: P_MWST1_BETRAG, type: NUMBER
+   +Parameter name: P_MWST2_SAP, type: VARCHAR2
+   +Parameter name: P_MWST2_TEXT, type: VARCHAR2
+   +Parameter name: P_MWST2_BEGINN, type: DATE
+   +Parameter name: P_MWST2_ENDE, type: DATE
+   +Parameter name: P_MWST2_BASIS, type: NUMBER
+   +Parameter name: P_MWST2_SATZ, type: NUMBER
+   +Parameter name: P_MWST2_BETRAG, type: NUMBER
+*Package name: SPR_BEWERTUNG_F_PA, schema VK
+  >Procedure name: ADD_GEBIET, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_GBOT_OID, type: NUMBER
+  >Procedure name: CHECK_KP_END_MIT_WELBEG, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: KDVT_IDIDS, type: TABLE
+   +Parameter name: WELLENBEGINN, type: DATE
+  >Procedure name: CLEAR_GEBIETE, type: rdbms:Procedure, returnType: null
+  >Procedure name: CLEAR_PARAMETER, type: rdbms:Procedure, returnType: null
+  >Procedure name: CREATE_KDVT_SPR_BEWERTUNG, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_KDVT_ID, type: NUMBER
+  >Procedure name: CREATE_KRS_SPR_BEWERTUNG, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_KDVT_ID, type: NUMBER
+   +Parameter name: IN_KRS_ID, type: NUMBER
+  >Procedure name: GET_TOTAL_EFF_BEW, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_NCHRT_ID, type: NUMBER
+   +Parameter name: OUT_ANZ_GEB_FL, type: NUMBER
+   +Parameter name: OUT_ANZ_BEW_FL, type: NUMBER
+   +Parameter name: OUT_RWE, type: NUMBER
+   +Parameter name: OUT_OTS, type: NUMBER
+   +Parameter name: OUT_SUM_PK_I_TSD, type: NUMBER
+   +Parameter name: OUTGRP, type: NUMBER
+   +Parameter name: IN_KONTAKTKLASSE, type: NUMBER
+  >Procedure name: SPR_BEWERTUNG_AN_PPI, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_KSB_ID, type: NUMBER
+  >Procedure name: SPR_BEWERTUNG_AUSFUEHREN_JUI, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_KSB_ID, type: NUMBER
+   +Parameter name: IN_PPI_BEWERTUNG, type: NUMBER
+  >Procedure name: SPR_BEWERTUNG_RESET, type: rdbms:Procedure, returnType: null
+   +Parameter name: OUT_KSB_ID, type: NUMBER
+  >Procedure name: SPR_PPI_BEWERTUNG_AUSFUEHREN, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_PPI_KP_ID, type: NUMBER
+   +Parameter name: IN_KONTAKTKLASSEN, type: NUMBER
+*Package name: UTILITIES_F_PA, schema VK
+  >Procedure name: AGPS_GET_ANNULL_KOSTEN_PROZ, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: AGPS_ID_IN, type: NUMBER
+  >Procedure name: AG_ANNULL_KOSTENPFLICHTIG_JF, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: AG_ID_IN, type: NUMBER
+  >Procedure name: AG_GET_BERATERKOMM_PROZENT, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: AG_ID_IN, type: NUMBER
+   +Parameter name: KDVT_BRUTTO_IN, type: NUMBER
+  >Procedure name: AG_GET_ID_TEXT, type: rdbms:Function, returnType: VARCHAR2
+   +Parameter name: AG_ID_IN, type: NUMBER
+  >Procedure name: AG_IM_AUSHANG_JF, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: AG_ID_IN, type: NUMBER
+  >Procedure name: AG_IS_VISUMSPFLICHTIG_JF, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: AG_ID_IN, type: NUMBER
+  >Procedure name: AG_ZAHLUNGSMODUS_VEKDVT_UPDATE, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_AG_ID, type: NUMBER
+   +Parameter name: IN_ZAHLUNGSMODUS, type: NUMBER
+  >Procedure name: CHECK_KURZFRISTIGKEIT_JC, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: INAUSHANGBEGINN, type: DATE
+   +Parameter name: P_DISPO_TYPE, type: VARCHAR2
+  >Procedure name: GET_SONNTAG_VON_DATUMSWOCHE, type: rdbms:Function, returnType: DATE
+   +Parameter name: DATE_IN, type: DATE
+  >Procedure name: GET_VP_EMAIL_INFOBLOCK, type: rdbms:Function, returnType: VARCHAR2
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+  >Procedure name: GET_VP_EMAIL_SUBJECT, type: rdbms:Function, returnType: VARCHAR2
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+  >Procedure name: KDVT_AKONTORECHNUNG_PRUEFEN, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+  >Procedure name: KDVT_ANNULL_KOSTENPFLICHTIG_JF, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+  >Procedure name: KDVT_CHECK_KSR_VERB_DIG_KAMP, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_KDVT_ID, type: NUMBER
+  >Procedure name: KDVT_HAT_NEUE_DIREKTBEST_DIG, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+  >Procedure name: KDVT_IM_AUSHANG_JF, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+  >Procedure name: KPG_IST_SWA_ASA_BERECHTIGT, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: P_KDVT_ID, type: NUMBER
+   +Parameter name: P_INKL_ANNULLATIONEN_NACH, type: DATE
+  >Procedure name: NG_ANT_AUSSTR_ELNT_ID_Z1, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: P_ELNT_ID, type: NUMBER
+   +Parameter name: P_PER, type: DATE
+  >Procedure name: SET_WERTE_VALID_RBAT_V, type: rdbms:Procedure, returnType: null
+   +Parameter name: AGAT_ID_IN, type: NUMBER
+   +Parameter name: RBAT1_IN, type: NUMBER
+   +Parameter name: RBAT2_IN, type: NUMBER
+   +Parameter name: RBAT3_IN, type: NUMBER
+  >Procedure name: UPLOAD_LINK_ERSTELLEN_FUNKTION, type: rdbms:Function, returnType: VARCHAR2
+   +Parameter name: IN_KDVT_ID, type: NUMBER
+*Package name: VERRECHENBARKEIT_F_PA, schema VK
+  >Procedure name: AGPS_FLZO_LEIST_VERRECHNEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: AFLST_ID_IN, type: NUMBER
+   +Parameter name: VERRECHNUNG_IN, type: NUMBER
+  >Procedure name: AGPS_LEIST_VERRECHNEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: AGPSLST_ID_IN, type: NUMBER
+   +Parameter name: VERRECHNUNG_IN, type: NUMBER
+  >Procedure name: DISKREPANZ_VISIEREN, type: rdbms:Procedure, returnType: null
+   +Parameter name: AFLST_ID_IN, type: NUMBER
+   +Parameter name: BEGRUENDUNG_IN, type: VARCHAR2
+  >Procedure name: INITIALES_FEEDBACK_SETZEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: AFLST_ID_IN, type: NUMBER
+  >Procedure name: VISUM_ZURUECKSETZEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: AFLST_ID_IN, type: NUMBER
+*Package name: VERSCHIEBEN_SERVICE_F_PA, schema VK
+  >Procedure name: SAVE_AGPS_FLAECHEN_LISTE, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_AGPS_ID_ALT, type: NUMBER
+   +Parameter name: IN_AGPS_ID_NEU, type: NUMBER
+*Package name: VISIERUNG_F_PA, schema VK
+  >Procedure name: IST_VBE_VISUM_PFLICHTIG, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: PI_AG_ID, type: NUMBER
+  >Procedure name: TEST_IST_VISUM_PFLICHTIG, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: PI_AG_ID, type: NUMBER
+  >Procedure name: VISA_ABLEHNEN, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_AG_ID, type: NUMBER
+   +Parameter name: IN_VIS_ID, type: NUMBER
+  >Procedure name: VISA_AKZEPTIEREN, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_AG_ID, type: NUMBER
+   +Parameter name: IN_VIS_ID, type: NUMBER
+*Package name: VK_REPORTCALL_F_PA, schema VK
+  >Procedure name: AUSSTRAHLUNGSNACHWEIS, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: BENUTZER_IN, type: VARCHAR2
+   +Parameter name: KDVT_ID_IN, type: TABLE
+   +Parameter name: KDVT_ID_STRING_IN, type: VARCHAR2
+   +Parameter name: DACH_KAMPAGNE_JN_IN, type: NUMBER
+  >Procedure name: AUSSTRAHLUNGSNACHWEIS_JF, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: BENUTZER_IN, type: VARCHAR2
+   +Parameter name: KDVT_ID_STRING_IN, type: VARCHAR2
+   +Parameter name: DACH_KAMPAGNE_JN_IN, type: NUMBER
+*Package name: VK_SPR_BEWERTUNG_F_PA, schema VK
+  >Procedure name: CLEAR_GEBIETE, type: rdbms:Procedure, returnType: null
+  >Procedure name: CLEAR_PARAMETER, type: rdbms:Procedure, returnType: null
+  >Procedure name: CREATE_KDVT_SPR_BEWERTUNG, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_KDVT_ID, type: NUMBER
+  >Procedure name: GET_TOTAL_EFF_BEW, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_NCHRT_ID, type: NUMBER
+   +Parameter name: OUT_ANZ_GEB_FL, type: NUMBER
+   +Parameter name: OUT_ANZ_BEW_FL, type: NUMBER
+   +Parameter name: OUT_RWE, type: NUMBER
+   +Parameter name: OUT_OTS, type: NUMBER
+   +Parameter name: OUT_SUM_PK_I_TSD, type: NUMBER
+   +Parameter name: OUTGRP, type: NUMBER
+   +Parameter name: IN_KONTAKTKLASSE, type: NUMBER
+  >Procedure name: SPR_BEWERTUNG_AUSFUEHREN_JUI, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_KSB_ID, type: NUMBER
+   +Parameter name: IN_PPI_BEWERTUNG, type: NUMBER
+*Package name: VP_F_PA, schema VK
+  >Procedure name: ANLIEFERTERMIN_PLAKAT, type: rdbms:Function, returnType: VARCHAR2
+   +Parameter name: IN_KDVT_ID, type: NUMBER
+   +Parameter name: IN_AGPS_ART, type: NUMBER
+   +Parameter name: IN_ABWICKLUNG_SUBJ_OID, type: NUMBER
+   +Parameter name: IN_SUJET, type: VARCHAR2
+   +Parameter name: IN_AUSHANG_BEGINN, type: DATE
+  >Procedure name: ANZAHL_SPALTEN_REKAP, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: CREATE_SPR_DIGITAL, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_KDVTDOK_ID, type: NUMBER
+  >Procedure name: ERSTELLEN_KDVTDOK_RECORDS, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_KDVT_ID, type: NUMBER
+   +Parameter name: IN_SORT_WEMF, type: NUMBER
+   +Parameter name: IN_DOKUMENT_FORMAT, type: NUMBER
+   +Parameter name: IN_DRUCKER_ALIAS, type: VARCHAR2
+   +Parameter name: IN_ANZ_EXEMPLARE, type: NUMBER
+   +Parameter name: IN_MIT_REKAPITULATION, type: NUMBER
+   +Parameter name: IN_MIT_VERTEILUNG_PLAN, type: NUMBER
+   +Parameter name: IN_MIT_ADRESSLISTE, type: NUMBER
+   +Parameter name: IN_MIT_SPR_BEWERTUNG, type: NUMBER
+   +Parameter name: IN_MIT_SPR_XML_DATEI, type: NUMBER
+   +Parameter name: IN_MIT_WM_BEDARF, type: NUMBER
+   +Parameter name: IN_MIT_SHORTCUT_FS, type: NUMBER
+   +Parameter name: IN_MIT_AUSSTRAHLUNGSPLAN, type: NUMBER
+   +Parameter name: IN_DIREKTDRUCK, type: NUMBER
+   +Parameter name: IN_VP_TYP_TRAFFIC, type: NUMBER
+   +Parameter name: IN_DRUCKSTEUERUNG_TRAFFIC, type: NUMBER
+   +Parameter name: IN_SPR_XML_OPT_JN, type: NUMBER
+   +Parameter name: IN_IS_MYAPGSGA_ERLAUBT, type: NUMBER
+   +Parameter name: IN_NUR_BRUTTO, type: NUMBER
+   +Parameter name: IN_MIT_KONTAKTWERT, type: NUMBER
+   +Parameter name: IN_DRUCKLAYOUT, type: NUMBER
+   +Parameter name: OUT_VK_PAP_DRUCKEN, type: NUMBER
+  >Procedure name: ERSTELLEN_VPDSA_RECORDS, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_KDVT_ID, type: NUMBER
+   +Parameter name: IN_KDVTDOK_ID, type: NUMBER
+  >Procedure name: IST_KOMMRAUM_FLUGHAEFEN_INT, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_KDVT_ID, type: NUMBER
+  >Procedure name: KDVT_ERSTELLEN_VERKAUFSPAPIERE, type: rdbms:Procedure, returnType: null
+   +Parameter name: KDVT_ID_IN, type: NUMBER
+   +Parameter name: VK_PAP_DRUCKEN_OUT, type: NUMBER
+  >Procedure name: LOESCHEN_VPDSA_RECORDS, type: rdbms:Procedure, returnType: null
+   +Parameter name: IN_KDVT_ID, type: NUMBER
+   +Parameter name: IN_KDVTDOK_ID, type: NUMBER
+  >Procedure name: PREISERMITTLUNG, type: rdbms:Procedure, returnType: null
+   +Parameter name: P_KDVT_ID_IN, type: NUMBER
+  >Procedure name: UPD_KOMMRAUM_BERGE_INT, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: IN_KDVT_ID, type: NUMBER
+*Package name: annullationFPa, schema VK
+  >Procedure name: kvlfAgpsAnnullKostpflJf, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: kvlfIdIn, type: NUMBER
+   +Parameter name: agpsIdIn, type: NUMBER
+*Package name: auftragsabwicklungFlFPa, schema VK
+  >Procedure name: flFreigeben1Init, type: rdbms:Procedure, returnType: null
+  >Procedure name: flFreigeben2Add, type: rdbms:Procedure, returnType: null
+   +Parameter name: inAgpsFlZoId, type: NUMBER
+  >Procedure name: flFreigeben3Check, type: rdbms:Procedure, returnType: null
+   +Parameter name: inAnnullieren, type: NUMBER
+   +Parameter name: inAgpsId, type: NUMBER
+   +Parameter name: inAgId, type: NUMBER
+   +Parameter name: inKdvtId, type: NUMBER
+  >Procedure name: flFreigeben4Execute, type: rdbms:Procedure, returnType: null
+*Package name: codesFPa, schema VK
+  >Procedure name: agatTraffAg#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: agatTraffDum#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: agpsVfzReserviert, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: agVebeneAg#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: agVebeneKdvt#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: blockiertBisOffset#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: leitwaehrungMandantCode#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: rgatAkonto#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: statusAgpsAnnulliert#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: statusAgpsInErfassung#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: statusKdvtAnnulliert#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: statusKdvtInBearbeitung#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: statusRgAbgeschlAusgegl#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: statusRgAbgeschlNGestellt#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: statusRgGestelltOffen#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: statusRgKorrektur#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: statusRgProvisorisch#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: statusRgVorbereitet#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: typeRgKundenrechnung#, type: rdbms:Function, returnType: VARCHAR2
+  >Procedure name: zahlungNachAushang#, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: zahlungVorAushang#, type: rdbms:Function, returnType: NUMBER
+*Package name: datenimportServiceFPa, schema VK
+  >Procedure name: agpsExportAllowed, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: pAgpsIdList, type: TABLE
+  >Procedure name: agpsHatManUp, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inAgpsId, type: NUMBER
+  >Procedure name: checkLoExportErlaubt, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inImpId, type: NUMBER
+  >Procedure name: pruefeImportset, type: rdbms:Procedure, returnType: null
+   +Parameter name: inImpId, type: NUMBER
+  >Procedure name: sendeAnLogistik, type: rdbms:Procedure, returnType: null
+   +Parameter name: inImpId, type: NUMBER
+*Package name: dgfxBuchungsablaufFPa, schema VK
+  >Procedure name: agpsBuchen, type: rdbms:Procedure, returnType: null
+   +Parameter name: pAgpsIds, type: TABLE
+   +Parameter name: pMitWarteliste, type: NUMBER
+   +Parameter name: pKompensationGleicheNg, type: NUMBER
+  >Procedure name: agpsTerminieren, type: rdbms:Procedure, returnType: null
+   +Parameter name: inAgpsIds, type: TABLE
+   +Parameter name: inAushangBis, type: DATE
+  >Procedure name: auftragMitAgpsVerbinden, type: rdbms:Procedure, returnType: null
+   +Parameter name: pAgId, type: NUMBER
+   +Parameter name: pAgpsIds, type: TABLE
+  >Procedure name: autofueller, type: rdbms:Procedure, returnType: null
+   +Parameter name: inAgpsIds, type: TABLE
+   +Parameter name: inAutofuellerArt, type: NUMBER
+  >Procedure name: autoFuellerErlaubt, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inKrsId, type: NUMBER
+  >Procedure name: checkKrsAgBranchenVertr, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inAgId, type: NUMBER
+   +Parameter name: inKrsId, type: NUMBER
+  >Procedure name: checkKrsAgVkoeVertr, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inAgId, type: NUMBER
+   +Parameter name: inKrsId, type: NUMBER
+  >Procedure name: checkNgBranchenVkoeVertr, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inNgId, type: NUMBER
+   +Parameter name: inAushangBeginn, type: DATE
+   +Parameter name: inAushangDauer, type: NUMBER
+   +Parameter name: inBrcIdorids, type: TABLE
+   +Parameter name: inVkoeOid, type: NUMBER
+   +Parameter name: inSubjOid, type: NUMBER
+  >Procedure name: deleteKrs, type: rdbms:Procedure, returnType: null
+   +Parameter name: inKrsIds, type: TABLE
+   +Parameter name: inAgpsIds, type: TABLE
+  >Procedure name: erstellenTzsVonVki, type: rdbms:Procedure, returnType: null
+   +Parameter name: pKrsIds, type: TABLE
+  >Procedure name: filterNgBranchenVkoe, type: rdbms:Procedure, returnType: null
+   +Parameter name: inNgIds, type: TABLE
+   +Parameter name: inAushangBeginn, type: DATE
+   +Parameter name: inAushangDauer, type: NUMBER
+   +Parameter name: inBrcIds, type: TABLE
+   +Parameter name: inVkoeOid, type: NUMBER
+   +Parameter name: inSubjOidRestrkAusnahme, type: NUMBER
+   +Parameter name: outFilteredNgIds, type: TABLE
+  >Procedure name: getDglBruttopreisNetz, type: rdbms:Function, returnType: CLOB
+   +Parameter name: inParametersXml, type: CLOB
+  >Procedure name: loescheKrsAgps, type: rdbms:Procedure, returnType: null
+   +Parameter name: inKrsIds, type: TABLE
+   +Parameter name: inAgpsIds, type: TABLE
+  >Procedure name: netzAushangtagAbDatum, type: rdbms:Procedure, returnType: null
+   +Parameter name: pNtgrotoid, type: NUMBER
+   +Parameter name: pDatumVon, type: DATE
+   +Parameter name: pAushangtag, type: DATE
+   +Parameter name: pAushangTakt, type: NUMBER
+  >Procedure name: ngSuche, type: rdbms:Function, returnType: TABLE
+   +Parameter name: pAushangBeginn, type: DATE
+   +Parameter name: pAushangDauer, type: NUMBER
+   +Parameter name: pMediumLaenge, type: NUMBER
+   +Parameter name: pVkoeOid, type: NUMBER
+   +Parameter name: pBrcIdL, type: TABLE
+   +Parameter name: pRkAusnahmeSubjOid, type: NUMBER
+   +Parameter name: pNkId, type: NUMBER
+   +Parameter name: pPfIdL, type: TABLE
+   +Parameter name: pEinGbotOidL, type: TABLE
+   +Parameter name: pAusGbotOidL, type: TABLE
+   +Parameter name: pObjOidL, type: TABLE
+  >Procedure name: reservation, type: rdbms:Procedure, returnType: null
+   +Parameter name: pKrsId, type: NUMBER
+   +Parameter name: pVorschlagId, type: NUMBER
+   +Parameter name: pVerteilungartId, type: NUMBER
+   +Parameter name: oDgfxVgResultatDetailXml, type: CLOB
+   +Parameter name: oAgpsId, type: NUMBER
+  >Procedure name: reservationXorVorschlag, type: rdbms:Procedure, returnType: null
+   +Parameter name: pKrsId, type: NUMBER
+   +Parameter name: pIstReservation, type: NUMBER
+   +Parameter name: ioVorschlagId, type: NUMBER
+   +Parameter name: oDgfxVgResultatDetailXml, type: CLOB
+   +Parameter name: oAgpsId, type: NUMBER
+  >Procedure name: vorschlag, type: rdbms:Procedure, returnType: null
+   +Parameter name: pKrsId, type: NUMBER
+   +Parameter name: pVerteilungartId, type: NUMBER
+   +Parameter name: oVorschlagId, type: NUMBER
+   +Parameter name: oDgfxVgResultatDetailXml, type: CLOB
+   +Parameter name: oAgpsId, type: NUMBER
+  >Procedure name: wartelisteAgpsEinloesen, type: rdbms:Procedure, returnType: null
+   +Parameter name: agpsIdsIn, type: TABLE
+*Package name: fakturaFPa, schema VK
+  >Procedure name: agpsIsAbgerechnet, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: agpsIdIn, type: NUMBER
+  >Procedure name: akontoRgErzeugen, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: kdvtIdIn, type: NUMBER
+  >Procedure name: bestimmeInfofeldText, type: rdbms:Procedure, returnType: null
+   +Parameter name: pKdvtIdIn, type: NUMBER
+   +Parameter name: pAgIdIn, type: NUMBER
+   +Parameter name: pAnzAg, type: NUMBER
+   +Parameter name: pAnzAgps, type: NUMBER
+   +Parameter name: pRechnungArt, type: NUMBER
+   +Parameter name: pBlockiertBisIn, type: DATE
+   +Parameter name: pDatumVon, type: DATE
+   +Parameter name: pDatumBis, type: DATE
+   +Parameter name: pInfotext, type: VARCHAR2
+   +Parameter name: pAkontoBez, type: NUMBER
+  >Procedure name: checkSrgHatDemontierteFl, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: pRgIdIn, type: NUMBER
+   +Parameter name: pMeldungOut, type: VARCHAR2
+  >Procedure name: fakturaunterlage, type: rdbms:Function, returnType: CLOB
+   +Parameter name: rgIdIn, type: NUMBER
+  >Procedure name: getfakturajournal, type: rdbms:Function, returnType: VARCHAR2
+   +Parameter name: amountIo, type: BINARY_INTEGER
+   +Parameter name: posIn, type: NUMBER
+  >Procedure name: getAkontoPreis, type: rdbms:Procedure, returnType: null
+   +Parameter name: kdvtIdIn, type: NUMBER
+   +Parameter name: agIdIn, type: NUMBER
+   +Parameter name: nettoPreisOut, type: NUMBER
+   +Parameter name: beraterkommissionOut, type: NUMBER
+   +Parameter name: zusatzkostenOut, type: NUMBER
+   +Parameter name: zusatzleistungOut, type: NUMBER
+   +Parameter name: fakturaPreisOut, type: NUMBER
+   +Parameter name: akontoPreisOut, type: NUMBER
+  >Procedure name: getFakturaPreis, type: rdbms:Procedure, returnType: null
+   +Parameter name: kdvtIdIn, type: NUMBER
+   +Parameter name: agIdIn, type: NUMBER
+   +Parameter name: nettoPreisOut, type: NUMBER
+   +Parameter name: beraterkommissionOut, type: NUMBER
+   +Parameter name: zusatzkostenOut, type: NUMBER
+   +Parameter name: zusatzleistungOut, type: NUMBER
+   +Parameter name: fakturaPreisOut, type: NUMBER
+  >Procedure name: getVeAgFaktura, type: rdbms:Procedure, returnType: null
+   +Parameter name: agIdIn, type: NUMBER
+   +Parameter name: nettoPreisOut, type: NUMBER
+   +Parameter name: beraterkommissionOut, type: NUMBER
+   +Parameter name: zusatzkostenOut, type: NUMBER
+   +Parameter name: zusatzleistungOut, type: NUMBER
+   +Parameter name: fakturaPreisOut, type: NUMBER
+  >Procedure name: getVeKdvtFaktura, type: rdbms:Procedure, returnType: null
+   +Parameter name: kdvtIdIn, type: NUMBER
+   +Parameter name: nettoPreisOut, type: NUMBER
+   +Parameter name: beraterkommissionOut, type: NUMBER
+   +Parameter name: zusatzkostenOut, type: NUMBER
+   +Parameter name: zusatzleistungOut, type: NUMBER
+   +Parameter name: fakturaPreisOut, type: NUMBER
+  >Procedure name: preparefakturajournal, type: rdbms:Procedure, returnType: null
+   +Parameter name: pBujId, type: NUMBER
+  >Procedure name: rechnungsstellungVerhindern, type: rdbms:Procedure, returnType: null
+   +Parameter name: rgIdIn, type: NUMBER
+   +Parameter name: textIn, type: VARCHAR2
+  >Procedure name: rechnungExistiert, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: kdvtIdIn, type: NUMBER
+  >Procedure name: rechnungFreigeben, type: rdbms:Procedure, returnType: null
+   +Parameter name: rgIdIn, type: NUMBER
+  >Procedure name: rechnungKorrigieren, type: rdbms:Procedure, returnType: null
+   +Parameter name: rgIdIn, type: NUMBER
+  >Procedure name: rgBeruecksichtigtVz, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: pRgId, type: NUMBER
+  >Procedure name: rgDuplikatErstellen, type: rdbms:Procedure, returnType: null
+   +Parameter name: rgIdIn, type: NUMBER
+  >Procedure name: rgKorrekturAbschliessen, type: rdbms:Procedure, returnType: null
+   +Parameter name: rgIdIn, type: NUMBER
+  >Procedure name: rgKorrekturErlaubt, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: rgIdIn, type: NUMBER
+  >Procedure name: schlussrechnungExistiert, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: kdvtIdIn, type: NUMBER
+  >Procedure name: updAgentur, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: rgIdIn, type: NUMBER
+  >Procedure name: updAuftraggeber, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: rgIdIn, type: NUMBER
+*Package name: handfakturaFPa, schema VK
+  >Procedure name: neueHandfaktura, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: pAtgebId, type: NUMBER
+   +Parameter name: pAtgebKontaktSubjOid, type: NUMBER
+   +Parameter name: pAgenturSubjOid, type: NUMBER
+   +Parameter name: pAgenturKontaktSubjOid, type: NUMBER
+   +Parameter name: pRechnEmpfSubjOid, type: NUMBER
+   +Parameter name: pVkoeOid, type: NUMBER
+   +Parameter name: pVkberOid, type: NUMBER
+   +Parameter name: pReferenz, type: VARCHAR2
+   +Parameter name: pMemoNotiz, type: VARCHAR2
+   +Parameter name: pTextVorRechnung, type: VARCHAR2
+   +Parameter name: pTextNachRechnung, type: VARCHAR2
+  >Procedure name: neueHandfakturaPos, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: pHfaId, type: NUMBER
+   +Parameter name: pLdpaId, type: NUMBER
+   +Parameter name: pBeschreibung, type: VARCHAR2
+   +Parameter name: pAnzahl, type: NUMBER
+   +Parameter name: pStueckpreis, type: NUMBER
+   +Parameter name: pLeistungsdatum, type: DATE
+   +Parameter name: pLdLogistikSubjOid, type: NUMBER
+   +Parameter name: pAkquOeSubjOid, type: NUMBER
+  >Procedure name: rechnungBearbeiten, type: rdbms:Procedure, returnType: null
+   +Parameter name: hfaIdIn, type: NUMBER
+  >Procedure name: rechnungErstellen, type: rdbms:Procedure, returnType: null
+   +Parameter name: hfaIdIn, type: NUMBER
+  >Procedure name: rechnungFreigeben, type: rdbms:Procedure, returnType: null
+   +Parameter name: hfaIdIn, type: NUMBER
+  >Procedure name: rechnungStornieren, type: rdbms:Procedure, returnType: null
+   +Parameter name: hfaIdIn, type: NUMBER
+*Package name: kokoAusgleichFPa, schema VK
+  >Procedure name: kokoAusgleichen, type: rdbms:Procedure, returnType: null
+   +Parameter name: pKokoId, type: NUMBER
+*Package name: kokoFPa, schema VK
+  >Procedure name: alleKokoFlzuLoeschen, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inKokoId, type: NUMBER
+  >Procedure name: einzFlHinzuAddFlJf2, type: rdbms:Procedure, returnType: null
+   +Parameter name: inFlOid, type: NUMBER
+  >Procedure name: einzFlHinzuClearJf1, type: rdbms:Procedure, returnType: null
+  >Procedure name: einzFlHinzuJf3, type: rdbms:Procedure, returnType: null
+   +Parameter name: kokoIdIn, type: NUMBER
+   +Parameter name: anzFlAngefordert, type: NUMBER
+   +Parameter name: anzFlDurchgefuehrt, type: NUMBER
+  >Procedure name: flLoeschenAddFlJf2, type: rdbms:Procedure, returnType: null
+   +Parameter name: inKfzId, type: NUMBER
+  >Procedure name: flLoeschenClearJf1, type: rdbms:Procedure, returnType: null
+  >Procedure name: flLoeschenJf3, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inKokoId, type: NUMBER
+  >Procedure name: kokoFlzuCheckedHinzufuegen, type: rdbms:Procedure, returnType: null
+   +Parameter name: inKokoId, type: NUMBER
+   +Parameter name: outAngeforderte, type: NUMBER
+   +Parameter name: outDurchgefuehrte, type: NUMBER
+  >Procedure name: kokoFlLoesen, type: rdbms:Procedure, returnType: null
+   +Parameter name: inKokoId, type: NUMBER
+  >Procedure name: kokoKopieren, type: rdbms:Procedure, returnType: null
+   +Parameter name: kokoIdAlt, type: NUMBER
+   +Parameter name: bezeichnungIn, type: VARCHAR2
+   +Parameter name: aushangBeginnIn, type: DATE
+   +Parameter name: aushangDauerIn, type: NUMBER
+   +Parameter name: ausgleichIn, type: NUMBER
+   +Parameter name: mitVerfuegbarkeitsabfrageIn, type: NUMBER
+   +Parameter name: anzahlFlGewuenscht, type: NUMBER
+   +Parameter name: anzahlFlErhalten, type: NUMBER
+  >Procedure name: kokoMitKokokrsErstellen, type: rdbms:Procedure, returnType: null
+   +Parameter name: kokoIdIn, type: NUMBER
+   +Parameter name: kokoKrsId, type: NUMBER
+*Package name: lobFPa, schema VK
+  >Procedure name: serverCommit, type: rdbms:Procedure, returnType: null
+*Package name: mwstFPa, schema VK
+  >Procedure name: vpMwstErmitteln, type: rdbms:Procedure, returnType: null
+   +Parameter name: pKdvtId, type: NUMBER
+   +Parameter name: pNurResLeist, type: PL/SQL BOOLEAN
+   +Parameter name: pMwst1Sap, type: VARCHAR2
+   +Parameter name: pMwst1Text, type: VARCHAR2
+   +Parameter name: pMwst1Beginn, type: DATE
+   +Parameter name: pMwst1Ende, type: DATE
+   +Parameter name: pMwst1Basis, type: NUMBER
+   +Parameter name: pMwst1Satz, type: NUMBER
+   +Parameter name: pMwst1Betrag, type: NUMBER
+   +Parameter name: pMwst2Sap, type: VARCHAR2
+   +Parameter name: pMwst2Text, type: VARCHAR2
+   +Parameter name: pMwst2Beginn, type: DATE
+   +Parameter name: pMwst2Ende, type: DATE
+   +Parameter name: pMwst2Basis, type: NUMBER
+   +Parameter name: pMwst2Satz, type: NUMBER
+   +Parameter name: pMwst2Betrag, type: NUMBER
+*Package name: sprBewertungFPa, schema VK
+  >Procedure name: addGebiet, type: rdbms:Procedure, returnType: null
+   +Parameter name: inGbotOid, type: NUMBER
+  >Procedure name: checkKpEndMitWelbeg, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: kdvtIdids, type: TABLE
+   +Parameter name: wellenbeginn, type: DATE
+  >Procedure name: clearGebiete, type: rdbms:Procedure, returnType: null
+  >Procedure name: clearParameter, type: rdbms:Procedure, returnType: null
+  >Procedure name: createKdvtSprBewertung, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inKdvtId, type: NUMBER
+  >Procedure name: createKrsSprBewertung, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inKdvtId, type: NUMBER
+   +Parameter name: inKrsId, type: NUMBER
+  >Procedure name: getTotalEffBew, type: rdbms:Procedure, returnType: null
+   +Parameter name: inNchrtId, type: NUMBER
+   +Parameter name: outAnzGebFl, type: NUMBER
+   +Parameter name: outAnzBewFl, type: NUMBER
+   +Parameter name: outRwe, type: NUMBER
+   +Parameter name: outOts, type: NUMBER
+   +Parameter name: outSumPkITsd, type: NUMBER
+   +Parameter name: outgrp, type: NUMBER
+   +Parameter name: inKontaktklasse, type: NUMBER
+  >Procedure name: sprBewertungAnPpi, type: rdbms:Procedure, returnType: null
+   +Parameter name: inKsbId, type: NUMBER
+  >Procedure name: sprBewertungAusfuehrenJui, type: rdbms:Procedure, returnType: null
+   +Parameter name: inKsbId, type: NUMBER
+   +Parameter name: inPpiBewertung, type: NUMBER
+  >Procedure name: sprBewertungReset, type: rdbms:Procedure, returnType: null
+   +Parameter name: outKsbId, type: NUMBER
+  >Procedure name: sprPpiBewertungAusfuehren, type: rdbms:Procedure, returnType: null
+   +Parameter name: inPpiKpId, type: NUMBER
+   +Parameter name: inKontaktklassen, type: NUMBER
+*Package name: utilitiesFPa, schema VK
+  >Procedure name: agpsGetAnnullKostenProz, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: agpsIdIn, type: NUMBER
+  >Procedure name: agAnnullKostenpflichtigJf, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: agIdIn, type: NUMBER
+  >Procedure name: agGetBeraterkommProzent, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: agIdIn, type: NUMBER
+   +Parameter name: kdvtBruttoIn, type: NUMBER
+  >Procedure name: agGetIdText, type: rdbms:Function, returnType: VARCHAR2
+   +Parameter name: agIdIn, type: NUMBER
+  >Procedure name: agImAushangJf, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: agIdIn, type: NUMBER
+  >Procedure name: agIsVisumspflichtigJf, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: agIdIn, type: NUMBER
+  >Procedure name: agZahlungsmodusVekdvtUpdate, type: rdbms:Procedure, returnType: null
+   +Parameter name: inAgId, type: NUMBER
+   +Parameter name: inZahlungsmodus, type: NUMBER
+  >Procedure name: checkKurzfristigkeitJc, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inaushangbeginn, type: DATE
+   +Parameter name: pDispoType, type: VARCHAR2
+  >Procedure name: getSonntagVonDatumswoche, type: rdbms:Function, returnType: DATE
+   +Parameter name: dateIn, type: DATE
+  >Procedure name: getVpEmailInfoblock, type: rdbms:Function, returnType: VARCHAR2
+   +Parameter name: kdvtIdIn, type: NUMBER
+  >Procedure name: getVpEmailSubject, type: rdbms:Function, returnType: VARCHAR2
+   +Parameter name: kdvtIdIn, type: NUMBER
+  >Procedure name: kdvtAkontorechnungPruefen, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: kdvtIdIn, type: NUMBER
+  >Procedure name: kdvtAnnullKostenpflichtigJf, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: kdvtIdIn, type: NUMBER
+  >Procedure name: kdvtCheckKsrVerbDigKamp, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inKdvtId, type: NUMBER
+  >Procedure name: kdvtHatNeueDirektbestDig, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: kdvtIdIn, type: NUMBER
+  >Procedure name: kdvtImAushangJf, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: kdvtIdIn, type: NUMBER
+  >Procedure name: kpgIstSwaAsaBerechtigt, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: pKdvtId, type: NUMBER
+   +Parameter name: pInklAnnullationenNach, type: DATE
+  >Procedure name: ngAntAusstrElntIdZ1, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: pElntId, type: NUMBER
+   +Parameter name: pPer, type: DATE
+  >Procedure name: setWerteValidRbatV, type: rdbms:Procedure, returnType: null
+   +Parameter name: agatIdIn, type: NUMBER
+   +Parameter name: rbat1In, type: NUMBER
+   +Parameter name: rbat2In, type: NUMBER
+   +Parameter name: rbat3In, type: NUMBER
+  >Procedure name: uploadLinkErstellenFunktion, type: rdbms:Function, returnType: VARCHAR2
+   +Parameter name: inKdvtId, type: NUMBER
+*Package name: verrechenbarkeitFPa, schema VK
+  >Procedure name: agpsFlzoLeistVerrechnen, type: rdbms:Procedure, returnType: null
+   +Parameter name: aflstIdIn, type: NUMBER
+   +Parameter name: verrechnungIn, type: NUMBER
+  >Procedure name: agpsLeistVerrechnen, type: rdbms:Procedure, returnType: null
+   +Parameter name: agpslstIdIn, type: NUMBER
+   +Parameter name: verrechnungIn, type: NUMBER
+  >Procedure name: diskrepanzVisieren, type: rdbms:Procedure, returnType: null
+   +Parameter name: aflstIdIn, type: NUMBER
+   +Parameter name: begruendungIn, type: VARCHAR2
+  >Procedure name: initialesFeedbackSetzen, type: rdbms:Procedure, returnType: null
+   +Parameter name: aflstIdIn, type: NUMBER
+  >Procedure name: visumZuruecksetzen, type: rdbms:Procedure, returnType: null
+   +Parameter name: aflstIdIn, type: NUMBER
+*Package name: verschiebenServiceFPa, schema VK
+  >Procedure name: saveAgpsFlaechenListe, type: rdbms:Procedure, returnType: null
+   +Parameter name: inAgpsIdAlt, type: NUMBER
+   +Parameter name: inAgpsIdNeu, type: NUMBER
+*Package name: visierungFPa, schema VK
+  >Procedure name: istVbeVisumPflichtig, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: piAgId, type: NUMBER
+  >Procedure name: testIstVisumPflichtig, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: piAgId, type: NUMBER
+  >Procedure name: visaAblehnen, type: rdbms:Procedure, returnType: null
+   +Parameter name: inAgId, type: NUMBER
+   +Parameter name: inVisId, type: NUMBER
+  >Procedure name: visaAkzeptieren, type: rdbms:Procedure, returnType: null
+   +Parameter name: inAgId, type: NUMBER
+   +Parameter name: inVisId, type: NUMBER
+*Package name: vkReportcallFPa, schema VK
+  >Procedure name: ausstrahlungsnachweis, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: benutzerIn, type: VARCHAR2
+   +Parameter name: kdvtIdIn, type: TABLE
+   +Parameter name: kdvtIdStringIn, type: VARCHAR2
+   +Parameter name: dachKampagneJnIn, type: NUMBER
+  >Procedure name: ausstrahlungsnachweisJf, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: benutzerIn, type: VARCHAR2
+   +Parameter name: kdvtIdStringIn, type: VARCHAR2
+   +Parameter name: dachKampagneJnIn, type: NUMBER
+*Package name: vkSprBewertungFPa, schema VK
+  >Procedure name: clearGebiete, type: rdbms:Procedure, returnType: null
+  >Procedure name: clearParameter, type: rdbms:Procedure, returnType: null
+  >Procedure name: createKdvtSprBewertung, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inKdvtId, type: NUMBER
+  >Procedure name: getTotalEffBew, type: rdbms:Procedure, returnType: null
+   +Parameter name: inNchrtId, type: NUMBER
+   +Parameter name: outAnzGebFl, type: NUMBER
+   +Parameter name: outAnzBewFl, type: NUMBER
+   +Parameter name: outRwe, type: NUMBER
+   +Parameter name: outOts, type: NUMBER
+   +Parameter name: outSumPkITsd, type: NUMBER
+   +Parameter name: outgrp, type: NUMBER
+   +Parameter name: inKontaktklasse, type: NUMBER
+  >Procedure name: sprBewertungAusfuehrenJui, type: rdbms:Procedure, returnType: null
+   +Parameter name: inKsbId, type: NUMBER
+   +Parameter name: inPpiBewertung, type: NUMBER
+*Package name: vpFPa, schema VK
+  >Procedure name: anlieferterminPlakat, type: rdbms:Function, returnType: VARCHAR2
+   +Parameter name: inKdvtId, type: NUMBER
+   +Parameter name: inAgpsArt, type: NUMBER
+   +Parameter name: inAbwicklungSubjOid, type: NUMBER
+   +Parameter name: inSujet, type: VARCHAR2
+   +Parameter name: inAushangBeginn, type: DATE
+  >Procedure name: anzahlSpaltenRekap, type: rdbms:Function, returnType: NUMBER
+  >Procedure name: createSprDigital, type: rdbms:Procedure, returnType: null
+   +Parameter name: inKdvtdokId, type: NUMBER
+  >Procedure name: erstellenKdvtdokRecords, type: rdbms:Procedure, returnType: null
+   +Parameter name: inKdvtId, type: NUMBER
+   +Parameter name: inSortWemf, type: NUMBER
+   +Parameter name: inDokumentFormat, type: NUMBER
+   +Parameter name: inDruckerAlias, type: VARCHAR2
+   +Parameter name: inAnzExemplare, type: NUMBER
+   +Parameter name: inMitRekapitulation, type: NUMBER
+   +Parameter name: inMitVerteilungPlan, type: NUMBER
+   +Parameter name: inMitAdressliste, type: NUMBER
+   +Parameter name: inMitSprBewertung, type: NUMBER
+   +Parameter name: inMitSprXmlDatei, type: NUMBER
+   +Parameter name: inMitWmBedarf, type: NUMBER
+   +Parameter name: inMitShortcutFs, type: NUMBER
+   +Parameter name: inMitAusstrahlungsplan, type: NUMBER
+   +Parameter name: inDirektdruck, type: NUMBER
+   +Parameter name: inVpTypTraffic, type: NUMBER
+   +Parameter name: inDrucksteuerungTraffic, type: NUMBER
+   +Parameter name: inSprXmlOptJn, type: NUMBER
+   +Parameter name: inIsMyapgsgaErlaubt, type: NUMBER
+   +Parameter name: inNurBrutto, type: NUMBER
+   +Parameter name: inMitKontaktwert, type: NUMBER
+   +Parameter name: inDrucklayout, type: NUMBER
+   +Parameter name: outVkPapDrucken, type: NUMBER
+  >Procedure name: erstellenVpdsaRecords, type: rdbms:Procedure, returnType: null
+   +Parameter name: inKdvtId, type: NUMBER
+   +Parameter name: inKdvtdokId, type: NUMBER
+  >Procedure name: istKommraumFlughaefenInt, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inKdvtId, type: NUMBER
+  >Procedure name: kdvtErstellenVerkaufspapiere, type: rdbms:Procedure, returnType: null
+   +Parameter name: kdvtIdIn, type: NUMBER
+   +Parameter name: vkPapDruckenOut, type: NUMBER
+  >Procedure name: loeschenVpdsaRecords, type: rdbms:Procedure, returnType: null
+   +Parameter name: inKdvtId, type: NUMBER
+   +Parameter name: inKdvtdokId, type: NUMBER
+  >Procedure name: preisermittlung, type: rdbms:Procedure, returnType: null
+   +Parameter name: pKdvtIdIn, type: NUMBER
+  >Procedure name: updKommraumBergeInt, type: rdbms:Function, returnType: NUMBER
+   +Parameter name: inKdvtId, type: NUMBER
+*Type: TABLE used in:
+  DATENIMPORT_SERVICE_F_PA.AGPS_EXPORT_ALLOWEDP_AGPS_ID_LIST
+  DGFX_BUCHUNGSABLAUF_F_PA.AGPS_BUCHENP_AGPS_IDS
+  DGFX_BUCHUNGSABLAUF_F_PA.AGPS_TERMINIERENIN_AGPS_IDS
+  DGFX_BUCHUNGSABLAUF_F_PA.AUFTRAG_MIT_AGPS_VERBINDENP_AGPS_IDS
+  DGFX_BUCHUNGSABLAUF_F_PA.AUTOFUELLERIN_AGPS_IDS
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_NG_BRANCHEN_VKOE_VERTRIN_BRC_IDORIDS
+  DGFX_BUCHUNGSABLAUF_F_PA.DELETE_KRSIN_KRS_IDS
+  DGFX_BUCHUNGSABLAUF_F_PA.DELETE_KRSIN_AGPS_IDS
+  DGFX_BUCHUNGSABLAUF_F_PA.ERSTELLEN_TZS_VON_VKIP_KRS_IDS
+  DGFX_BUCHUNGSABLAUF_F_PA.FILTER_NG_BRANCHEN_VKOEIN_NG_IDS
+  DGFX_BUCHUNGSABLAUF_F_PA.FILTER_NG_BRANCHEN_VKOEIN_BRC_IDS
+  DGFX_BUCHUNGSABLAUF_F_PA.FILTER_NG_BRANCHEN_VKOEOUT_FILTERED_NG_IDS
+  DGFX_BUCHUNGSABLAUF_F_PA.LOESCHE_KRS_AGPSIN_KRS_IDS
+  DGFX_BUCHUNGSABLAUF_F_PA.LOESCHE_KRS_AGPSIN_AGPS_IDS
+  DGFX_BUCHUNGSABLAUF_F_PA.NG_SUCHE
+  DGFX_BUCHUNGSABLAUF_F_PA.NG_SUCHEP_BRC_ID_L
+  DGFX_BUCHUNGSABLAUF_F_PA.NG_SUCHEP_PF_ID_L
+  DGFX_BUCHUNGSABLAUF_F_PA.NG_SUCHEP_EIN_GBOT_OID_L
+  DGFX_BUCHUNGSABLAUF_F_PA.NG_SUCHEP_AUS_GBOT_OID_L
+  DGFX_BUCHUNGSABLAUF_F_PA.NG_SUCHEP_OBJ_OID_L
+  DGFX_BUCHUNGSABLAUF_F_PA.WARTELISTE_AGPS_EINLOESENAGPS_IDS_IN
+  SPR_BEWERTUNG_F_PA.CHECK_KP_END_MIT_WELBEGKDVT_IDIDS
+  VK_REPORTCALL_F_PA.AUSSTRAHLUNGSNACHWEISKDVT_ID_IN
+*Type: DATE used in:
+  DGFX_BUCHUNGSABLAUF_F_PA.AGPS_TERMINIERENIN_AUSHANG_BIS
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_NG_BRANCHEN_VKOE_VERTRIN_AUSHANG_BEGINN
+  DGFX_BUCHUNGSABLAUF_F_PA.FILTER_NG_BRANCHEN_VKOEIN_AUSHANG_BEGINN
+  DGFX_BUCHUNGSABLAUF_F_PA.NETZ_AUSHANGTAG_AB_DATUMP_DATUM_VON
+  DGFX_BUCHUNGSABLAUF_F_PA.NETZ_AUSHANGTAG_AB_DATUMP_AUSHANGTAG
+  DGFX_BUCHUNGSABLAUF_F_PA.NG_SUCHEP_AUSHANG_BEGINN
+  FAKTURA_F_PA.BESTIMME_INFOFELD_TEXTP_BLOCKIERT_BIS_IN
+  FAKTURA_F_PA.BESTIMME_INFOFELD_TEXTP_DATUM_VON
+  FAKTURA_F_PA.BESTIMME_INFOFELD_TEXTP_DATUM_BIS
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURA_POSP_LEISTUNGSDATUM
+  KOKO_F_PA.KOKO_KOPIERENAUSHANG_BEGINN_IN
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST1_BEGINN
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST1_ENDE
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST2_BEGINN
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST2_ENDE
+  SPR_BEWERTUNG_F_PA.CHECK_KP_END_MIT_WELBEGWELLENBEGINN
+  UTILITIES_F_PA.CHECK_KURZFRISTIGKEIT_JCINAUSHANGBEGINN
+  UTILITIES_F_PA.GET_SONNTAG_VON_DATUMSWOCHE
+  UTILITIES_F_PA.GET_SONNTAG_VON_DATUMSWOCHEDATE_IN
+  UTILITIES_F_PA.KPG_IST_SWA_ASA_BERECHTIGTP_INKL_ANNULLATIONEN_NACH
+  UTILITIES_F_PA.NG_ANT_AUSSTR_ELNT_ID_Z1P_PER
+  VP_F_PA.ANLIEFERTERMIN_PLAKATIN_AUSHANG_BEGINN
+*Type: PL/SQL BOOLEAN used in:
+  MWST_F_PA.VP_MWST_ERMITTELNP_NUR_RES_LEIST
+*Type: NUMBER used in:
+  ANNULLATION_F_PA.KVLF_AGPS_ANNULL_KOSTPFL_JF
+  ANNULLATION_F_PA.KVLF_AGPS_ANNULL_KOSTPFL_JFKVLF_ID_IN
+  ANNULLATION_F_PA.KVLF_AGPS_ANNULL_KOSTPFL_JFAGPS_ID_IN
+  AUFTRAGSABWICKLUNG_FL_F_PA.FL_FREIGEBEN2_ADDIN_AGPS_FL_ZO_ID
+  AUFTRAGSABWICKLUNG_FL_F_PA.FL_FREIGEBEN3_CHECKIN_ANNULLIEREN
+  AUFTRAGSABWICKLUNG_FL_F_PA.FL_FREIGEBEN3_CHECKIN_AGPS_ID
+  AUFTRAGSABWICKLUNG_FL_F_PA.FL_FREIGEBEN3_CHECKIN_AG_ID
+  AUFTRAGSABWICKLUNG_FL_F_PA.FL_FREIGEBEN3_CHECKIN_KDVT_ID
+  CODES_F_PA.AGAT_TRAFF_AG#
+  CODES_F_PA.AGAT_TRAFF_DUM#
+  CODES_F_PA.AGPS_VFZ_RESERVIERT
+  CODES_F_PA.AG_VEBENE_AG#
+  CODES_F_PA.AG_VEBENE_KDVT#
+  CODES_F_PA.BLOCKIERT_BIS_OFFSET#
+  CODES_F_PA.LEITWAEHRUNG_MANDANT_CODE#
+  CODES_F_PA.RGAT_AKONTO#
+  CODES_F_PA.STATUS_AGPS_ANNULLIERT#
+  CODES_F_PA.STATUS_AGPS_IN_ERFASSUNG#
+  CODES_F_PA.STATUS_KDVT_ANNULLIERT#
+  CODES_F_PA.STATUS_KDVT_IN_BEARBEITUNG#
+  CODES_F_PA.STATUS_RG_ABGESCHL_AUSGEGL#
+  CODES_F_PA.STATUS_RG_ABGESCHL_N_GESTELLT#
+  CODES_F_PA.STATUS_RG_GESTELLT_OFFEN#
+  CODES_F_PA.STATUS_RG_KORREKTUR#
+  CODES_F_PA.STATUS_RG_PROVISORISCH#
+  CODES_F_PA.STATUS_RG_VORBEREITET#
+  CODES_F_PA.ZAHLUNG_NACH_AUSHANG#
+  CODES_F_PA.ZAHLUNG_VOR_AUSHANG#
+  DATENIMPORT_SERVICE_F_PA.AGPS_EXPORT_ALLOWED
+  DATENIMPORT_SERVICE_F_PA.AGPS_HAT_MAN_UP
+  DATENIMPORT_SERVICE_F_PA.AGPS_HAT_MAN_UPIN_AGPS_ID
+  DATENIMPORT_SERVICE_F_PA.CHECK_LO_EXPORT_ERLAUBT
+  DATENIMPORT_SERVICE_F_PA.CHECK_LO_EXPORT_ERLAUBTIN_IMP_ID
+  DATENIMPORT_SERVICE_F_PA.PRUEFE_IMPORTSETIN_IMP_ID
+  DATENIMPORT_SERVICE_F_PA.SENDE_AN_LOGISTIKIN_IMP_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.AGPS_BUCHENP_MIT_WARTELISTE
+  DGFX_BUCHUNGSABLAUF_F_PA.AGPS_BUCHENP_KOMPENSATION_GLEICHE_NG
+  DGFX_BUCHUNGSABLAUF_F_PA.AUFTRAG_MIT_AGPS_VERBINDENP_AG_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.AUTOFUELLERIN_AUTOFUELLER_ART
+  DGFX_BUCHUNGSABLAUF_F_PA.AUTO_FUELLER_ERLAUBT
+  DGFX_BUCHUNGSABLAUF_F_PA.AUTO_FUELLER_ERLAUBTIN_KRS_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_KRS_AG_BRANCHEN_VERTR
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_KRS_AG_BRANCHEN_VERTRIN_AG_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_KRS_AG_BRANCHEN_VERTRIN_KRS_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_KRS_AG_VKOE_VERTR
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_KRS_AG_VKOE_VERTRIN_AG_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_KRS_AG_VKOE_VERTRIN_KRS_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_NG_BRANCHEN_VKOE_VERTR
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_NG_BRANCHEN_VKOE_VERTRIN_NG_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_NG_BRANCHEN_VKOE_VERTRIN_AUSHANG_DAUER
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_NG_BRANCHEN_VKOE_VERTRIN_VKOE_OID
+  DGFX_BUCHUNGSABLAUF_F_PA.CHECK_NG_BRANCHEN_VKOE_VERTRIN_SUBJ_OID
+  DGFX_BUCHUNGSABLAUF_F_PA.FILTER_NG_BRANCHEN_VKOEIN_AUSHANG_DAUER
+  DGFX_BUCHUNGSABLAUF_F_PA.FILTER_NG_BRANCHEN_VKOEIN_VKOE_OID
+  DGFX_BUCHUNGSABLAUF_F_PA.FILTER_NG_BRANCHEN_VKOEIN_SUBJ_OID_RESTRK_AUSNAHME
+  DGFX_BUCHUNGSABLAUF_F_PA.NETZ_AUSHANGTAG_AB_DATUMP_NTGROTOID
+  DGFX_BUCHUNGSABLAUF_F_PA.NETZ_AUSHANGTAG_AB_DATUMP_AUSHANG_TAKT
+  DGFX_BUCHUNGSABLAUF_F_PA.NG_SUCHEP_AUSHANG_DAUER
+  DGFX_BUCHUNGSABLAUF_F_PA.NG_SUCHEP_MEDIUM_LAENGE
+  DGFX_BUCHUNGSABLAUF_F_PA.NG_SUCHEP_VKOE_OID
+  DGFX_BUCHUNGSABLAUF_F_PA.NG_SUCHEP_RK_AUSNAHME_SUBJ_OID
+  DGFX_BUCHUNGSABLAUF_F_PA.NG_SUCHEP_NK_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.RESERVATIONP_KRS_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.RESERVATIONP_VORSCHLAG_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.RESERVATIONP_VERTEILUNGART_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.RESERVATIONO_AGPS_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.RESERVATION_XOR_VORSCHLAGP_KRS_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.RESERVATION_XOR_VORSCHLAGP_IST_RESERVATION
+  DGFX_BUCHUNGSABLAUF_F_PA.RESERVATION_XOR_VORSCHLAGIO_VORSCHLAG_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.RESERVATION_XOR_VORSCHLAGO_AGPS_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.VORSCHLAGP_KRS_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.VORSCHLAGP_VERTEILUNGART_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.VORSCHLAGO_VORSCHLAG_ID
+  DGFX_BUCHUNGSABLAUF_F_PA.VORSCHLAGO_AGPS_ID
+  FAKTURA_F_PA.AGPS_IS_ABGERECHNET
+  FAKTURA_F_PA.AGPS_IS_ABGERECHNETAGPS_ID_IN
+  FAKTURA_F_PA.AKONTO_RG_ERZEUGEN
+  FAKTURA_F_PA.AKONTO_RG_ERZEUGENKDVT_ID_IN
+  FAKTURA_F_PA.BESTIMME_INFOFELD_TEXTP_KDVT_ID_IN
+  FAKTURA_F_PA.BESTIMME_INFOFELD_TEXTP_AG_ID_IN
+  FAKTURA_F_PA.BESTIMME_INFOFELD_TEXTP_ANZ_AG
+  FAKTURA_F_PA.BESTIMME_INFOFELD_TEXTP_ANZ_AGPS
+  FAKTURA_F_PA.BESTIMME_INFOFELD_TEXTP_RECHNUNG_ART
+  FAKTURA_F_PA.BESTIMME_INFOFELD_TEXTP_AKONTO_BEZ
+  FAKTURA_F_PA.CHECK_SRG_HAT_DEMONTIERTE_FL
+  FAKTURA_F_PA.CHECK_SRG_HAT_DEMONTIERTE_FLP_RG_ID_IN
+  FAKTURA_F_PA.FAKTURAUNTERLAGERG_ID_IN
+  FAKTURA_F_PA.GETFAKTURAJOURNALPOS_IN
+  FAKTURA_F_PA.GET_AKONTO_PREISKDVT_ID_IN
+  FAKTURA_F_PA.GET_AKONTO_PREISAG_ID_IN
+  FAKTURA_F_PA.GET_AKONTO_PREISNETTO_PREIS_OUT
+  FAKTURA_F_PA.GET_AKONTO_PREISBERATERKOMMISSION_OUT
+  FAKTURA_F_PA.GET_AKONTO_PREISZUSATZKOSTEN_OUT
+  FAKTURA_F_PA.GET_AKONTO_PREISZUSATZLEISTUNG_OUT
+  FAKTURA_F_PA.GET_AKONTO_PREISFAKTURA_PREIS_OUT
+  FAKTURA_F_PA.GET_AKONTO_PREISAKONTO_PREIS_OUT
+  FAKTURA_F_PA.GET_FAKTURA_PREISKDVT_ID_IN
+  FAKTURA_F_PA.GET_FAKTURA_PREISAG_ID_IN
+  FAKTURA_F_PA.GET_FAKTURA_PREISNETTO_PREIS_OUT
+  FAKTURA_F_PA.GET_FAKTURA_PREISBERATERKOMMISSION_OUT
+  FAKTURA_F_PA.GET_FAKTURA_PREISZUSATZKOSTEN_OUT
+  FAKTURA_F_PA.GET_FAKTURA_PREISZUSATZLEISTUNG_OUT
+  FAKTURA_F_PA.GET_FAKTURA_PREISFAKTURA_PREIS_OUT
+  FAKTURA_F_PA.GET_VE_AG_FAKTURAAG_ID_IN
+  FAKTURA_F_PA.GET_VE_AG_FAKTURANETTO_PREIS_OUT
+  FAKTURA_F_PA.GET_VE_AG_FAKTURABERATERKOMMISSION_OUT
+  FAKTURA_F_PA.GET_VE_AG_FAKTURAZUSATZKOSTEN_OUT
+  FAKTURA_F_PA.GET_VE_AG_FAKTURAZUSATZLEISTUNG_OUT
+  FAKTURA_F_PA.GET_VE_AG_FAKTURAFAKTURA_PREIS_OUT
+  FAKTURA_F_PA.GET_VE_KDVT_FAKTURAKDVT_ID_IN
+  FAKTURA_F_PA.GET_VE_KDVT_FAKTURANETTO_PREIS_OUT
+  FAKTURA_F_PA.GET_VE_KDVT_FAKTURABERATERKOMMISSION_OUT
+  FAKTURA_F_PA.GET_VE_KDVT_FAKTURAZUSATZKOSTEN_OUT
+  FAKTURA_F_PA.GET_VE_KDVT_FAKTURAZUSATZLEISTUNG_OUT
+  FAKTURA_F_PA.GET_VE_KDVT_FAKTURAFAKTURA_PREIS_OUT
+  FAKTURA_F_PA.PREPAREFAKTURAJOURNALP_BUJ_ID
+  FAKTURA_F_PA.RECHNUNGSSTELLUNG_VERHINDERNRG_ID_IN
+  FAKTURA_F_PA.RECHNUNG_EXISTIERT
+  FAKTURA_F_PA.RECHNUNG_EXISTIERTKDVT_ID_IN
+  FAKTURA_F_PA.RECHNUNG_FREIGEBENRG_ID_IN
+  FAKTURA_F_PA.RECHNUNG_KORRIGIERENRG_ID_IN
+  FAKTURA_F_PA.RG_BERUECKSICHTIGT_VZ
+  FAKTURA_F_PA.RG_BERUECKSICHTIGT_VZP_RG_ID
+  FAKTURA_F_PA.RG_DUPLIKAT_ERSTELLENRG_ID_IN
+  FAKTURA_F_PA.RG_KORREKTUR_ABSCHLIESSENRG_ID_IN
+  FAKTURA_F_PA.RG_KORREKTUR_ERLAUBT
+  FAKTURA_F_PA.RG_KORREKTUR_ERLAUBTRG_ID_IN
+  FAKTURA_F_PA.SCHLUSSRECHNUNG_EXISTIERT
+  FAKTURA_F_PA.SCHLUSSRECHNUNG_EXISTIERTKDVT_ID_IN
+  FAKTURA_F_PA.UPD_AGENTUR
+  FAKTURA_F_PA.UPD_AGENTURRG_ID_IN
+  FAKTURA_F_PA.UPD_AUFTRAGGEBER
+  FAKTURA_F_PA.UPD_AUFTRAGGEBERRG_ID_IN
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURA
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURAP_ATGEB_ID
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURAP_ATGEB_KONTAKT_SUBJ_OID
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURAP_AGENTUR_SUBJ_OID
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURAP_AGENTUR_KONTAKT_SUBJ_OID
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURAP_RECHN_EMPF_SUBJ_OID
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURAP_VKOE_OID
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURAP_VKBER_OID
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURA_POS
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURA_POSP_HFA_ID
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURA_POSP_LDPA_ID
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURA_POSP_ANZAHL
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURA_POSP_STUECKPREIS
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURA_POSP_LD_LOGISTIK_SUBJ_OID
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURA_POSP_AKQU_OE_SUBJ_OID
+  HANDFAKTURA_F_PA.RECHNUNG_BEARBEITENHFA_ID_IN
+  HANDFAKTURA_F_PA.RECHNUNG_ERSTELLENHFA_ID_IN
+  HANDFAKTURA_F_PA.RECHNUNG_FREIGEBENHFA_ID_IN
+  HANDFAKTURA_F_PA.RECHNUNG_STORNIERENHFA_ID_IN
+  KOKO_AUSGLEICH_F_PA.KOKO_AUSGLEICHENP_KOKO_ID
+  KOKO_F_PA.ALLE_KOKO_FLZU_LOESCHEN
+  KOKO_F_PA.ALLE_KOKO_FLZU_LOESCHENIN_KOKO_ID
+  KOKO_F_PA.EINZ_FL_HINZU_ADD_FL_JF2IN_FL_OID
+  KOKO_F_PA.EINZ_FL_HINZU_JF3KOKO_ID_IN
+  KOKO_F_PA.EINZ_FL_HINZU_JF3ANZ_FL_ANGEFORDERT
+  KOKO_F_PA.EINZ_FL_HINZU_JF3ANZ_FL_DURCHGEFUEHRT
+  KOKO_F_PA.FL_LOESCHEN_ADD_FL_JF2IN_KFZ_ID
+  KOKO_F_PA.FL_LOESCHEN_JF3
+  KOKO_F_PA.FL_LOESCHEN_JF3IN_KOKO_ID
+  KOKO_F_PA.KOKO_FLZU_CHECKED_HINZUFUEGENIN_KOKO_ID
+  KOKO_F_PA.KOKO_FLZU_CHECKED_HINZUFUEGENOUT_ANGEFORDERTE
+  KOKO_F_PA.KOKO_FLZU_CHECKED_HINZUFUEGENOUT_DURCHGEFUEHRTE
+  KOKO_F_PA.KOKO_FL_LOESENIN_KOKO_ID
+  KOKO_F_PA.KOKO_KOPIERENKOKO_ID_ALT
+  KOKO_F_PA.KOKO_KOPIERENAUSHANG_DAUER_IN
+  KOKO_F_PA.KOKO_KOPIERENAUSGLEICH_IN
+  KOKO_F_PA.KOKO_KOPIERENMIT_VERFUEGBARKEITSABFRAGE_IN
+  KOKO_F_PA.KOKO_KOPIERENANZAHL_FL_GEWUENSCHT
+  KOKO_F_PA.KOKO_KOPIERENANZAHL_FL_ERHALTEN
+  KOKO_F_PA.KOKO_MIT_KOKOKRS_ERSTELLENKOKO_ID_IN
+  KOKO_F_PA.KOKO_MIT_KOKOKRS_ERSTELLENKOKO_KRS_ID
+  MWST_F_PA.VP_MWST_ERMITTELNP_KDVT_ID
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST1_BASIS
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST1_SATZ
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST1_BETRAG
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST2_BASIS
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST2_SATZ
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST2_BETRAG
+  SPR_BEWERTUNG_F_PA.ADD_GEBIETIN_GBOT_OID
+  SPR_BEWERTUNG_F_PA.CHECK_KP_END_MIT_WELBEG
+  SPR_BEWERTUNG_F_PA.CREATE_KDVT_SPR_BEWERTUNG
+  SPR_BEWERTUNG_F_PA.CREATE_KDVT_SPR_BEWERTUNGIN_KDVT_ID
+  SPR_BEWERTUNG_F_PA.CREATE_KRS_SPR_BEWERTUNG
+  SPR_BEWERTUNG_F_PA.CREATE_KRS_SPR_BEWERTUNGIN_KDVT_ID
+  SPR_BEWERTUNG_F_PA.CREATE_KRS_SPR_BEWERTUNGIN_KRS_ID
+  SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWIN_NCHRT_ID
+  SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWOUT_ANZ_GEB_FL
+  SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWOUT_ANZ_BEW_FL
+  SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWOUT_RWE
+  SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWOUT_OTS
+  SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWOUT_SUM_PK_I_TSD
+  SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWOUTGRP
+  SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWIN_KONTAKTKLASSE
+  SPR_BEWERTUNG_F_PA.SPR_BEWERTUNG_AN_PPIIN_KSB_ID
+  SPR_BEWERTUNG_F_PA.SPR_BEWERTUNG_AUSFUEHREN_JUIIN_KSB_ID
+  SPR_BEWERTUNG_F_PA.SPR_BEWERTUNG_AUSFUEHREN_JUIIN_PPI_BEWERTUNG
+  SPR_BEWERTUNG_F_PA.SPR_BEWERTUNG_RESETOUT_KSB_ID
+  SPR_BEWERTUNG_F_PA.SPR_PPI_BEWERTUNG_AUSFUEHRENIN_PPI_KP_ID
+  SPR_BEWERTUNG_F_PA.SPR_PPI_BEWERTUNG_AUSFUEHRENIN_KONTAKTKLASSEN
+  UTILITIES_F_PA.AGPS_GET_ANNULL_KOSTEN_PROZ
+  UTILITIES_F_PA.AGPS_GET_ANNULL_KOSTEN_PROZAGPS_ID_IN
+  UTILITIES_F_PA.AG_ANNULL_KOSTENPFLICHTIG_JF
+  UTILITIES_F_PA.AG_ANNULL_KOSTENPFLICHTIG_JFAG_ID_IN
+  UTILITIES_F_PA.AG_GET_BERATERKOMM_PROZENT
+  UTILITIES_F_PA.AG_GET_BERATERKOMM_PROZENTAG_ID_IN
+  UTILITIES_F_PA.AG_GET_BERATERKOMM_PROZENTKDVT_BRUTTO_IN
+  UTILITIES_F_PA.AG_GET_ID_TEXTAG_ID_IN
+  UTILITIES_F_PA.AG_IM_AUSHANG_JF
+  UTILITIES_F_PA.AG_IM_AUSHANG_JFAG_ID_IN
+  UTILITIES_F_PA.AG_IS_VISUMSPFLICHTIG_JF
+  UTILITIES_F_PA.AG_IS_VISUMSPFLICHTIG_JFAG_ID_IN
+  UTILITIES_F_PA.AG_ZAHLUNGSMODUS_VEKDVT_UPDATEIN_AG_ID
+  UTILITIES_F_PA.AG_ZAHLUNGSMODUS_VEKDVT_UPDATEIN_ZAHLUNGSMODUS
+  UTILITIES_F_PA.CHECK_KURZFRISTIGKEIT_JC
+  UTILITIES_F_PA.GET_VP_EMAIL_INFOBLOCKKDVT_ID_IN
+  UTILITIES_F_PA.GET_VP_EMAIL_SUBJECTKDVT_ID_IN
+  UTILITIES_F_PA.KDVT_AKONTORECHNUNG_PRUEFEN
+  UTILITIES_F_PA.KDVT_AKONTORECHNUNG_PRUEFENKDVT_ID_IN
+  UTILITIES_F_PA.KDVT_ANNULL_KOSTENPFLICHTIG_JF
+  UTILITIES_F_PA.KDVT_ANNULL_KOSTENPFLICHTIG_JFKDVT_ID_IN
+  UTILITIES_F_PA.KDVT_CHECK_KSR_VERB_DIG_KAMP
+  UTILITIES_F_PA.KDVT_CHECK_KSR_VERB_DIG_KAMPIN_KDVT_ID
+  UTILITIES_F_PA.KDVT_HAT_NEUE_DIREKTBEST_DIG
+  UTILITIES_F_PA.KDVT_HAT_NEUE_DIREKTBEST_DIGKDVT_ID_IN
+  UTILITIES_F_PA.KDVT_IM_AUSHANG_JF
+  UTILITIES_F_PA.KDVT_IM_AUSHANG_JFKDVT_ID_IN
+  UTILITIES_F_PA.KPG_IST_SWA_ASA_BERECHTIGT
+  UTILITIES_F_PA.KPG_IST_SWA_ASA_BERECHTIGTP_KDVT_ID
+  UTILITIES_F_PA.NG_ANT_AUSSTR_ELNT_ID_Z1
+  UTILITIES_F_PA.NG_ANT_AUSSTR_ELNT_ID_Z1P_ELNT_ID
+  UTILITIES_F_PA.SET_WERTE_VALID_RBAT_VAGAT_ID_IN
+  UTILITIES_F_PA.SET_WERTE_VALID_RBAT_VRBAT1_IN
+  UTILITIES_F_PA.SET_WERTE_VALID_RBAT_VRBAT2_IN
+  UTILITIES_F_PA.SET_WERTE_VALID_RBAT_VRBAT3_IN
+  UTILITIES_F_PA.UPLOAD_LINK_ERSTELLEN_FUNKTIONIN_KDVT_ID
+  VERRECHENBARKEIT_F_PA.AGPS_FLZO_LEIST_VERRECHNENAFLST_ID_IN
+  VERRECHENBARKEIT_F_PA.AGPS_FLZO_LEIST_VERRECHNENVERRECHNUNG_IN
+  VERRECHENBARKEIT_F_PA.AGPS_LEIST_VERRECHNENAGPSLST_ID_IN
+  VERRECHENBARKEIT_F_PA.AGPS_LEIST_VERRECHNENVERRECHNUNG_IN
+  VERRECHENBARKEIT_F_PA.DISKREPANZ_VISIERENAFLST_ID_IN
+  VERRECHENBARKEIT_F_PA.INITIALES_FEEDBACK_SETZENAFLST_ID_IN
+  VERRECHENBARKEIT_F_PA.VISUM_ZURUECKSETZENAFLST_ID_IN
+  VERSCHIEBEN_SERVICE_F_PA.SAVE_AGPS_FLAECHEN_LISTEIN_AGPS_ID_ALT
+  VERSCHIEBEN_SERVICE_F_PA.SAVE_AGPS_FLAECHEN_LISTEIN_AGPS_ID_NEU
+  VISIERUNG_F_PA.IST_VBE_VISUM_PFLICHTIG
+  VISIERUNG_F_PA.IST_VBE_VISUM_PFLICHTIGPI_AG_ID
+  VISIERUNG_F_PA.TEST_IST_VISUM_PFLICHTIG
+  VISIERUNG_F_PA.TEST_IST_VISUM_PFLICHTIGPI_AG_ID
+  VISIERUNG_F_PA.VISA_ABLEHNENIN_AG_ID
+  VISIERUNG_F_PA.VISA_ABLEHNENIN_VIS_ID
+  VISIERUNG_F_PA.VISA_AKZEPTIERENIN_AG_ID
+  VISIERUNG_F_PA.VISA_AKZEPTIERENIN_VIS_ID
+  VK_REPORTCALL_F_PA.AUSSTRAHLUNGSNACHWEIS
+  VK_REPORTCALL_F_PA.AUSSTRAHLUNGSNACHWEISDACH_KAMPAGNE_JN_IN
+  VK_REPORTCALL_F_PA.AUSSTRAHLUNGSNACHWEIS_JF
+  VK_REPORTCALL_F_PA.AUSSTRAHLUNGSNACHWEIS_JFDACH_KAMPAGNE_JN_IN
+  VK_SPR_BEWERTUNG_F_PA.CREATE_KDVT_SPR_BEWERTUNG
+  VK_SPR_BEWERTUNG_F_PA.CREATE_KDVT_SPR_BEWERTUNGIN_KDVT_ID
+  VK_SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWIN_NCHRT_ID
+  VK_SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWOUT_ANZ_GEB_FL
+  VK_SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWOUT_ANZ_BEW_FL
+  VK_SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWOUT_RWE
+  VK_SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWOUT_OTS
+  VK_SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWOUT_SUM_PK_I_TSD
+  VK_SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWOUTGRP
+  VK_SPR_BEWERTUNG_F_PA.GET_TOTAL_EFF_BEWIN_KONTAKTKLASSE
+  VK_SPR_BEWERTUNG_F_PA.SPR_BEWERTUNG_AUSFUEHREN_JUIIN_KSB_ID
+  VK_SPR_BEWERTUNG_F_PA.SPR_BEWERTUNG_AUSFUEHREN_JUIIN_PPI_BEWERTUNG
+  VP_F_PA.ANLIEFERTERMIN_PLAKATIN_KDVT_ID
+  VP_F_PA.ANLIEFERTERMIN_PLAKATIN_AGPS_ART
+  VP_F_PA.ANLIEFERTERMIN_PLAKATIN_ABWICKLUNG_SUBJ_OID
+  VP_F_PA.ANZAHL_SPALTEN_REKAP
+  VP_F_PA.CREATE_SPR_DIGITALIN_KDVTDOK_ID
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_KDVT_ID
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_SORT_WEMF
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_DOKUMENT_FORMAT
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_ANZ_EXEMPLARE
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_MIT_REKAPITULATION
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_MIT_VERTEILUNG_PLAN
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_MIT_ADRESSLISTE
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_MIT_SPR_BEWERTUNG
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_MIT_SPR_XML_DATEI
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_MIT_WM_BEDARF
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_MIT_SHORTCUT_FS
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_MIT_AUSSTRAHLUNGSPLAN
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_DIREKTDRUCK
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_VP_TYP_TRAFFIC
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_DRUCKSTEUERUNG_TRAFFIC
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_SPR_XML_OPT_JN
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_IS_MYAPGSGA_ERLAUBT
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_NUR_BRUTTO
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_MIT_KONTAKTWERT
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_DRUCKLAYOUT
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSOUT_VK_PAP_DRUCKEN
+  VP_F_PA.ERSTELLEN_VPDSA_RECORDSIN_KDVT_ID
+  VP_F_PA.ERSTELLEN_VPDSA_RECORDSIN_KDVTDOK_ID
+  VP_F_PA.IST_KOMMRAUM_FLUGHAEFEN_INT
+  VP_F_PA.IST_KOMMRAUM_FLUGHAEFEN_INTIN_KDVT_ID
+  VP_F_PA.KDVT_ERSTELLEN_VERKAUFSPAPIEREKDVT_ID_IN
+  VP_F_PA.KDVT_ERSTELLEN_VERKAUFSPAPIEREVK_PAP_DRUCKEN_OUT
+  VP_F_PA.LOESCHEN_VPDSA_RECORDSIN_KDVT_ID
+  VP_F_PA.LOESCHEN_VPDSA_RECORDSIN_KDVTDOK_ID
+  VP_F_PA.PREISERMITTLUNGP_KDVT_ID_IN
+  VP_F_PA.UPD_KOMMRAUM_BERGE_INT
+  VP_F_PA.UPD_KOMMRAUM_BERGE_INTIN_KDVT_ID
+*Type: CLOB used in:
+  DGFX_BUCHUNGSABLAUF_F_PA.GET_DGL_BRUTTOPREIS_NETZ
+  DGFX_BUCHUNGSABLAUF_F_PA.GET_DGL_BRUTTOPREIS_NETZIN_PARAMETERS_XML
+  DGFX_BUCHUNGSABLAUF_F_PA.RESERVATIONO_DGFX_VG_RESULTAT_DETAIL_XML
+  DGFX_BUCHUNGSABLAUF_F_PA.RESERVATION_XOR_VORSCHLAGO_DGFX_VG_RESULTAT_DETAIL_XML
+  DGFX_BUCHUNGSABLAUF_F_PA.VORSCHLAGO_DGFX_VG_RESULTAT_DETAIL_XML
+  FAKTURA_F_PA.FAKTURAUNTERLAGE
+*Type: VARCHAR2 used in:
+  CODES_F_PA.TYPE_RG_KUNDENRECHNUNG#
+  FAKTURA_F_PA.BESTIMME_INFOFELD_TEXTP_INFOTEXT
+  FAKTURA_F_PA.CHECK_SRG_HAT_DEMONTIERTE_FLP_MELDUNG_OUT
+  FAKTURA_F_PA.GETFAKTURAJOURNAL
+  FAKTURA_F_PA.RECHNUNGSSTELLUNG_VERHINDERNTEXT_IN
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURAP_REFERENZ
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURAP_MEMO_NOTIZ
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURAP_TEXT_VOR_RECHNUNG
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURAP_TEXT_NACH_RECHNUNG
+  HANDFAKTURA_F_PA.NEUE_HANDFAKTURA_POSP_BESCHREIBUNG
+  KOKO_F_PA.KOKO_KOPIERENBEZEICHNUNG_IN
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST1_SAP
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST1_TEXT
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST2_SAP
+  MWST_F_PA.VP_MWST_ERMITTELNP_MWST2_TEXT
+  UTILITIES_F_PA.AG_GET_ID_TEXT
+  UTILITIES_F_PA.CHECK_KURZFRISTIGKEIT_JCP_DISPO_TYPE
+  UTILITIES_F_PA.GET_VP_EMAIL_INFOBLOCK
+  UTILITIES_F_PA.GET_VP_EMAIL_SUBJECT
+  UTILITIES_F_PA.UPLOAD_LINK_ERSTELLEN_FUNKTION
+  VERRECHENBARKEIT_F_PA.DISKREPANZ_VISIERENBEGRUENDUNG_IN
+  VK_REPORTCALL_F_PA.AUSSTRAHLUNGSNACHWEISBENUTZER_IN
+  VK_REPORTCALL_F_PA.AUSSTRAHLUNGSNACHWEISKDVT_ID_STRING_IN
+  VK_REPORTCALL_F_PA.AUSSTRAHLUNGSNACHWEIS_JFBENUTZER_IN
+  VK_REPORTCALL_F_PA.AUSSTRAHLUNGSNACHWEIS_JFKDVT_ID_STRING_IN
+  VP_F_PA.ANLIEFERTERMIN_PLAKAT
+  VP_F_PA.ANLIEFERTERMIN_PLAKATIN_SUJET
+  VP_F_PA.ERSTELLEN_KDVTDOK_RECORDSIN_DRUCKER_ALIAS
+*Type: BINARY_INTEGER used in:
+  FAKTURA_F_PA.GETFAKTURAJOURNALAMOUNT_IO
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  15.703 s
+[INFO] Finished at: 2024-07-24T08:17:32+02:00
+[INFO] ------------------------------------------------------------------------
