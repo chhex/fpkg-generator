@@ -5,7 +5,7 @@ import com.affichage.it21.fpkg.model.Parameter;
 import com.affichage.it21.fpkg.model.Pkg;
 import com.affichage.it21.fpkg.model.Proc;
 
-public class TypeMappingVisitor extends AbstractModelVisitor {
+public class TypeMappingVisitor extends AbstractModelVisitor<TypeMaps> {
 
     private final TypeMaps typeMaps = new TypeMaps(); 
 
@@ -29,6 +29,11 @@ public class TypeMappingVisitor extends AbstractModelVisitor {
         System.out.println(String.format("   +Parameter name: %s, type: %s", parm.getName(), parm.getType()));
         System.out.println(String.format("   + Typemap Oracle 2 Java: %s", typeMaps.ora2java(parm.getName(), parm.getType())));
         System.out.println(String.format("   + Typemap Oracle 2 MyBatis: %s", typeMaps.ora2MyBatis(parm.getName(), parm.getParameterType(), parm.getType())));
+    }
+
+    @Override
+    public TypeMaps getResult() {
+        return typeMaps; 
     }
 
 }

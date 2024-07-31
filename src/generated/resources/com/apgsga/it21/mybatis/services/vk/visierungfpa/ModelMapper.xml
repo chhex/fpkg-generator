@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apgsga.it21.mybatis.services.vk.visierungfpa">
+<update id="visierung_f_pa_ist_vbe_visum_pflichtig" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.visierung_f_pa.ist_vbe_visum_pflichtig( pi_ag_id => #{PI_AG_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="visierung_f_pa_test_ist_visum_pflichtig" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.visierung_f_pa.test_ist_visum_pflichtig( pi_ag_id => #{PI_AG_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="visierung_f_pa_visa_ablehnen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.visierung_f_pa.visa_ablehnen( in_ag_id => #{IN_AG_ID, mode=IN, jdbcType=NUMERIC} ,	
+in_vis_id => #{IN_VIS_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="visierung_f_pa_visa_akzeptieren" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.visierung_f_pa.visa_akzeptieren( in_ag_id => #{IN_AG_ID, mode=IN, jdbcType=NUMERIC} ,	
+in_vis_id => #{IN_VIS_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+</mapper>

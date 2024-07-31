@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apgsga.it21.mybatis.services.vk.verschiebenservicefpa">
+<update id="verschieben_service_f_pa_save_agps_flaechen_liste" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.verschieben_service_f_pa.save_agps_flaechen_liste( in_agps_id_alt => #{IN_AGPS_ID_ALT, mode=IN, jdbcType=NUMERIC} ,	
+in_agps_id_neu => #{IN_AGPS_ID_NEU, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+</mapper>

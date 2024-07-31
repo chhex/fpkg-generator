@@ -10,7 +10,7 @@ import com.affichage.it21.fpkg.model.Parameter;
 import com.affichage.it21.fpkg.model.Pkg;
 import com.affichage.it21.fpkg.model.Proc;
 
-public class TypesUsedVisitor extends AbstractModelVisitor {
+public class TypesUsedVisitor extends AbstractModelVisitor<Map<String,List<String>>> {
 
     private Map<String,List<String>> usages = new HashMap<>(); 
 

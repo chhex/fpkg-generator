@@ -1,46 +1,46 @@
 package com.affichage.it21.fpkg.generator;
 
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.util.FileSystemUtils;
 import org.stringtemplate.v4.STGroupDir;
 
-import com.affichage.it21.fpkg.model.ModelVisitor;
 import com.affichage.it21.fpkg.model.Parameter;
 import com.affichage.it21.fpkg.model.Pkg;
 import com.affichage.it21.fpkg.model.Proc;
+import com.affichage.it21.fpkg.model.SchemaBasedVisitor;
 import com.apgsga.forms2java.persistence.util.NameConversion;
 
-public class MyBatisServiceXMLGenerator implements ModelVisitor {
+public class MyBatisServiceXMLGenerator implements SchemaBasedVisitor<StringBuffer> {
 
     private static final TypeMaps TYPE_MAPS = new TypeMaps(); 
 
     private final STGroupDir groupDir;
     private final StringBuffer outputBuffer = new StringBuffer();
-    private final String schema;
     private final String nameSpace; 
+    private String schema;
     private Pkg lastPackage; 
     private RenderService lastService;
     private RenderParameter lastParameter; 
 
-    public MyBatisServiceXMLGenerator(String nameSpace, String templatePath, String schema) {
+    public MyBatisServiceXMLGenerator(String nameSpace, String templatePath) {
         this.groupDir = new STGroupDir(templatePath);
         this.nameSpace = nameSpace; 
-        this.schema = schema;
     }
 
-    public void init() {
+    public void generateFor(Pkg pkg, String schema) {
         outputBuffer.setLength(0); 
+        this.schema = schema; 
+        pkg.accept(this);
     }
+
 
     @Override
     public void visit(Pkg pkg) {
         lastPackage = pkg; 
         var st = groupDir.getInstanceOf("header");
-        st.add("name", String.format("5s.%s.%s", nameSpace, schema.toLowerCase(), NameConversion.toJavaName(pkg.getName()).toLowerCase()));
+        st.add("name", String.format("%s.%s.%s", nameSpace, schema.toLowerCase(), NameConversion.toJavaName(pkg.getName()).toLowerCase()));
         outputBuffer.append(st.render(60)); 
     }
 
@@ -88,7 +88,7 @@ public class MyBatisServiceXMLGenerator implements ModelVisitor {
         lastService.add(lastParameter);
     }
 
-    public StringBuffer getOutputBuffer() {
+    public StringBuffer getResult() {
         return outputBuffer;
     }
 
