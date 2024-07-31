@@ -8,14 +8,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.affichage.it21.fpkg.generator.DefaultNameSpaceFileWriter;
-import com.affichage.it21.fpkg.generator.NameSpaceFileOutputWriter;
+import org.apache.commons.collections.map.HashedMap;
+
 import com.affichage.it21.fpkg.model.ModelLoader;
 import com.affichage.it21.fpkg.model.Pkg;
 import com.affichage.it21.fpkg.model.SchemaBasedVisitor;
 import com.apgsga.forms2java.persistence.util.NameConversion;
 
 public class SchemaPkgServiceGenerator<T> implements FPkgServiceGenerator<T> {
+
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, String> visitorOutputFileMap = new HashedMap(); 
+
+    static {
+        visitorOutputFileMap.put("MyBatisServiceXMLGenerator", "ModelMapper.xml"); 
+    }
 
     private final String rootNameSpace;
 
@@ -26,8 +34,6 @@ public class SchemaPkgServiceGenerator<T> implements FPkgServiceGenerator<T> {
     private final String daoExtractionFile;
 
     private final ModelLoader daoExtractionLoader;
-
-    private final NameSpaceFileOutputWriter writer = new DefaultNameSpaceFileWriter();
 
     private final Class<? extends SchemaBasedVisitor<T>> modelVisitorClass;
 
@@ -44,21 +50,22 @@ public class SchemaPkgServiceGenerator<T> implements FPkgServiceGenerator<T> {
 
     @Override
     public T generateFor(String... schemas) {
-        writer.initRootNameSpaceDir(targetRootDir, rootNameSpace);
+
         try {
             var visitor = modelVisitorClass.getDeclaredConstructor(String.class, String.class)
                     .newInstance(rootNameSpace, templateDirPath);
+            visitor.initRootNameSpaceDir(targetRootDir, rootNameSpace);
             var pkgs = daoExtractionLoader.loadFromFileForSchemas(new File(daoExtractionFile), Arrays.asList(schemas));
             var pkgssorted = pkgs.stream()
                     .sorted(createPkgComparator())
                     .collect(Collectors.toList());
             Map<String, List<Pkg>> pkgsGrouped = pkgssorted.stream().collect(Collectors.groupingBy(w -> w.getSchema()));
             for (String schema : pkgsGrouped.keySet()) {
-                writer.initSchemaNameSpaceDir(schema);
+                visitor.initSchemaNameSpaceDir(schema);
                 var pkgsOfSchema = pkgsGrouped.get(schema);
                 pkgsOfSchema.forEach(pkg -> {
                     visitor.generateFor(pkg, schema);
-                    writer.writeOutputFile("ModelMapper.xml", NameConversion.toJavaName(pkg.getName()).toLowerCase(),
+                    visitor.writeOutputFile(visitorOutputFileMap.get(visitor.getClass().getSimpleName()), NameConversion.toJavaName(pkg.getName()).toLowerCase(),
                             visitor.getResult().toString());
                 });
             }

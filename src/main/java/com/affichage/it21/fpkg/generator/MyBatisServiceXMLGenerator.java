@@ -12,7 +12,7 @@ import com.affichage.it21.fpkg.model.Proc;
 import com.affichage.it21.fpkg.model.SchemaBasedVisitor;
 import com.apgsga.forms2java.persistence.util.NameConversion;
 
-public class MyBatisServiceXMLGenerator implements SchemaBasedVisitor<StringBuffer> {
+public class MyBatisServiceXMLGenerator implements SchemaBasedVisitor<StringBuffer>{
 
     private static final TypeMaps TYPE_MAPS = new TypeMaps(); 
 
@@ -23,6 +23,7 @@ public class MyBatisServiceXMLGenerator implements SchemaBasedVisitor<StringBuff
     private Pkg lastPackage; 
     private RenderService lastService;
     private RenderParameter lastParameter; 
+    private final NameSpaceFileOutputWriter outputWriter = new DefaultNameSpaceFileWriter(); 
 
     public MyBatisServiceXMLGenerator(String nameSpace, String templatePath) {
         this.groupDir = new STGroupDir(templatePath);
@@ -90,6 +91,21 @@ public class MyBatisServiceXMLGenerator implements SchemaBasedVisitor<StringBuff
 
     public StringBuffer getResult() {
         return outputBuffer;
+    }
+
+    @Override
+    public void initRootNameSpaceDir(String rootTargetDir, String nameSpace) {
+        outputWriter.initRootNameSpaceDir(rootTargetDir, nameSpace);
+    }
+
+    @Override
+    public void initSchemaNameSpaceDir(String schema) {
+        outputWriter.initSchemaNameSpaceDir(schema);
+    }
+
+    @Override
+    public void writeOutputFile(String fileName, String dir, String output) {
+        outputWriter.writeOutputFile(fileName, dir, output);
     }
 
    
@@ -176,5 +192,7 @@ public class MyBatisServiceXMLGenerator implements SchemaBasedVisitor<StringBuff
         } 
         
     }
+
+   
 
 }
