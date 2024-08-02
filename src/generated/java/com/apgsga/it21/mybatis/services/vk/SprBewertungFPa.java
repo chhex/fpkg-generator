@@ -2,7 +2,7 @@ package com.apgsga.it21.mybatis.services.vk;
 
 public interface SprBewertungFPa {
 
-  public void addGebiet(Integer inGbotOid);
+  public void addGebiet(Long inGbotOid);
 
   public void checkKpEndMitWelbeg(java.util.List kdvtIdids, java.sql.Timestamp wellenbeginn);
 
@@ -10,12 +10,12 @@ public interface SprBewertungFPa {
 
   public void clearParameter();
 
-  public void createKdvtSprBewertung(Integer inKdvtId);
+  public void createKdvtSprBewertung(Long inKdvtId);
 
-  public void createKrsSprBewertung(Integer inKdvtId, Integer inKrsId);
+  public void createKrsSprBewertung(Long inKdvtId, Long inKrsId);
 
   public void getTotalEffBew(
-      Integer inNchrtId,
+      Long inNchrtId,
       Integer outAnzGebFl,
       Integer outAnzBewFl,
       Integer outRwe,
@@ -24,11 +24,11 @@ public interface SprBewertungFPa {
       Integer outgrp,
       Integer inKontaktklasse);
 
-  public void sprBewertungAnPpi(Integer inKsbId);
+  public void sprBewertungAnPpi(Long inKsbId);
 
-  public void sprBewertungAusfuehrenJui(Integer inKsbId, Integer inPpiBewertung);
+  public void sprBewertungAusfuehrenJui(Long inKsbId, Integer inPpiBewertung);
 
-  public void sprBewertungReset(Integer outKsbId);
+  public void sprBewertungReset(Long outKsbId);
 
-  public void sprPpiBewertungAusfuehren(Integer inPpiKpId, Integer inKontaktklassen);
+  public void sprPpiBewertungAusfuehren(Long inPpiKpId, Integer inKontaktklassen);
 }

@@ -7,23 +7,23 @@ public interface DgfxBuchungsablaufFPa {
 
   public void agpsTerminieren(java.util.List inAgpsIds, java.sql.Timestamp inAushangBis);
 
-  public void auftragMitAgpsVerbinden(Integer pAgId, java.util.List pAgpsIds);
+  public void auftragMitAgpsVerbinden(Long pAgId, java.util.List pAgpsIds);
 
   public void autofueller(java.util.List inAgpsIds, Integer inAutofuellerArt);
 
-  public void autoFuellerErlaubt(Integer inKrsId);
+  public void autoFuellerErlaubt(Long inKrsId);
 
-  public void checkKrsAgBranchenVertr(Integer inAgId, Integer inKrsId);
+  public void checkKrsAgBranchenVertr(Long inAgId, Long inKrsId);
 
-  public void checkKrsAgVkoeVertr(Integer inAgId, Integer inKrsId);
+  public void checkKrsAgVkoeVertr(Long inAgId, Long inKrsId);
 
   public void checkNgBranchenVkoeVertr(
-      Integer inNgId,
+      Long inNgId,
       java.sql.Timestamp inAushangBeginn,
       Integer inAushangDauer,
       java.util.List inBrcIdorids,
-      Integer inVkoeOid,
-      Integer inSubjOid);
+      Long inVkoeOid,
+      Long inSubjOid);
 
   public void deleteKrs(java.util.List inKrsIds, java.util.List inAgpsIds);
 
@@ -34,8 +34,8 @@ public interface DgfxBuchungsablaufFPa {
       java.sql.Timestamp inAushangBeginn,
       Integer inAushangDauer,
       java.util.List inBrcIds,
-      Integer inVkoeOid,
-      Integer inSubjOidRestrkAusnahme,
+      Long inVkoeOid,
+      Long inSubjOidRestrkAusnahme,
       java.util.List outFilteredNgIds);
 
   public void getDglBruttopreisNetz(String inParametersXml);
@@ -43,7 +43,7 @@ public interface DgfxBuchungsablaufFPa {
   public void loescheKrsAgps(java.util.List inKrsIds, java.util.List inAgpsIds);
 
   public void netzAushangtagAbDatum(
-      Integer pNtgrotoid,
+      Long pNtgrotoid,
       java.sql.Timestamp pDatumVon,
       java.sql.Timestamp pAushangtag,
       Integer pAushangTakt);
@@ -52,35 +52,35 @@ public interface DgfxBuchungsablaufFPa {
       java.sql.Timestamp pAushangBeginn,
       Integer pAushangDauer,
       Integer pMediumLaenge,
-      Integer pVkoeOid,
+      Long pVkoeOid,
       java.util.List pBrcIdL,
-      Integer pRkAusnahmeSubjOid,
-      Integer pNkId,
+      Long pRkAusnahmeSubjOid,
+      Long pNkId,
       java.util.List pPfIdL,
       java.util.List pEinGbotOidL,
       java.util.List pAusGbotOidL,
       java.util.List pObjOidL);
 
   public void reservation(
-      Integer pKrsId,
-      Integer pVorschlagId,
-      Integer pVerteilungartId,
+      Long pKrsId,
+      Long pVorschlagId,
+      Long pVerteilungartId,
       String oDgfxVgResultatDetailXml,
-      Integer oAgpsId);
+      Long oAgpsId);
 
   public void reservationXorVorschlag(
-      Integer pKrsId,
+      Long pKrsId,
       Integer pIstReservation,
-      Integer ioVorschlagId,
+      Long ioVorschlagId,
       String oDgfxVgResultatDetailXml,
-      Integer oAgpsId);
+      Long oAgpsId);
 
   public void vorschlag(
-      Integer pKrsId,
-      Integer pVerteilungartId,
-      Integer oVorschlagId,
+      Long pKrsId,
+      Long pVerteilungartId,
+      Long oVorschlagId,
       String oDgfxVgResultatDetailXml,
-      Integer oAgpsId);
+      Long oAgpsId);
 
   public void wartelisteAgpsEinloesen(java.util.List agpsIdsIn);
 }

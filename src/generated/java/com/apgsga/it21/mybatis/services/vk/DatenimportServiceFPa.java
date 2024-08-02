@@ -4,11 +4,11 @@ public interface DatenimportServiceFPa {
 
   public void agpsExportAllowed(java.util.List pAgpsIdList);
 
-  public void agpsHatManUp(Integer inAgpsId);
+  public void agpsHatManUp(Long inAgpsId);
 
-  public void checkLoExportErlaubt(Integer inImpId);
+  public void checkLoExportErlaubt(Long inImpId);
 
-  public void pruefeImportset(Integer inImpId);
+  public void pruefeImportset(Long inImpId);
 
-  public void sendeAnLogistik(Integer inImpId);
+  public void sendeAnLogistik(Long inImpId);
 }

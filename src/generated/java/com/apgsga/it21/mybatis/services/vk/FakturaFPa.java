@@ -2,13 +2,13 @@ package com.apgsga.it21.mybatis.services.vk;
 
 public interface FakturaFPa {
 
-  public void agpsIsAbgerechnet(Integer agpsIdIn);
+  public void agpsIsAbgerechnet(Long agpsIdIn);
 
-  public void akontoRgErzeugen(Integer kdvtIdIn);
+  public void akontoRgErzeugen(Long kdvtIdIn);
 
   public void bestimmeInfofeldText(
-      Integer pKdvtIdIn,
-      Integer pAgIdIn,
+      Long pKdvtIdIn,
+      Long pAgIdIn,
       Integer pAnzAg,
       Integer pAnzAgps,
       Integer pRechnungArt,
@@ -18,15 +18,15 @@ public interface FakturaFPa {
       String pInfotext,
       Integer pAkontoBez);
 
-  public void checkSrgHatDemontierteFl(Integer pRgIdIn, String pMeldungOut);
+  public void checkSrgHatDemontierteFl(Long pRgIdIn, String pMeldungOut);
 
-  public void fakturaunterlage(Integer rgIdIn);
+  public void fakturaunterlage(Long rgIdIn);
 
   public void getfakturajournal(Integer amountIo, Integer posIn);
 
   public void getAkontoPreis(
-      Integer kdvtIdIn,
-      Integer agIdIn,
+      Long kdvtIdIn,
+      Long agIdIn,
       Integer nettoPreisOut,
       Integer beraterkommissionOut,
       Integer zusatzkostenOut,
@@ -35,8 +35,8 @@ public interface FakturaFPa {
       Integer akontoPreisOut);
 
   public void getFakturaPreis(
-      Integer kdvtIdIn,
-      Integer agIdIn,
+      Long kdvtIdIn,
+      Long agIdIn,
       Integer nettoPreisOut,
       Integer beraterkommissionOut,
       Integer zusatzkostenOut,
@@ -44,7 +44,7 @@ public interface FakturaFPa {
       Integer fakturaPreisOut);
 
   public void getVeAgFaktura(
-      Integer agIdIn,
+      Long agIdIn,
       Integer nettoPreisOut,
       Integer beraterkommissionOut,
       Integer zusatzkostenOut,
@@ -52,34 +52,34 @@ public interface FakturaFPa {
       Integer fakturaPreisOut);
 
   public void getVeKdvtFaktura(
-      Integer kdvtIdIn,
+      Long kdvtIdIn,
       Integer nettoPreisOut,
       Integer beraterkommissionOut,
       Integer zusatzkostenOut,
       Integer zusatzleistungOut,
       Integer fakturaPreisOut);
 
-  public void preparefakturajournal(Integer pBujId);
+  public void preparefakturajournal(Long pBujId);
 
-  public void rechnungsstellungVerhindern(Integer rgIdIn, String textIn);
+  public void rechnungsstellungVerhindern(Long rgIdIn, String textIn);
 
-  public void rechnungExistiert(Integer kdvtIdIn);
+  public void rechnungExistiert(Long kdvtIdIn);
 
-  public void rechnungFreigeben(Integer rgIdIn);
+  public void rechnungFreigeben(Long rgIdIn);
 
-  public void rechnungKorrigieren(Integer rgIdIn);
+  public void rechnungKorrigieren(Long rgIdIn);
 
-  public void rgBeruecksichtigtVz(Integer pRgId);
+  public void rgBeruecksichtigtVz(Long pRgId);
 
-  public void rgDuplikatErstellen(Integer rgIdIn);
+  public void rgDuplikatErstellen(Long rgIdIn);
 
-  public void rgKorrekturAbschliessen(Integer rgIdIn);
+  public void rgKorrekturAbschliessen(Long rgIdIn);
 
-  public void rgKorrekturErlaubt(Integer rgIdIn);
+  public void rgKorrekturErlaubt(Long rgIdIn);
 
-  public void schlussrechnungExistiert(Integer kdvtIdIn);
+  public void schlussrechnungExistiert(Long kdvtIdIn);
 
-  public void updAgentur(Integer rgIdIn);
+  public void updAgentur(Long rgIdIn);
 
-  public void updAuftraggeber(Integer rgIdIn);
+  public void updAuftraggeber(Long rgIdIn);
 }

@@ -3,7 +3,7 @@ package com.apgsga.it21.mybatis.services.vk;
 public interface MwstFPa {
 
   public void vpMwstErmitteln(
-      Integer pKdvtId,
+      Long pKdvtId,
       boolean pNurResLeist,
       String pMwst1Sap,
       String pMwst1Text,

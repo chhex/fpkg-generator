@@ -6,10 +6,10 @@ public interface VkSprBewertungFPa {
 
   public void clearParameter();
 
-  public void createKdvtSprBewertung(Integer inKdvtId);
+  public void createKdvtSprBewertung(Long inKdvtId);
 
   public void getTotalEffBew(
-      Integer inNchrtId,
+      Long inNchrtId,
       Integer outAnzGebFl,
       Integer outAnzBewFl,
       Integer outRwe,
@@ -18,5 +18,5 @@ public interface VkSprBewertungFPa {
       Integer outgrp,
       Integer inKontaktklasse);
 
-  public void sprBewertungAusfuehrenJui(Integer inKsbId, Integer inPpiBewertung);
+  public void sprBewertungAusfuehrenJui(Long inKsbId, Integer inPpiBewertung);
 }

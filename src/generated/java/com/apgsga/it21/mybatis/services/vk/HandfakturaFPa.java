@@ -3,33 +3,33 @@ package com.apgsga.it21.mybatis.services.vk;
 public interface HandfakturaFPa {
 
   public void neueHandfaktura(
-      Integer pAtgebId,
-      Integer pAtgebKontaktSubjOid,
-      Integer pAgenturSubjOid,
-      Integer pAgenturKontaktSubjOid,
-      Integer pRechnEmpfSubjOid,
-      Integer pVkoeOid,
-      Integer pVkberOid,
+      Long pAtgebId,
+      Long pAtgebKontaktSubjOid,
+      Long pAgenturSubjOid,
+      Long pAgenturKontaktSubjOid,
+      Long pRechnEmpfSubjOid,
+      Long pVkoeOid,
+      Long pVkberOid,
       String pReferenz,
       String pMemoNotiz,
       String pTextVorRechnung,
       String pTextNachRechnung);
 
   public void neueHandfakturaPos(
-      Integer pHfaId,
-      Integer pLdpaId,
+      Long pHfaId,
+      Long pLdpaId,
       String pBeschreibung,
       Integer pAnzahl,
       Integer pStueckpreis,
       java.sql.Timestamp pLeistungsdatum,
-      Integer pLdLogistikSubjOid,
-      Integer pAkquOeSubjOid);
+      Long pLdLogistikSubjOid,
+      Long pAkquOeSubjOid);
 
-  public void rechnungBearbeiten(Integer hfaIdIn);
+  public void rechnungBearbeiten(Long hfaIdIn);
 
-  public void rechnungErstellen(Integer hfaIdIn);
+  public void rechnungErstellen(Long hfaIdIn);
 
-  public void rechnungFreigeben(Integer hfaIdIn);
+  public void rechnungFreigeben(Long hfaIdIn);
 
-  public void rechnungStornieren(Integer hfaIdIn);
+  public void rechnungStornieren(Long hfaIdIn);
 }

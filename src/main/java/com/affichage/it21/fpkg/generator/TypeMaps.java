@@ -36,7 +36,7 @@ public class TypeMaps implements TypeMapping {
 
         @Override
         public String ora2java(String propertyName, String jdbcType) {
-            if (propertyName != null && propertyName.endsWith("id")) return "Long"; 
+            if (propertyName != null && propertyName.toLowerCase().contains("id")) return "Long"; 
             return "Integer"; 
         }
         @Override

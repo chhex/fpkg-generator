@@ -3,18 +3,18 @@ package com.apgsga.it21.mybatis.services.vk;
 public interface VpFPa {
 
   public void anlieferterminPlakat(
-      Integer inKdvtId,
+      Long inKdvtId,
       Integer inAgpsArt,
-      Integer inAbwicklungSubjOid,
+      Long inAbwicklungSubjOid,
       String inSujet,
       java.sql.Timestamp inAushangBeginn);
 
   public void anzahlSpaltenRekap();
 
-  public void createSprDigital(Integer inKdvtdokId);
+  public void createSprDigital(Long inKdvtdokId);
 
   public void erstellenKdvtdokRecords(
-      Integer inKdvtId,
+      Long inKdvtId,
       Integer inSortWemf,
       Integer inDokumentFormat,
       String inDruckerAlias,
@@ -37,15 +37,15 @@ public interface VpFPa {
       Integer inDrucklayout,
       Integer outVkPapDrucken);
 
-  public void erstellenVpdsaRecords(Integer inKdvtId, Integer inKdvtdokId);
+  public void erstellenVpdsaRecords(Long inKdvtId, Long inKdvtdokId);
 
-  public void istKommraumFlughaefenInt(Integer inKdvtId);
+  public void istKommraumFlughaefenInt(Long inKdvtId);
 
-  public void kdvtErstellenVerkaufspapiere(Integer kdvtIdIn, Integer vkPapDruckenOut);
+  public void kdvtErstellenVerkaufspapiere(Long kdvtIdIn, Integer vkPapDruckenOut);
 
-  public void loeschenVpdsaRecords(Integer inKdvtId, Integer inKdvtdokId);
+  public void loeschenVpdsaRecords(Long inKdvtId, Long inKdvtdokId);
 
-  public void preisermittlung(Integer pKdvtIdIn);
+  public void preisermittlung(Long pKdvtIdIn);
 
-  public void updKommraumBergeInt(Integer inKdvtId);
+  public void updKommraumBergeInt(Long inKdvtId);
 }
