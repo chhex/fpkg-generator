@@ -3,45 +3,45 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apgsga.it21.mybatis.services.vk.sprbewertungfpa">
-<update id="spr_bewertung_f_pa_add_gebiet" parameterType="hashmap" statementType="CALLABLE">
+<update id="add_gebiet" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.spr_bewertung_f_pa.add_gebiet( in_gbot_oid => #{IN_GBOT_OID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="spr_bewertung_f_pa_check_kp_end_mit_welbeg" parameterType="hashmap" statementType="CALLABLE">
+<update id="check_kp_end_mit_welbeg" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
 			vk.spr_bewertung_f_pa.check_kp_end_mit_welbeg( kdvt_idids => #{KDVT_IDIDS, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} ,	
 wellenbeginn => #{WELLENBEGINN, mode=IN, jdbcType=DATE} 	
 			)  
 		}
 </update>
-<update id="spr_bewertung_f_pa_clear_gebiete" parameterType="hashmap" statementType="CALLABLE">
+<update id="clear_gebiete" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.spr_bewertung_f_pa.clear_gebiete( 
 			)  
 		}
 </update>
-<update id="spr_bewertung_f_pa_clear_parameter" parameterType="hashmap" statementType="CALLABLE">
+<update id="clear_parameter" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.spr_bewertung_f_pa.clear_parameter( 
 			)  
 		}
 </update>
-<update id="spr_bewertung_f_pa_create_kdvt_spr_bewertung" parameterType="hashmap" statementType="CALLABLE">
+<update id="create_kdvt_spr_bewertung" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
 			vk.spr_bewertung_f_pa.create_kdvt_spr_bewertung( in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="spr_bewertung_f_pa_create_krs_spr_bewertung" parameterType="hashmap" statementType="CALLABLE">
+<update id="create_krs_spr_bewertung" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
 			vk.spr_bewertung_f_pa.create_krs_spr_bewertung( in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC} ,	
 in_krs_id => #{IN_KRS_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="spr_bewertung_f_pa_get_total_eff_bew" parameterType="hashmap" statementType="CALLABLE">
+<update id="get_total_eff_bew" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.spr_bewertung_f_pa.get_total_eff_bew( in_nchrt_id => #{IN_NCHRT_ID, mode=IN, jdbcType=NUMERIC} ,	
 out_anz_geb_fl => #{OUT_ANZ_GEB_FL, mode=IN, jdbcType=NUMERIC} ,	
@@ -52,26 +52,26 @@ outgrp => #{OUTGRP, mode=IN, jdbcType=NUMERIC} ,	in_kontaktklasse => #{IN_KONTAK
 			)  
 		}
 </update>
-<update id="spr_bewertung_f_pa_spr_bewertung_an_ppi" parameterType="hashmap" statementType="CALLABLE">
+<update id="spr_bewertung_an_ppi" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.spr_bewertung_f_pa.spr_bewertung_an_ppi( in_ksb_id => #{IN_KSB_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="spr_bewertung_f_pa_spr_bewertung_ausfuehren_jui" parameterType="hashmap" statementType="CALLABLE">
+<update id="spr_bewertung_ausfuehren_jui" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.spr_bewertung_f_pa.spr_bewertung_ausfuehren_jui( in_ksb_id => #{IN_KSB_ID, mode=IN, jdbcType=NUMERIC} ,	
 in_ppi_bewertung => #{IN_PPI_BEWERTUNG, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="spr_bewertung_f_pa_spr_bewertung_reset" parameterType="hashmap" statementType="CALLABLE">
+<update id="spr_bewertung_reset" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.spr_bewertung_f_pa.spr_bewertung_reset( out_ksb_id => #{OUT_KSB_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="spr_bewertung_f_pa_spr_ppi_bewertung_ausfuehren" parameterType="hashmap" statementType="CALLABLE">
+<update id="spr_ppi_bewertung_ausfuehren" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.spr_bewertung_f_pa.spr_ppi_bewertung_ausfuehren( in_ppi_kp_id => #{IN_PPI_KP_ID, mode=IN, jdbcType=NUMERIC} ,	
 in_kontaktklassen => #{IN_KONTAKTKLASSEN, mode=IN, jdbcType=NUMERIC} 	

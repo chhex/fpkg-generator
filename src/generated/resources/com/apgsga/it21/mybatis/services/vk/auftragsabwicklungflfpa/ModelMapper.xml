@@ -3,19 +3,19 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apgsga.it21.mybatis.services.vk.auftragsabwicklungflfpa">
-<update id="auftragsabwicklung_fl_f_pa_fl_freigeben1_init" parameterType="hashmap" statementType="CALLABLE">
+<update id="fl_freigeben1_init" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.auftragsabwicklung_fl_f_pa.fl_freigeben1_init( 
 			)  
 		}
 </update>
-<update id="auftragsabwicklung_fl_f_pa_fl_freigeben2_add" parameterType="hashmap" statementType="CALLABLE">
+<update id="fl_freigeben2_add" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.auftragsabwicklung_fl_f_pa.fl_freigeben2_add( in_agps_fl_zo_id => #{IN_AGPS_FL_ZO_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="auftragsabwicklung_fl_f_pa_fl_freigeben3_check" parameterType="hashmap" statementType="CALLABLE">
+<update id="fl_freigeben3_check" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.auftragsabwicklung_fl_f_pa.fl_freigeben3_check( in_annullieren => #{IN_ANNULLIEREN, mode=IN, jdbcType=NUMERIC} ,	
 in_agps_id => #{IN_AGPS_ID, mode=IN, jdbcType=NUMERIC} ,	in_ag_id => #{IN_AG_ID, mode=IN, jdbcType=NUMERIC} ,	
@@ -23,7 +23,7 @@ in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC}
 			)  
 		}
 </update>
-<update id="auftragsabwicklung_fl_f_pa_fl_freigeben4_execute" parameterType="hashmap" statementType="CALLABLE">
+<update id="fl_freigeben4_execute" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.auftragsabwicklung_fl_f_pa.fl_freigeben4_execute( 
 			)  

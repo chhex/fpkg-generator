@@ -31,6 +31,17 @@ public class DefaultNameSpaceFileWriter implements NameSpaceFileOutputWriter {
     }
 
     @Override
+    public void writeOutputFile(String fileName,  String output) {
+        try {
+            File outputFile = new File(nameSpaceDir, fileName);
+            var outputStream = new FileOutputStream(outputFile);
+            IOUtils.write(output, outputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void writeOutputFile(String fileName, String dir,  String output) {
         try {
             var pkgDir = new File(nameSpaceDir,dir);

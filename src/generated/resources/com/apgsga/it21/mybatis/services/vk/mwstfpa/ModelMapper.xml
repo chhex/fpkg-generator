@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apgsga.it21.mybatis.services.vk.mwstfpa">
-<update id="mwst_f_pa_vp_mwst_ermitteln" parameterType="hashmap" statementType="CALLABLE">
+<update id="vp_mwst_ermitteln" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.mwst_f_pa.vp_mwst_ermitteln( p_kdvt_id => #{P_KDVT_ID, mode=IN, jdbcType=NUMERIC} ,	
 p_nur_res_leist => #{P_NUR_RES_LEIST, mode=IN, jdbcType=BOOLEAN} ,	

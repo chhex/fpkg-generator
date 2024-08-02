@@ -8,7 +8,7 @@ public interface FPkgServiceGeneratorBuilder<T> {
 
     FPkgServiceGeneratorBuilder<T> daoExtractionLoader(ModelLoader modelLoader); 
 
-    FPkgServiceGeneratorBuilder<T> templatesDir(String templatesDir); 
+    FPkgServiceGeneratorBuilder<T> templatesRootDir(String templatesRootDir); 
 
     FPkgServiceGeneratorBuilder<T> targetRootDir(String targetRootDir); 
 

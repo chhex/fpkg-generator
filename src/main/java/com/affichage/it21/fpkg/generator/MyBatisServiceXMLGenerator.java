@@ -4,6 +4,7 @@ package com.affichage.it21.fpkg.generator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.stringtemplate.v4.STGroupDir;
 
 import com.affichage.it21.fpkg.model.Parameter;
@@ -25,8 +26,8 @@ public class MyBatisServiceXMLGenerator implements SchemaBasedVisitor<StringBuff
     private RenderParameter lastParameter; 
     private final NameSpaceFileOutputWriter outputWriter = new DefaultNameSpaceFileWriter(); 
 
-    public MyBatisServiceXMLGenerator(String nameSpace, String templatePath) {
-        this.groupDir = new STGroupDir(templatePath);
+    public MyBatisServiceXMLGenerator(String nameSpace, String templatesRootDir) {
+        this.groupDir = new STGroupDir(FilenameUtils.concat(templatesRootDir, "mybatis"));
         this.nameSpace = nameSpace; 
     }
 
@@ -50,6 +51,7 @@ public class MyBatisServiceXMLGenerator implements SchemaBasedVisitor<StringBuff
         var st = groupDir.getInstanceOf("footer");
         outputBuffer.append("\n"); 
         outputBuffer.append(st.render(60)); 
+        writeOutputFile("ModelMapper.xml",  NameConversion.toJavaName(pkg.getName()).toLowerCase(), outputBuffer.toString());
     }
 
     @Override
@@ -95,7 +97,7 @@ public class MyBatisServiceXMLGenerator implements SchemaBasedVisitor<StringBuff
 
     @Override
     public void initRootNameSpaceDir(String rootTargetDir, String nameSpace) {
-        outputWriter.initRootNameSpaceDir(rootTargetDir, nameSpace);
+        outputWriter.initRootNameSpaceDir(FilenameUtils.concat(rootTargetDir, "resources"), nameSpace);
     }
 
     @Override
@@ -191,6 +193,11 @@ public class MyBatisServiceXMLGenerator implements SchemaBasedVisitor<StringBuff
             this.komma = komma;
         } 
         
+    }
+
+    @Override
+    public void writeOutputFile(String fileName, String output) {
+        throw new UnsupportedOperationException("Unimplemented method 'writeOutputFile'");
     }
 
    

@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apgsga.it21.mybatis.services.vk.vpfpa">
-<update id="vp_f_pa_anliefertermin_plakat" parameterType="hashmap" statementType="CALLABLE">
+<update id="anliefertermin_plakat" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=VARCHAR2} := CALL
 			vk.vp_f_pa.anliefertermin_plakat( in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC} ,	
 in_agps_art => #{IN_AGPS_ART, mode=IN, jdbcType=NUMERIC} ,	in_abwicklung_subj_oid => #{IN_ABWICKLUNG_SUBJ_OID, mode=IN, jdbcType=NUMERIC} ,	
@@ -11,19 +11,19 @@ in_sujet => #{IN_SUJET, mode=IN, jdbcType=VARCHAR} ,	in_aushang_beginn => #{IN_A
 			)  
 		}
 </update>
-<update id="vp_f_pa_anzahl_spalten_rekap" parameterType="hashmap" statementType="CALLABLE">
+<update id="anzahl_spalten_rekap" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
 			vk.vp_f_pa.anzahl_spalten_rekap( 
 			)  
 		}
 </update>
-<update id="vp_f_pa_create_spr_digital" parameterType="hashmap" statementType="CALLABLE">
+<update id="create_spr_digital" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.vp_f_pa.create_spr_digital( in_kdvtdok_id => #{IN_KDVTDOK_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="vp_f_pa_erstellen_kdvtdok_records" parameterType="hashmap" statementType="CALLABLE">
+<update id="erstellen_kdvtdok_records" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.vp_f_pa.erstellen_kdvtdok_records( in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC} ,	
 in_sort_wemf => #{IN_SORT_WEMF, mode=IN, jdbcType=NUMERIC} ,	
@@ -50,40 +50,40 @@ out_vk_pap_drucken => #{OUT_VK_PAP_DRUCKEN, mode=IN, jdbcType=NUMERIC}
 			)  
 		}
 </update>
-<update id="vp_f_pa_erstellen_vpdsa_records" parameterType="hashmap" statementType="CALLABLE">
+<update id="erstellen_vpdsa_records" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.vp_f_pa.erstellen_vpdsa_records( in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC} ,	
 in_kdvtdok_id => #{IN_KDVTDOK_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="vp_f_pa_ist_kommraum_flughaefen_int" parameterType="hashmap" statementType="CALLABLE">
+<update id="ist_kommraum_flughaefen_int" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
 			vk.vp_f_pa.ist_kommraum_flughaefen_int( in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="vp_f_pa_kdvt_erstellen_verkaufspapiere" parameterType="hashmap" statementType="CALLABLE">
+<update id="kdvt_erstellen_verkaufspapiere" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.vp_f_pa.kdvt_erstellen_verkaufspapiere( kdvt_id_in => #{KDVT_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
 vk_pap_drucken_out => #{VK_PAP_DRUCKEN_OUT, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="vp_f_pa_loeschen_vpdsa_records" parameterType="hashmap" statementType="CALLABLE">
+<update id="loeschen_vpdsa_records" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.vp_f_pa.loeschen_vpdsa_records( in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC} ,	
 in_kdvtdok_id => #{IN_KDVTDOK_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="vp_f_pa_preisermittlung" parameterType="hashmap" statementType="CALLABLE">
+<update id="preisermittlung" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.vp_f_pa.preisermittlung( p_kdvt_id_in => #{P_KDVT_ID_IN, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="vp_f_pa_upd_kommraum_berge_int" parameterType="hashmap" statementType="CALLABLE">
+<update id="upd_kommraum_berge_int" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
 			vk.vp_f_pa.upd_kommraum_berge_int( in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  

@@ -13,7 +13,7 @@ public abstract class AbstractServiceGenBuilder<T> implements FPkgServiceGenerat
 
     private String targetRootDir; 
 
-    private String templateDir; 
+    private String templatesRootDir; 
 
     private ModelLoader daoExtractionLoader = new XmlSaxModelLoader(); 
 
@@ -42,8 +42,8 @@ public abstract class AbstractServiceGenBuilder<T> implements FPkgServiceGenerat
     }
 
     @Override
-    public FPkgServiceGeneratorBuilder<T> templatesDir(String templatesDir) {
-        this.templateDir = templatesDir; 
+    public FPkgServiceGeneratorBuilder<T> templatesRootDir(String templatesRootDir) {
+        this.templatesRootDir = templatesRootDir; 
         return this;
     }
 
@@ -63,8 +63,8 @@ public abstract class AbstractServiceGenBuilder<T> implements FPkgServiceGenerat
         return targetRootDir;
     }
 
-    public String getTemplateDir() {
-        return templateDir;
+    public String getTemplatesRootDir() {
+        return templatesRootDir;
     }
 
  

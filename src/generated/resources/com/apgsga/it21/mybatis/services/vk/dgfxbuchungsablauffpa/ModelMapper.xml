@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apgsga.it21.mybatis.services.vk.dgfxbuchungsablauffpa">
-<update id="dgfx_buchungsablauf_f_pa_agps_buchen" parameterType="hashmap" statementType="CALLABLE">
+<update id="agps_buchen" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.agps_buchen( p_agps_ids => #{P_AGPS_IDS, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} ,	
 p_mit_warteliste => #{P_MIT_WARTELISTE, mode=IN, jdbcType=NUMERIC} ,	
@@ -11,48 +11,48 @@ p_kompensation_gleiche_ng => #{P_KOMPENSATION_GLEICHE_NG, mode=IN, jdbcType=NUME
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_agps_terminieren" parameterType="hashmap" statementType="CALLABLE">
+<update id="agps_terminieren" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.agps_terminieren( in_agps_ids => #{IN_AGPS_IDS, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} ,	
 in_aushang_bis => #{IN_AUSHANG_BIS, mode=IN, jdbcType=DATE} 	
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_auftrag_mit_agps_verbinden" parameterType="hashmap" statementType="CALLABLE">
+<update id="auftrag_mit_agps_verbinden" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.auftrag_mit_agps_verbinden( p_ag_id => #{P_AG_ID, mode=IN, jdbcType=NUMERIC} ,	
 p_agps_ids => #{P_AGPS_IDS, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} 	
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_autofueller" parameterType="hashmap" statementType="CALLABLE">
+<update id="autofueller" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.autofueller( in_agps_ids => #{IN_AGPS_IDS, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} ,	
 in_autofueller_art => #{IN_AUTOFUELLER_ART, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_auto_fueller_erlaubt" parameterType="hashmap" statementType="CALLABLE">
+<update id="auto_fueller_erlaubt" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
 			vk.dgfx_buchungsablauf_f_pa.auto_fueller_erlaubt( in_krs_id => #{IN_KRS_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_check_krs_ag_branchen_vertr" parameterType="hashmap" statementType="CALLABLE">
+<update id="check_krs_ag_branchen_vertr" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
 			vk.dgfx_buchungsablauf_f_pa.check_krs_ag_branchen_vertr( 
 in_ag_id => #{IN_AG_ID, mode=IN, jdbcType=NUMERIC} ,	in_krs_id => #{IN_KRS_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_check_krs_ag_vkoe_vertr" parameterType="hashmap" statementType="CALLABLE">
+<update id="check_krs_ag_vkoe_vertr" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
 			vk.dgfx_buchungsablauf_f_pa.check_krs_ag_vkoe_vertr( in_ag_id => #{IN_AG_ID, mode=IN, jdbcType=NUMERIC} ,	
 in_krs_id => #{IN_KRS_ID, mode=IN, jdbcType=NUMERIC} 	
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_check_ng_branchen_vkoe_vertr" parameterType="hashmap" statementType="CALLABLE">
+<update id="check_ng_branchen_vkoe_vertr" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
 			vk.dgfx_buchungsablauf_f_pa.check_ng_branchen_vkoe_vertr( 
 in_ng_id => #{IN_NG_ID, mode=IN, jdbcType=NUMERIC} ,	in_aushang_beginn => #{IN_AUSHANG_BEGINN, mode=IN, jdbcType=DATE} ,	
@@ -62,20 +62,20 @@ in_vkoe_oid => #{IN_VKOE_OID, mode=IN, jdbcType=NUMERIC} ,	in_subj_oid => #{IN_S
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_delete_krs" parameterType="hashmap" statementType="CALLABLE">
+<update id="delete_krs" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.delete_krs( in_krs_ids => #{IN_KRS_IDS, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} ,	
 in_agps_ids => #{IN_AGPS_IDS, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} 	
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_erstellen_tzs_von_vki" parameterType="hashmap" statementType="CALLABLE">
+<update id="erstellen_tzs_von_vki" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.erstellen_tzs_von_vki( p_krs_ids => #{P_KRS_IDS, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} 	
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_filter_ng_branchen_vkoe" parameterType="hashmap" statementType="CALLABLE">
+<update id="filter_ng_branchen_vkoe" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.filter_ng_branchen_vkoe( in_ng_ids => #{IN_NG_IDS, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} ,	
 in_aushang_beginn => #{IN_AUSHANG_BEGINN, mode=IN, jdbcType=DATE} ,	
@@ -86,20 +86,20 @@ out_filtered_ng_ids => #{OUT_FILTERED_NG_IDS, mode=IN, jdbcType=ARRAY, typeHandl
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_get_dgl_bruttopreis_netz" parameterType="hashmap" statementType="CALLABLE">
+<update id="get_dgl_bruttopreis_netz" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=CLOB} := CALL
 			vk.dgfx_buchungsablauf_f_pa.get_dgl_bruttopreis_netz( in_parameters_xml => #{IN_PARAMETERS_XML, mode=IN, jdbcType=CLOB, typeHandler=com.apgsga.forms2java.persistence.mybatis.ClobTypeHandler} 	
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_loesche_krs_agps" parameterType="hashmap" statementType="CALLABLE">
+<update id="loesche_krs_agps" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.loesche_krs_agps( in_krs_ids => #{IN_KRS_IDS, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} ,	
 in_agps_ids => #{IN_AGPS_IDS, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} 	
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_netz_aushangtag_ab_datum" parameterType="hashmap" statementType="CALLABLE">
+<update id="netz_aushangtag_ab_datum" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.netz_aushangtag_ab_datum( p_ntgrotoid => #{P_NTGROTOID, mode=IN, jdbcType=NUMERIC} ,	
 p_datum_von => #{P_DATUM_VON, mode=IN, jdbcType=DATE} ,	p_aushangtag => #{P_AUSHANGTAG, mode=IN, jdbcType=DATE} ,	
@@ -107,7 +107,7 @@ p_aushang_takt => #{P_AUSHANG_TAKT, mode=IN, jdbcType=NUMERIC}
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_ng_suche" parameterType="hashmap" statementType="CALLABLE">
+<update id="ng_suche" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL #{RESULT, mode=OUT, jdbcType=TABLE} := CALL
 			vk.dgfx_buchungsablauf_f_pa.ng_suche( p_aushang_beginn => #{P_AUSHANG_BEGINN, mode=IN, jdbcType=DATE} ,	
 p_aushang_dauer => #{P_AUSHANG_DAUER, mode=IN, jdbcType=NUMERIC} ,	
@@ -121,7 +121,7 @@ p_obj_oid_l => #{P_OBJ_OID_L, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.fo
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_reservation" parameterType="hashmap" statementType="CALLABLE">
+<update id="reservation" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.reservation( p_krs_id => #{P_KRS_ID, mode=IN, jdbcType=NUMERIC} ,	
 p_vorschlag_id => #{P_VORSCHLAG_ID, mode=IN, jdbcType=NUMERIC} ,	
@@ -131,7 +131,7 @@ o_agps_id => #{O_AGPS_ID, mode=IN, jdbcType=NUMERIC}
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_reservation_xor_vorschlag" parameterType="hashmap" statementType="CALLABLE">
+<update id="reservation_xor_vorschlag" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.reservation_xor_vorschlag( p_krs_id => #{P_KRS_ID, mode=IN, jdbcType=NUMERIC} ,	
 p_ist_reservation => #{P_IST_RESERVATION, mode=IN, jdbcType=NUMERIC} ,	
@@ -141,7 +141,7 @@ o_agps_id => #{O_AGPS_ID, mode=IN, jdbcType=NUMERIC}
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_vorschlag" parameterType="hashmap" statementType="CALLABLE">
+<update id="vorschlag" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.vorschlag( p_krs_id => #{P_KRS_ID, mode=IN, jdbcType=NUMERIC} ,	
 p_verteilungart_id => #{P_VERTEILUNGART_ID, mode=IN, jdbcType=NUMERIC} ,	
@@ -151,7 +151,7 @@ o_agps_id => #{O_AGPS_ID, mode=IN, jdbcType=NUMERIC}
 			)  
 		}
 </update>
-<update id="dgfx_buchungsablauf_f_pa_warteliste_agps_einloesen" parameterType="hashmap" statementType="CALLABLE">
+<update id="warteliste_agps_einloesen" parameterType="hashmap" statementType="CALLABLE">
 		{ CALL
 			vk.dgfx_buchungsablauf_f_pa.warteliste_agps_einloesen( agps_ids_in => #{AGPS_IDS_IN, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} 	
 			)  
