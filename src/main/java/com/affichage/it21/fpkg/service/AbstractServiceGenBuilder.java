@@ -5,7 +5,7 @@ import com.affichage.it21.fpkg.model.XmlSaxModelLoader;
 
 public abstract class AbstractServiceGenBuilder<T> implements FPkgServiceGeneratorBuilder<T> {
 
-    private static String NAME_SPACE_CONVENTION = "com.apgsga.it21.mybatis.services";
+    private static String NAME_SPACE_CONVENTION = "com.apgsga.it21.fpkgservices";
 
     private String rootNameSpace = NAME_SPACE_CONVENTION;
 

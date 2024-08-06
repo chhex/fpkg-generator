@@ -13,6 +13,12 @@ public class DefaultNameSpaceFileWriter implements NameSpaceFileOutputWriter {
     private File rootNsPath;
     private File nameSpaceDir;
 
+    private Boolean clean = true;
+
+    public DefaultNameSpaceFileWriter(Boolean clean) {
+        this.clean = clean;
+    }
+
     @Override
     public void initRootNameSpaceDir(String rootTargetDir,String nameSpace) {
         rootNsPath = new File(FilenameUtils.concat(rootTargetDir, nameSpace.replace(".", File.separator)));
@@ -24,7 +30,7 @@ public class DefaultNameSpaceFileWriter implements NameSpaceFileOutputWriter {
         try {
             nameSpaceDir = new File(FilenameUtils.concat(rootNsPath.getCanonicalPath(), schema.toLowerCase()));
             nameSpaceDir.mkdirs();
-            FileUtils.cleanDirectory(nameSpaceDir);
+            if (clean)  FileUtils.cleanDirectory(nameSpaceDir);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

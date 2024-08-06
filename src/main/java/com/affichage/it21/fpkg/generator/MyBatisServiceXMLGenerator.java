@@ -24,7 +24,7 @@ public class MyBatisServiceXMLGenerator implements SchemaBasedVisitor<StringBuff
     private Pkg lastPackage; 
     private RenderService lastService;
     private RenderParameter lastParameter; 
-    private final NameSpaceFileOutputWriter outputWriter = new DefaultNameSpaceFileWriter(); 
+    private final NameSpaceFileOutputWriter outputWriter = new DefaultNameSpaceFileWriter(false); 
 
     public MyBatisServiceXMLGenerator(String nameSpace, String templatesRootDir) {
         this.groupDir = new STGroupDir(FilenameUtils.concat(templatesRootDir, "mybatis"));

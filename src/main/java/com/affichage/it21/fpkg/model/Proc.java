@@ -7,6 +7,7 @@ public class Proc {
     private final String name;
     private final String type;
     private final String returnType; 
+    private Pkg pkg; 
     private final List<Parameter> paramters = new ArrayList<Parameter>();
     public Proc(String name, String type, String returnType) {
         this.name = name;
@@ -34,6 +35,15 @@ public class Proc {
     public void add(Parameter parameter) {
         paramters.add(parameter); 
     }
+    
+    public Pkg getPkg() {
+        return pkg;
+    }
+
+    public void setPkg(Pkg pkg) {
+        this.pkg = pkg;
+    } 
+
 
     public void accept(ModelVisitor visitor) {
         visitor.visit(this);
@@ -69,7 +79,8 @@ public class Proc {
     public String toString() {
         return "FProcedure [name=" + name + ", type=" + type + ", returnType=" + returnType + ", paramters=" + paramters
                 + "]";
-    } 
+    }
+
 
     
 

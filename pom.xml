@@ -151,6 +151,24 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/generated/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
@@ -214,5 +232,39 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+            <resource>
+                <directory>src/generated/java</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/model</directory>
+                <includes>
+                    <include>**/*.dao</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/generated/metadata</directory>
+                <includes>
+                    <include>**/*.rdbms</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/generated/resources</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
 	</build>
 </project>

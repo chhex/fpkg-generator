@@ -18,7 +18,7 @@ public class JavaInterfaceGenerator implements SchemaBasedVisitor<StringBuffer> 
     private final StringBuffer outputBuffer = new StringBuffer();
     private final String nameSpace;
     private String schema;
-    private final NameSpaceFileOutputWriter outputWriter = new DefaultNameSpaceFileWriter();
+    private final NameSpaceFileOutputWriter outputWriter = new DefaultNameSpaceFileWriter(true);
     Formatter formatter = Formatter.create();
     private boolean firstParam = true;
 
@@ -36,7 +36,7 @@ public class JavaInterfaceGenerator implements SchemaBasedVisitor<StringBuffer> 
     @Override
     public void visit(Pkg pkg) {
         var st = groupDir.getInstanceOf("interface");
-        st.add("packageName", String.format("%s.%s", nameSpace, schema.toLowerCase()));
+        st.add("packageName", String.format("%s.%s.%s", nameSpace, schema.toLowerCase(), NameConversion.toJavaName(pkg.getName()).toLowerCase()));
         st.add("className", String.format("%s", NameConversion.toJavaNameFirstUpper(pkg.getName())));
         outputBuffer.append(st.render(60));
     }
@@ -47,7 +47,7 @@ public class JavaInterfaceGenerator implements SchemaBasedVisitor<StringBuffer> 
         outputBuffer.append("\n");
         outputBuffer.append(st.render(60));
         try {
-            writeOutputFile(String.format("%s.java", NameConversion.toJavaNameFirstUpper(pkg.getName())),
+            writeOutputFile(String.format("%s.java", NameConversion.toJavaNameFirstUpper(pkg.getName())), NameConversion.toJavaName(pkg.getName()).toLowerCase(), 
                     formatter.formatSource(outputBuffer.toString()));
                 } catch (FormatterException e) {
             throw new RuntimeException(e);
@@ -62,7 +62,7 @@ public class JavaInterfaceGenerator implements SchemaBasedVisitor<StringBuffer> 
     public void visit(Proc proc) {
         var st = groupDir.getInstanceOf("method");
         st.add("methodName", NameConversion.toJavaName(proc.getName()).replaceAll("#", ""));
-        st.add("returnType", String.format("%s", "void"));
+        st.add("returnType", String.format("%s", proc.getReturnType() == null ? "void" : TYPE_MAPS.ora2java(null, proc.getReturnType())));
         outputBuffer.append(st.render(60));
         firstParam = true; 
 
@@ -109,7 +109,7 @@ public class JavaInterfaceGenerator implements SchemaBasedVisitor<StringBuffer> 
 
     @Override
     public void writeOutputFile(String fileName, String dir, String output) {
-        throw new UnsupportedOperationException("Unimplemented method 'writeOutputFile'");
+        outputWriter.writeOutputFile(fileName,dir,output); 
     }
 
 }

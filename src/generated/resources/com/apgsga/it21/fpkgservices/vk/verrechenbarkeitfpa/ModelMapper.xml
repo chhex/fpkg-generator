@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apgsga.it21.fpkgservices.vk.verrechenbarkeitfpa">
+<update id="agps_flzo_leist_verrechnen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.verrechenbarkeit_f_pa.agps_flzo_leist_verrechnen( aflst_id_in => #{AFLST_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+verrechnung_in => #{VERRECHNUNG_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="agps_leist_verrechnen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.verrechenbarkeit_f_pa.agps_leist_verrechnen( agpslst_id_in => #{AGPSLST_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+verrechnung_in => #{VERRECHNUNG_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="diskrepanz_visieren" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.verrechenbarkeit_f_pa.diskrepanz_visieren( aflst_id_in => #{AFLST_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+begruendung_in => #{BEGRUENDUNG_IN, mode=IN, jdbcType=VARCHAR} 	
+			)  
+		}
+</update>
+<update id="initiales_feedback_setzen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.verrechenbarkeit_f_pa.initiales_feedback_setzen( aflst_id_in => #{AFLST_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="visum_zuruecksetzen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.verrechenbarkeit_f_pa.visum_zuruecksetzen( aflst_id_in => #{AFLST_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+</mapper>

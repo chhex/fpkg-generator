@@ -71,6 +71,7 @@ public class ModelLoaderSax extends DefaultHandler {
             }
         } else if (qName.equalsIgnoreCase("procedures")) {
             if (f_pkg) {
+                currentFProcedure.setPkg(currentPkg);
                 currentPkg.add(currentFProcedure);
             }
 
