@@ -23,7 +23,7 @@ public class JavaInterfaceGenerator implements SchemaBasedVisitor<StringBuffer> 
     private boolean firstParam = true;
 
     public JavaInterfaceGenerator(String nameSpace, String templatesRootDir) {
-        this.groupDir = new STGroupDir(FilenameUtils.concat(templatesRootDir, "java"));
+        this.groupDir = new STGroupDir(FilenameUtils.concat(templatesRootDir, "java/interface"));
         this.nameSpace = nameSpace;
     }
 
