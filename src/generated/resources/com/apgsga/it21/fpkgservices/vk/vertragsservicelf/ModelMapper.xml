@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apgsga.it21.fpkgservices.vk.vertragsservicelf">
+<update id="ermitteln_jahrespreis" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.vertrags_service_l_f.ermitteln_jahrespreis( p_agps_id_in => #{P_AGPS_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+p_ziel_bruttopreis_in => #{P_ZIEL_BRUTTOPREIS_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="ermitteln_kuendigungsarten_agps" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.vertrags_service_l_f.ermitteln_kuendigungsarten_agps( 
+p_agps_id_list => #{P_AGPS_ID_LIST, mode=IN, jdbcType=ARRAY, typeHandler=com.apgsga.forms2java.persistence.mybatis.NumberLTypeHandler} ,	
+p_kuendigungsdatum => #{P_KUENDIGUNGSDATUM, mode=IN, jdbcType=DATE} 	
+			)  
+		}
+</update>
+<update id="ermitteln_kuendigungsarten_vertrag" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.vertrags_service_l_f.ermitteln_kuendigungsarten_vertrag( 
+p_kvlf_id => #{P_KVLF_ID, mode=IN, jdbcType=NUMERIC} ,	p_kuendigungsdatum => #{P_KUENDIGUNGSDATUM, mode=IN, jdbcType=DATE} 	
+			)  
+		}
+</update>
+<update id="get_aushangtaktende" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=DATE} := CALL
+			vk.vertrags_service_l_f.get_aushangtaktende( in_agps_id => #{IN_AGPS_ID, mode=IN, jdbcType=NUMERIC} ,	
+in_aushangende_von => #{IN_AUSHANGENDE_VON, mode=IN, jdbcType=DATE} 	
+			)  
+		}
+</update>
+<update id="ins_log" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.vertrags_service_l_f.ins_log( 
+			)  
+		}
+</update>
+<update id="ist_datum_fuer_ao_kuendigung_erlaubt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.vertrags_service_l_f.ist_datum_fuer_ao_kuendigung_erlaubt( 
+p_agps_id_in => #{P_AGPS_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+p_kvlf_id_in => #{P_KVLF_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+p_kuend_datum_in => #{P_KUEND_DATUM_IN, mode=IN, jdbcType=DATE} 	
+			)  
+		}
+</update>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apgsga.it21.fpkgservices.vk.optionenservicef">
+<update id="agps_annehmen_einloesbare_opt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.optionen_service_f.agps_annehmen_einloesbare_opt( agps_id_in => #{AGPS_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="agps_verwerfen_einloesbare_opt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.optionen_service_f.agps_verwerfen_einloesbare_opt( agps_id_in => #{AGPS_ID_IN, mode=IN, jdbcType=NUMERIC} ,	
+option_behalten_in => #{OPTION_BEHALTEN_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+</mapper>

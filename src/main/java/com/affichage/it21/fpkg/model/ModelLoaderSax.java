@@ -36,7 +36,7 @@ public class ModelLoaderSax extends DefaultHandler {
         if (qName.equalsIgnoreCase("packages")) {
             String name = attributes.getValue("name");
             String dbSchema = attributes.getValue("dbSchema");
-            if (name.endsWith("F_PA") && schemas.contains(dbSchema)) {
+            if (name.endsWith("_F") && schemas.contains(dbSchema)) {
                 f_pkg = true;
                 currentPkg = new Pkg(name, dbSchema);
 
@@ -53,8 +53,10 @@ public class ModelLoaderSax extends DefaultHandler {
             if (f_pkg) {
                 String name = attributes.getValue("name");
                 String type = attributes.getValue("type");
-                String parameterType = attributes.getValue("paramterType"); 
-                currentFProcedure.add(new Parameter(name, type,parameterType));
+                String parameterType = attributes.getValue("paramterType");
+                // TODO (CHE, 7.8) : We don't know how to Map , ignored , used by Verkauf
+                if (type != null && type.equals("PL/SQL RECORD")) return; 
+                currentFProcedure.add(new Parameter(name, type, parameterType));
             }
         }
     }
@@ -70,6 +72,7 @@ public class ModelLoaderSax extends DefaultHandler {
                 fpkgs.add(currentPkg);
             }
         } else if (qName.equalsIgnoreCase("procedures")) {
+
             if (f_pkg) {
                 currentFProcedure.setPkg(currentPkg);
                 currentPkg.add(currentFProcedure);

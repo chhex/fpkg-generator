@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apgsga.it21.fpkgservices.vk.enkundevertraegelf">
+<update id="get_reservationsart" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.en_kunde_vertraege_l_f.get_reservationsart( p_kdvt_id => #{P_KDVT_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="ist_kommraum_berge_int" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.en_kunde_vertraege_l_f.ist_kommraum_berge_int( in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="ist_swa_berechtigt" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.en_kunde_vertraege_l_f.ist_swa_berechtigt( p_kdvt_id_in => #{P_KDVT_ID_IN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apgsga.it21.fpkgservices.vk.buchungkriteriensatzservicef">
+<update id="checked_freigeben" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.buchung_kriteriensatz_service_f.checked_freigeben( in_agps_id => #{IN_AGPS_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="checked_reservieren" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.buchung_kriteriensatz_service_f.checked_reservieren( in_agps_id => #{IN_AGPS_ID, mode=IN, jdbcType=NUMERIC} ,	
+in_status => #{IN_STATUS, mode=IN, jdbcType=NUMERIC} ,	out_angeforderte => #{OUT_ANGEFORDERTE, mode=IN, jdbcType=NUMERIC} ,	
+out_durchgefuehrte => #{OUT_DURCHGEFUEHRTE, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="dobe_freigeben" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.buchung_kriteriensatz_service_f.dobe_freigeben( in_agps_id => #{IN_AGPS_ID, mode=IN, jdbcType=NUMERIC} ,	
+in_fl_oid => #{IN_FL_OID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="ermitteln_verfuegbare_flaechen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.buchung_kriteriensatz_service_f.ermitteln_verfuegbare_flaechen( 
+in_krs_id => #{IN_KRS_ID, mode=IN, jdbcType=NUMERIC} ,	in_agps_id => #{IN_AGPS_ID, mode=IN, jdbcType=NUMERIC} ,	
+in_modus => #{IN_MODUS, mode=IN, jdbcType=NUMERIC} ,	in_anfr_id => #{IN_ANFR_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="exit_instance" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.buchung_kriteriensatz_service_f.exit_instance( 
+			)  
+		}
+</update>
+<update id="reserviere_efl_jf" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.buchung_kriteriensatz_service_f.reserviere_efl_jf( in_agps_id => #{IN_AGPS_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+</mapper>

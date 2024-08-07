@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apgsga.it21.fpkgservices.vk.fobservicef">
+<update id="clearkrs" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.fob_service_f.clearkrs( in_krs_id => #{IN_KRS_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="entfernen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.fob_service_f.entfernen( in_flzo_opt => #{IN_FLZO_OPT, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="fl_branche_vertraegelich" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.fob_service_f.fl_branche_vertraegelich( in_fl_oid => #{IN_FL_OID, mode=IN, jdbcType=NUMERIC} ,	
+in_brc_id_l => #{IN_BRC_ID_L, mode=IN, jdbcType=NUMERIC} ,	in_aushang_von => #{IN_AUSHANG_VON, mode=IN, jdbcType=DATE} ,	
+in_aushang_dauer => #{IN_AUSHANG_DAUER, mode=IN, jdbcType=NUMERIC} ,	
+in_subj_oid => #{IN_SUBJ_OID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="get_preise" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.fob_service_f.get_preise( in_fl_oid => #{IN_FL_OID, mode=IN, jdbcType=NUMERIC} ,	
+in_aushang_beginn => #{IN_AUSHANG_BEGINN, mode=IN, jdbcType=DATE} ,	
+in_aushang_dauer => #{IN_AUSHANG_DAUER, mode=IN, jdbcType=NUMERIC} ,	
+out_medienleistung => #{OUT_MEDIENLEISTUNG, mode=IN, jdbcType=NUMERIC} ,	
+out_produktion => #{OUT_PRODUKTION, mode=IN, jdbcType=NUMERIC} ,	
+out_montage => #{OUT_MONTAGE, mode=IN, jdbcType=NUMERIC} ,	out_gebuehren => #{OUT_GEBUEHREN, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="option_zum_einloesen" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.fob_service_f.option_zum_einloesen( in_agps_fl_zo_id => #{IN_AGPS_FL_ZO_ID, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="reservieren" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL
+			vk.fob_service_f.reservieren( in_atgeb_id => #{IN_ATGEB_ID, mode=IN, jdbcType=NUMERIC} ,	
+in_agentur_subj_oid => #{IN_AGENTUR_SUBJ_OID, mode=IN, jdbcType=NUMERIC} ,	
+in_krs_id => #{IN_KRS_ID, mode=IN, jdbcType=NUMERIC} ,	in_kdvt_id => #{IN_KDVT_ID, mode=IN, jdbcType=NUMERIC} ,	
+in_ag_id => #{IN_AG_ID, mode=IN, jdbcType=NUMERIC} ,	in_agps_art => #{IN_AGPS_ART, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+<update id="set_display_par" parameterType="hashmap" statementType="CALLABLE">
+		{ CALL #{RESULT, mode=OUT, jdbcType=NUMBER} := CALL
+			vk.fob_service_f.set_display_par( in_fl_oid => #{IN_FL_OID, mode=IN, jdbcType=NUMERIC} ,	
+in_aushang_von => #{IN_AUSHANG_VON, mode=IN, jdbcType=DATE} ,	
+in_aushang_bis => #{IN_AUSHANG_BIS, mode=IN, jdbcType=DATE} ,	
+in_interval => #{IN_INTERVAL, mode=IN, jdbcType=NUMERIC} 	
+			)  
+		}
+</update>
+</mapper>
