@@ -10,4 +10,4 @@ agps_id_in => #{AGPS_ID_IN, mode=IN, jdbcType=NUMERIC}
 			)  
 		}
 </update>
-</mapper>	
+</mapper>
