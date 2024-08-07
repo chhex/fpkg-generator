@@ -20,11 +20,7 @@ public class TestStringTemplate4 {
         st.add("value", 0);
         result = st.render();
         System.out.println(result);
-        st = new ST("<items:{it|<it.id>: <it.lastName>, <it.firstName>\n}>");
-        st.addAggr("items.{ firstName ,lastName, id }", "Ter", "Parr", 99); // add() uses varargs
-        st.addAggr("items.{firstName, lastName ,id}", "Tom", "Burns", 34);
-        result = st.render();
-        System.out.println(result);
+   
 
     }
 

@@ -1,4 +1,4 @@
-package com.affichage.it21.fpkg.service.test;
+package com.affichage.it21.fpkg.service.main;
 
 import java.io.IOException;
 import java.util.List;
